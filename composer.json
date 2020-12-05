@@ -1,0 +1,70 @@
+{
+    "name": "laraish/laraish",
+    "description": "The WordPress theme powered by the Laravel Framework.",
+    "keywords": [
+        "framework",
+        "laravel",
+        "WordPress"
+    ],
+    "license": "MIT",
+    "type": "project",
+    "require": {
+        "php": "^7.3",
+        "fideloper/proxy": "^4.2",
+        "fruitcake/laravel-cors": "^2.0",
+        "guzzlehttp/guzzle": "^7.0.1",
+        "jwilsson/spotify-web-api-php": "^3.4",
+        "laraish/framework": "^2.0.0",
+        "laravel/horizon": "^5.5",
+        "laravel/socialite": "^5.1",
+        "laravel/tinker": "^2.0",
+        "socialiteproviders/spotify": "^3.1",
+        "spatie/browsershot": "^3.41"
+    },
+    "require-dev": {
+        "facade/ignition": "^2.3.6"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "dont-discover": []
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        },
+        "classmap": [
+            "database/seeds",
+            "database/factories"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "post-create-project-cmd": [
+            "Laraish\\Foundation\\ComposerScripts::renameHelperFunctions",
+            "@php artisan key:generate --ansi"
+        ],
+        "post-update-cmd": [
+            "Laraish\\Foundation\\ComposerScripts::renameHelperFunctions"
+        ],
+        "post-autoload-dump": [
+            "Laraish\\Foundation\\ComposerScripts::renameHelperFunctions",
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover --ansi"
+        ]
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
