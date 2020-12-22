@@ -29,5 +29,15 @@
         if(!$isPs) {
             wp_head();
         }
+        if($isPs) {
+            echo <<<HTML
+                <style>
+                .post-box {
+                 opacity: 1 !important;
+                }
+                </style>
+            HTML;
+
+        }
     ?>
 </head>
