@@ -31,15 +31,22 @@ class CreateOgImageJob implements ShouldQueue
             if (get_post_meta($this->post->id(), 'og_image', true)) {
                 return;
             }
-            $base64Image = Browsershot::url($this->post->ogImageBaseUrl())
+            $bshot = Browsershot::url($this->post->ogImageBaseUrl())
                 ->devicePixelRatio(2)
-                ->windowSize(1200, 630)
-                ->base64Screenshot();
+                ->windowSize(1200, 630);
+            if(!defined('LOCAL_WP')) {
+                $bshot->setNodeBinary('/home/forge/.nvm/versions/node/v12.16.1/bin/node');
+                $bshot->setNpmBinary('/home/forge/.nvm/versions/node/v12.16.1/bin/npm');
+//                $bshot->setChromePath("/path/to/my/chrome");
+            }
+//
+            $base64Image = $bshot->base64Screenshot();
 
             $id = $this->save_image($base64Image, 'og_'.$this->post->id());
 
             update_post_meta($this->post->id(), 'og_image', $id);
         } catch (Exception $exception) {
+            dd($exception);
             return $exception;
         }
     }
