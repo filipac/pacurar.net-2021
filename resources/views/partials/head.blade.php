@@ -16,9 +16,9 @@
     @else
     <link rel="stylesheet" href="{{ mix('css/app.css') }}"/>
     @endif
-    @if(($post = get_post()) && ($imgId = get_post_meta($post, 'og_image')))
-    @dd($imgId)
-    @endif
+{{--    @if(($post = get_post()) && ($imgId = get_post_meta($post, 'og_image')))--}}
+{{--    @dd($imgId)--}}
+{{--    @endif--}}
     @yield('head')
     @stack('head')
     <?php wp_head();?>
