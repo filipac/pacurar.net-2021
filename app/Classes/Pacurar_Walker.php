@@ -166,6 +166,7 @@ class Pacurar_Walker extends Walker_Nav_Menu
         if ($depth == 0) {
             // $atts['@mouseover'] = '$refs.creak && $refs.creak.play();';
             $atts['@mouseover'] = '$dispatch(\'creak\')';
+            $atts['class'] = 'prevent-if';
         }
         $atts['title']  = ! empty($item->attr_title) ? $item->attr_title : '';
         $atts['target'] = ! empty($item->target) ? $item->target : '';
