@@ -137,7 +137,7 @@ class Pacurar_Walker extends Walker_Nav_Menu
 
         $extra = '';
         if (in_array('menu-item-has-children', $class_names_raw)) {
-            $extra = 'x-data=\''.json_encode(['show' => false]).'\' @mouseenter="if(jQuery(window).width() > 600) { show=true }" @mouseleave="if(jQuery(window).width() > 600) { show=false }" @click.away="if(jQuery(window).width() > 600) { show=false }';
+            $extra = 'x-data=\''.json_encode(['show' => false]).'\' @mouseenter="if(jQuery(window).width() > 600) { show=true }" @mouseleave="if(jQuery(window).width() > 600) { show=false }" @click.away="if(jQuery(window).width() > 600) { show=false }"';
             $class_names_raw[] = 'relative parentapp';
         }
 
