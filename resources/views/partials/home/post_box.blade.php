@@ -1,5 +1,10 @@
 @if(has_post_thumbnail($_post->wpPost))
-    <a href="{{ get_the_permalink($_post->wpPost) }}" class="featured-image flex sm:max-h-sm sm:max-w-full sm:w-full"><img src="{{ get_the_post_thumbnail_url( $_post->wpPost, 'full' ) }}" class="featured-image  sm:max-w-full sm:w-full"></a>
+    @php
+        $_img = get_the_post_thumbnail_url( $_post->wpPost, 'full' );
+    @endphp
+    <a href="{{ get_the_permalink($_post->wpPost) }}" class="featured-image flex sm:max-h-sm sm:max-w-full sm:w-full">
+        {!! apply_filters('manual_lazy_image', '<img src="'.$_img.'" class="featured-image  sm:max-w-full sm:w-full" />') !!}
+    </a>
 @endif
 @include('partials.meta_bar')
 <div class="p-6">

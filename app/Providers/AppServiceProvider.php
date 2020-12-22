@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Jobs\CreateOgImageJob;
 use App\Models\Wp\Post\Post;
+use Automattic\Jetpack\Jetpack_Lazy_Images;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -52,6 +53,13 @@ class AppServiceProvider extends ServiceProvider
 
         add_action('manage_posts_custom_column', $og, 10, 2);
         add_action('manage_page_posts_custom_column', $og, 10, 2);
+
+        add_action('manual_lazy_image', function ($content) {
+            $inst = Jetpack_Lazy_Images::instance();
+            $content = $inst->add_image_placeholders($content);
+
+            return $content;
+        });
 
 
         add_action('admin_menu', function () {
