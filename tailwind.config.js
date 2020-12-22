@@ -1,6 +1,10 @@
 module.exports = {
     important: true,
     darkMode: "media",
+    purge: [
+        './resources/**/*.blade.php',
+        './resources/**/*.js',
+    ],
     theme: {
         screens: {
             sm: "640px",
