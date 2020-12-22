@@ -28,7 +28,7 @@ class Pacurar_Walker extends Walker_Nav_Menu
         $indent = str_repeat($t, $depth);
 
         // Default class.
-        $classes = array( 'sub-menu', 'bg-white absolute mt-2 shadow rounded py-6 px-12 text-indigo-600 z-50 parentapp' );
+        $classes = array( 'sub-menu', 'bg-white absolute mt-2 shadow rounded py-6 px-12 text-indigo-600 z-50' );
 
         if ($depth >= 1) {
             $classes[] = 'right-0';
@@ -138,7 +138,7 @@ class Pacurar_Walker extends Walker_Nav_Menu
         $extra = '';
         if (in_array('menu-item-has-children', $class_names_raw)) {
             $extra = 'x-data=\''.json_encode(['open' => false]).'\' @mouseenter="open=true" @mouseleave="open=false"';
-            $class_names_raw[] = 'relative';
+            $class_names_raw[] = 'relative parentapp';
         }
 
         $class_names_raw[] = 'depth-'.$depth;
