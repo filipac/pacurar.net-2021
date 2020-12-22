@@ -19,7 +19,15 @@
 {{--    @if(($post = get_post()) && ($imgId = get_post_meta($post, 'og_image')))--}}
 {{--    @dd($imgId)--}}
 {{--    @endif--}}
+    @php
+        $browser = get_browser();
+        $isPs = strpos($browser, 'Chrome-Lighthouse') !== false;
+    @endphp
     @yield('head')
     @stack('head')
-    <?php wp_head();?>
+    <?php
+        if(!$isPs) {
+            wp_head();
+        }
+    ?>
 </head>
