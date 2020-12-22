@@ -7,7 +7,7 @@ module.exports = {
             './resources/**/*.js',
         ],
         options: {
-            safeList: ['z-50'],
+            safelist: ['z-50'],
         },
     },
     theme: {
