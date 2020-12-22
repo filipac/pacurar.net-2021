@@ -553,3 +553,12 @@ a#cancel-comment-reply-link {
     -o-transform: scale(1.1);
     transform: scale(1.1);
 }
+
+.wp-block-embed {
+    blockquote {
+        display: none;
+    }
+    iframe.wp-embedded-content {
+        position: relative !important;
+    }
+}
