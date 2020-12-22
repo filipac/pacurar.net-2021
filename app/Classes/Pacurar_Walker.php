@@ -54,7 +54,7 @@ class Pacurar_Walker extends Walker_Nav_Menu
         x-transition:leave-end="opacity-0 transform -translate-y-3"
         t;
 
-        $output .= "{$n}{$indent}<ul$class_names style=\"display: none;\" x-show=\"open\" {$trans}>{$n}";
+        $output .= "{$n}{$indent}<ul$class_names style=\"display: none;\" x-show=\"show\" {$trans}>{$n}";
     }
 
     /**
@@ -137,7 +137,7 @@ class Pacurar_Walker extends Walker_Nav_Menu
 
         $extra = '';
         if (in_array('menu-item-has-children', $class_names_raw)) {
-            $extra = 'x-data=\''.json_encode(['open' => false]).'\' @mouseenter="if(jQuery(window).width() > 600) { open=true }" @mouseleave="if(jQuery(window).width() > 600) { open=false }" @click.away="open = false"';
+            $extra = 'x-data=\''.json_encode(['show' => false]).'\' @mouseenter="if(jQuery(window).width() > 600) { show=true }" @mouseleave="if(jQuery(window).width() > 600) { show=false }" @click.away="show = false"';
             $class_names_raw[] = 'relative parentapp';
         }
 
