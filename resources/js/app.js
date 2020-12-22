@@ -101,14 +101,14 @@ jQuery(document).on("click", ".prevent-if", function(e) {
         data.show = true;
     }
 });
-jQuery(document).on("click", ".menu-item-has-children", function(e) {
-    // e.preventDefault();
-    let data = this.__x.$data;
-    if (!data.open) {
-        e.preventDefault();
-        data.open = true;
-    }
-});
+// jQuery(document).on("click", ".menu-item-has-children", function(e) {
+//     // e.preventDefault();
+//     let data = this.__x.$data;
+//     if (!data.open) {
+//         e.preventDefault();
+//         data.open = true;
+//     }
+// });
 
 function setCookie(cname, cvalue, exdays) {
     let d = new Date();
