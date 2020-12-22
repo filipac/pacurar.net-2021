@@ -37,7 +37,7 @@ class CreateOgImageJob implements ShouldQueue
             if(!defined('LOCAL_WP')) {
                 $bshot->setNodeBinary('/home/forge/.nvm/versions/node/v12.16.1/bin/node');
                 $bshot->setNpmBinary('/home/forge/.nvm/versions/node/v12.16.1/bin/npm');
-//                $bshot->setChromePath("/path/to/my/chrome");
+                $bshot->setChromePath("/home/forge/.nvm/versions/node/v12.16.1/lib/node_modules/puppeteer/.local-chromium");
             }
 //
             $base64Image = $bshot->base64Screenshot();
