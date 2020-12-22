@@ -19,6 +19,11 @@ class Page extends Controller
 
     public function index()
     {
+        $frontpage_id = get_option('page_on_front');
+
+        if (get_post()->ID == $frontpage_id) {
+            return $this->view('generic.home');
+        }
         $data = [
             'post' => new Post(),
         ];

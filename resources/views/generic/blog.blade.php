@@ -7,4 +7,6 @@
         @include('partials.posts')
         @include('partials.pagination')
     </div>
+
+    @include('partials.copy')
 @overwrite

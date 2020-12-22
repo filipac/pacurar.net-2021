@@ -1,7 +1,7 @@
 require("./bootstrap");
 import ScrollMagic from "scrollmagic";
 
-var controller = new ScrollMagic.Controller();
+let controller = new ScrollMagic.Controller();
 
 jQuery(function() {
     let all = document.querySelectorAll(".post-box");
@@ -18,7 +18,7 @@ jQuery(function() {
     });
 });
 
-let konami = function() {
+let imanok = function() {
     let all = document.querySelectorAll(".post-box");
     all.forEach(item => {
         let rect = item.getBoundingClientRect();
@@ -48,7 +48,7 @@ let konami = function() {
     });
 };
 
-var pattern = [
+let pattern = [
     "ArrowUp",
     "ArrowUp",
     "ArrowDown",
@@ -60,9 +60,9 @@ var pattern = [
     "b",
     "a"
 ];
-var current = 0;
+let current = 0;
 
-var keyHandler = function(event) {
+let keyHandler = function(event) {
     // If the key isn't in the pattern, or isn't the current key in the pattern, reset
     if (pattern.indexOf(event.key) < 0 || event.key !== pattern[current]) {
         current = 0;
@@ -73,7 +73,7 @@ var keyHandler = function(event) {
     // If complete, alert and reset
     if (pattern.length === current) {
         current = 0;
-        konami();
+        imanok();
         document.addEventListener("keydown", handler);
     }
 };
@@ -87,7 +87,7 @@ function handler(e) {
     if (jQuery(".post-box.kon").length > 0 && e.key == "Escape") {
         // remove this handler
         document.removeEventListener("keydown", handler);
-        konami();
+        imanok();
     }
 }
 
@@ -111,9 +111,9 @@ jQuery(document).on("click", ".menu-item-has-children", function(e) {
 });
 
 function setCookie(cname, cvalue, exdays) {
-    var d = new Date();
+    let d = new Date();
     d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
-    var expires = "expires=" + d.toUTCString();
+    let expires = "expires=" + d.toUTCString();
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
 

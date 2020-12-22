@@ -27,7 +27,8 @@ class CreateOgImageJob implements ShouldQueue
     public function handle()
     {
         try {
-            if (get_the_post_thumbnail($this->post->wpPost()) || get_post_meta($this->post->id(), 'og_image', true)) {
+//            if (get_the_post_thumbnail($this->post->wpPost()) || get_post_meta($this->post->id(), 'og_image', true)) {
+            if (get_post_meta($this->post->id(), 'og_image', true)) {
                 return;
             }
             $base64Image = Browsershot::url($this->post->ogImageBaseUrl())

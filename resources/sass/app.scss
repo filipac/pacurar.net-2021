@@ -474,3 +474,26 @@ a#cancel-comment-reply-link {
         }
     }
 }
+
+
+.btn-cta-consultanta {
+    @apply bg-red-400;
+    border-radius: .25rem;
+    color: #fff;
+    padding: 1.5rem;
+    -webkit-transition: all .1s ease-in-out;
+    -o-transition: all .1s ease-in-out;
+    transition: all .1s ease-in-out;
+
+    font-size: 16px;
+}
+.btn-cta-consultanta:focus,
+.btn-cta-consultanta:hover {
+    @apply bg-red-600 text-2xl;
+    color: #fff;
+    cursor: pointer;
+    text-decoration: none;
+    -webkit-transform: scale(1.1);
+    -o-transform: scale(1.1);
+    transform: scale(1.1);
+}

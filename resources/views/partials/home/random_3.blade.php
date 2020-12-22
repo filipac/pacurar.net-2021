@@ -1,0 +1,17 @@
+<div class="bg-white p-6 h-full flex flex-col items-center justify-center">
+    <div>
+        Iosua says:
+    </div>
+<div  class="w-3/4">
+    <audio src="{{get_stylesheet_directory_uri().'/resources/v2.mp3'}}" controls class="w-full"></audio>
+</div>
+    <div class="mt-2" x-data="{show: false}">
+        <div class="text-center">
+            <div class="cursor-pointer bg-red-400 p-4 shadow-box hover:shadow-boxhvr inline-block" @click.prevent="show = !show">Nu inteleg ce spune</div>
+        </div>
+        <div class="border-l-4 border-gray-300 mt-6 pl-4" :class="{hidden: !show}">
+            <p class="italic">Salutare, bine ati venit pe blogul lui Tata! Sa stiti ca aici nu o sa gasiti desene, v-am avertizat!</p>
+            <p class="text-right w-full font-bold">Iosua Pacurar</p>
+        </div>
+    </div>
+</div>

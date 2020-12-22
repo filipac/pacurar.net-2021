@@ -5,6 +5,13 @@
     @while(have_posts()) @php
         the_post()
     @endphp
+    @push('head')
+        @if(($post = get_post()) && ($imgId = get_post_meta($post->ID, 'og_image', true)))
+            @if(($data = wp_get_attachment_image_src($imgId, 'full')) && is_array($data))
+                <meta name="og:image" content="{{ $data[0] }}"/>
+            @endif
+        @endif
+    @endpush
     <div class="sigmar text-3xl w-full text-center">
         <p>{{ the_title() }}</p>
     </div>
@@ -24,3 +31,7 @@
         </div>
     @endwhile
 @endsection
+
+@section('below-content')
+    @include('partials.copy')
+@overwrite

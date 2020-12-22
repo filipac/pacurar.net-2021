@@ -22131,7 +22131,7 @@ jQuery(function () {
   });
 });
 
-var konami = function konami() {
+var imanok = function imanok() {
   var all = document.querySelectorAll(".post-box");
   all.forEach(function (item) {
     var rect = item.getBoundingClientRect();
@@ -22169,7 +22169,7 @@ var keyHandler = function keyHandler(event) {
 
   if (pattern.length === current) {
     current = 0;
-    konami();
+    imanok();
     document.addEventListener("keydown", handler);
   }
 }; // Listen for keydown events
@@ -22183,7 +22183,7 @@ function handler(e) {
   if (jQuery(".post-box.kon").length > 0 && e.key == "Escape") {
     // remove this handler
     document.removeEventListener("keydown", handler);
-    konami();
+    imanok();
   }
 }
 

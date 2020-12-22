@@ -16,7 +16,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         // Change the error reporting level to match WordPress's
-        if (! WP_DEBUG) {
+        if (!WP_DEBUG) {
             error_reporting(E_CORE_ERROR | E_CORE_WARNING | E_COMPILE_ERROR | E_ERROR | E_WARNING | E_PARSE | E_USER_ERROR | E_USER_WARNING | E_RECOVERABLE_ERROR);
         }
 
@@ -27,6 +27,58 @@ class AppServiceProvider extends ServiceProvider
             $job = new CreateOgImageJob($post);
             dispatch($job);
         }, 10, 2);
+
+        add_filter('manage_posts_columns', function ($columns) {
+            $columns['og_image'] = 'OG';
+            return $columns;
+        });
+        add_filter('manage_page_posts_columns', function ($columns) {
+            $columns['og_image'] = 'OG';
+            return $columns;
+        });
+
+        $og = function ($column_id, $post_id) {
+            switch ($column_id) {
+                case 'og_image':
+                    $imgId = get_post_meta($post_id, 'og_image', true);
+                    if ($imgId && ($data = wp_get_attachment_image_src($imgId, 'full')) && is_array($data)) {
+                        echo "<div><img src='{$data[0]}' style='max-width: 100px;' /></div>";
+                    }
+                    echo "<div><a href='/wp-admin/options-general.php?page=fpac_regen_og&id={$post_id}' class='btn btn-primary'>Regenerate</a></div>";
+                    break;
+
+            }
+        };
+
+        add_action('manage_posts_custom_column', $og, 10, 2);
+        add_action('manage_page_posts_custom_column', $og, 10, 2);
+
+
+        add_action('admin_menu', function () {
+
+            // Register the hidden submenu.
+            add_submenu_page(
+                null, 'Regenerate og image', '', 'manage_options', 'fpac_regen_og', function () {
+                if(!request()->get('id')) {
+                    return;
+                }
+                $id = request()->get('id');
+                $post = get_post((int) $id);
+                if(!$post) {
+                    return;
+                }
+                $post = new Post($id);
+                $job = new CreateOgImageJob($post);
+                $job->handle();
+                $resp = redirect()->to(request()->headers->get('referer', '/wp-admin/edit.php'));
+                return $resp->send();
+
+            }
+            );
+        });
+
+
+//        dd(get_stylesheet_directory_uri().'/resources/v1.mp3');
 
 
 //        add_filter( 'query_vars', function ( $vars ) {
@@ -56,7 +108,7 @@ class AppServiceProvider extends ServiceProvider
         add_filter('the_content', function ($content) {
             if (is_single()) {
                 if (has_tag('azi-am-invatat')):
-            $content .= '<p class="block w-full bg-green-200 p-4">Vezi ce alte lucruri am mai invatat in alte zile urmarind postari similare: <a href="/tag/azi-am-invatat/">toate postarile "azi am invatat"</a>.</p>';
+                    $content .= '<p class="block w-full bg-green-200 p-4">Vezi ce alte lucruri am mai invatat in alte zile urmarind postari similare: <a href="/tag/azi-am-invatat/">toate postarile "azi am invatat"</a>.</p>';
                 endif;
             }
             return $content;
