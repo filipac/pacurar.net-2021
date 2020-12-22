@@ -28,7 +28,7 @@ class Pacurar_Walker extends Walker_Nav_Menu
         $indent = str_repeat($t, $depth);
 
         // Default class.
-        $classes = array( 'sub-menu', 'bg-white absolute mt-2 shadow rounded py-6 px-12 text-indigo-600 z-50' );
+        $classes = array( 'sub-menu', 'bg-white absolute mt-2 shadow rounded py-6 px-12 text-indigo-600 z-50 parentapp' );
 
         if ($depth >= 1) {
             $classes[] = 'right-0';
@@ -109,7 +109,7 @@ class Pacurar_Walker extends Walker_Nav_Menu
         $classes   = empty($item->classes) ? array() : (array) $item->classes;
         $classes[] = 'menu-item-' . $item->ID;
 
-        $classes[] = 'parentapp';
+//        $classes[] = 'parentapp';
 
         /**
          * Filters the arguments for a single nav menu item.
