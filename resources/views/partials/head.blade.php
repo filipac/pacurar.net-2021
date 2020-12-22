@@ -20,7 +20,7 @@
 {{--    @dd($imgId)--}}
 {{--    @endif--}}
     @php
-        $browser = get_browser();
+        $browser = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
         $isPs = strpos($browser, 'Chrome-Lighthouse') !== false;
     @endphp
     @yield('head')

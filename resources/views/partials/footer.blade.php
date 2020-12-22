@@ -12,7 +12,7 @@
     gtag('config', 'UA-53615822-4');
 </script>
 @php
-    $browser = get_browser();
+    $browser = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
     $isPs = strpos($browser, 'Chrome-Lighthouse') !== false;
 @endphp
 @if(!$isPs)
