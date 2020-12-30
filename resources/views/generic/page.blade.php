@@ -12,16 +12,16 @@
             @endif
         @endif
     @endpush
-    <div class="sigmar text-3xl w-full text-center">
-        <p>{{ the_title() }}</p>
-    </div>
     @if(has_post_thumbnail())
         <div class='w-full shadow-box border-2 border-black'>
             <img src="{{ get_the_post_thumbnail_url(get_post()->ID, 'full') }}" class="w-full" alt="">
         </div>
     @endif
-    <div class="bg-white shadow-box flex-1 w-full border-2 border-black px-4 md:px-32 py-6 md:py-16 text-xl">
-        <div class="entry-content pb-20 prose prose-lg max-w-none">
+    <div class="bg-white shadow-box flex-1 w-full border-2 border-black px-4 md:px-32 text-xl">
+        <div class="sigmar text-3xl w-full text-center pt-4">
+            <p>{{ the_title() }}</p>
+        </div>
+        <div class="entry-content pb-20 prose prose-lg max-w-none py-4 md:py-8">
             {!! the_content() !!}
         </div>
     </div>

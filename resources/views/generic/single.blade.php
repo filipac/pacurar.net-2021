@@ -12,7 +12,7 @@
         @endif
     @endif
     @endpush
-<div class="sigmar text-3xl w-full text-center text-shadow my-6 md:my-2">
+<div class="sigmar text-3xl w-full text-center text-shadow my-6 md:my-2 hidden lg:block">
             <p>{{ the_title() }}</p>
         </div>
         @if(has_post_thumbnail())
@@ -22,6 +22,9 @@
         @endif
         @include('partials.meta_bar')
         <div class="bg-white shadow-box flex-1 w-full border-2 border-black px-2 md:px-32 py-8 md:py-16 text-xl">
+            <div class="sigmar text-3xl w-full text-center text-shadow my-6 md:my-2 block lg:hidden">
+            <p>{{ the_title() }}</p>
+        </div>
             <div class="pb-6">
                 @include('partials.tags')
             </div>
