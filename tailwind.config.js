@@ -2,13 +2,20 @@ module.exports = {
     important: true,
     darkMode: "media",
     purge: {
-        content: [
-            './resources/**/*.blade.php',
-            './resources/**/*.js',
-        ],
+        content: ["./resources/**/*.blade.php", "./resources/**/*.js"],
         options: {
-            safelist: ['z-50'],
-        },
+            safelist: [
+                "z-50",
+                "from-red-400",
+                "to-red-700",
+                "from-blue-500",
+                "to-blue-800",
+                "from-yellow-400",
+                "to-orange-500",
+                "from-yellow",
+                "to-green-200"
+            ]
+        }
     },
     theme: {
         screens: {
