@@ -7,6 +7,19 @@
 
     @push('head')
     @if(($post = get_post()) && ($imgId = get_post_meta($post->ID, 'og_image', true)))
+    @php
+        add_filter(
+    'wpseo_frontend_presenter_classes',
+    function ( $filter ) {
+
+	if (($key = array_search('Yoast\WP\SEO\Presenters\Open_Graph\Image_Presenter', $filter)) !== false) {
+		unset($filter[$key]);
+	}
+
+	return $filter;
+    }
+);
+    @endphp
         @if(($data = wp_get_attachment_image_src($imgId, 'full')) && is_array($data))
         <meta name="og:image" content="{{ $data[0] }}"/>
         @endif
