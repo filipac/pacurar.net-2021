@@ -64,7 +64,7 @@ class Post extends BaseModel
         }
 
         if ($tagNames->contains('javascript')) {
-            return 'from-yellow-400 to-orange-500';
+            return 'from-yellow to-orange-500';
         }
 
         return 'from-yellow to-green-200';
