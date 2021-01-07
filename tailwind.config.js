@@ -13,7 +13,9 @@ module.exports = {
                 "from-yellow-400",
                 "to-orange-500",
                 "from-yellow",
-                "to-green-200"
+                "to-green-200",
+                "from-purple-900",
+                "to-pink-400"
             ]
         }
     },
