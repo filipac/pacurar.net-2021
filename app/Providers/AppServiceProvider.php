@@ -77,7 +77,7 @@ class AppServiceProvider extends ServiceProvider
                 }
                 $post = new Post($id);
                 $job = new CreateOgImageJob($post);
-                $job->handle();
+                $job->forced()->handle();
                 $resp = redirect()->to(request()->headers->get('referer', '/wp-admin/edit.php'));
                 return $resp->send();
 

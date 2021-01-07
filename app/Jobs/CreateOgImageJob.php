@@ -19,16 +19,24 @@ class CreateOgImageJob implements ShouldQueue
 
     public $tries = 2;
 
+    public $force = false;
+
     public function __construct(Post $post)
     {
         $this->post = $post;
+    }
+
+    public function forced()
+    {
+        $this->force = true;
+        return $this;
     }
 
     public function handle()
     {
         try {
 //            if (get_the_post_thumbnail($this->post->wpPost()) || get_post_meta($this->post->id(), 'og_image', true)) {
-            if (get_post_meta($this->post->id(), 'og_image', true)) {
+            if (get_post_meta($this->post->id(), 'og_image', true) && !$this->force) {
                 return;
             }
             $bshot = Browsershot::url($this->post->ogImageBaseUrl())
