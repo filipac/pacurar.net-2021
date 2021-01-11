@@ -562,3 +562,7 @@ a#cancel-comment-reply-link {
         position: relative !important;
     }
 }
+
+.wp-embed-responsive .wp-has-aspect-ratio .wp-block-embed__wrapper:before {
+    padding-top: 0 !important;
+}
