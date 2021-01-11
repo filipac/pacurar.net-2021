@@ -13,7 +13,7 @@
             <div class="mx-auto">
                 <div class="divide-y divide-gray-200">
                     <div class="pb-4 text-base space-y-4 leading-9">
-                        <p class="text-3xl font-bold">{{ $post->title }}</p>
+                        <p class="text-3xl font-bold">{!! $post->title !!}</p>
                     </div>
                     <div class="pt-6 text-base leading-6 font-bold sm:text-lg sm:leading-7">
                         <div class=" flex items-center">
