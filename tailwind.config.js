@@ -15,7 +15,10 @@ module.exports = {
                 "from-yellow",
                 "to-green-200",
                 "from-purple-900",
-                "to-pink-400"
+                "to-pink-400",
+                "col-span-1",
+                "col-span-2",
+                "col-span-3"
             ]
         }
     },

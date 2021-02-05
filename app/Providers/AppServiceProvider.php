@@ -66,22 +66,26 @@ class AppServiceProvider extends ServiceProvider
 
             // Register the hidden submenu.
             add_submenu_page(
-                null, 'Regenerate og image', '', 'manage_options', 'fpac_regen_og', function () {
-                if(!request()->get('id')) {
-                    return;
+                 null,
+                'Regenerate og image',
+                '',
+                'manage_options',
+                'fpac_regen_og',
+                function () {
+                    if (!request()->get('id')) {
+                        return;
+                    }
+                    $id = request()->get('id');
+                    $post = get_post((int) $id);
+                    if (!$post) {
+                        return;
+                    }
+                    $post = new Post($id);
+                    $job = new CreateOgImageJob($post);
+                    $job->forced()->handle();
+                    $resp = redirect()->to(request()->headers->get('referer', '/wp-admin/edit.php'));
+                    return $resp->send();
                 }
-                $id = request()->get('id');
-                $post = get_post((int) $id);
-                if(!$post) {
-                    return;
-                }
-                $post = new Post($id);
-                $job = new CreateOgImageJob($post);
-                $job->forced()->handle();
-                $resp = redirect()->to(request()->headers->get('referer', '/wp-admin/edit.php'));
-                return $resp->send();
-
-            }
             );
         });
 
