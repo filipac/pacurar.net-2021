@@ -115,4 +115,4 @@ There is no perfect solution though, that's why we can look for the best solutio
                     <img src="{{get_stylesheet_directory_uri().'/resources/pounce.jpeg'}}" alt="Pounce, the \"matza\""." class="w-full">
                 </template>
         </div>
-    </dizv>
+    </div>
