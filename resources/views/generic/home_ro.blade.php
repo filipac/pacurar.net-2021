@@ -115,4 +115,4 @@ proiectul tau.
                     <img src="{{get_stylesheet_directory_uri().'/resources/pounce.jpeg'}}" alt="Pounce, the \"matza\""." class="w-full">
                 </template>
         </div>
-    </dizv>
+    </div>
