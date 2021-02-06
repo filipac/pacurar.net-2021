@@ -24,6 +24,12 @@ class AppServiceProvider extends ServiceProvider
             session_start();
         }
 
+        if (defined('ICL_LANGUAGE_CODE') && ICL_LANGUAGE_CODE == 'en') {
+            config()->set('app.url', 'https://filipac.net');
+        }
+
+        dd(site_url());
+
         add_action('wp_loaded', function () {
             if ($_SESSION['set_lang']  == '1') {
                 return ;

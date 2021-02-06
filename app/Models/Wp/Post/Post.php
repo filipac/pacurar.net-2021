@@ -51,11 +51,9 @@ class Post extends BaseModel
         $tagNames = $this->tags()->map(fn ($item) => $item->name());
         $categories = $this->categories()->map(fn ($item) => $item->slug());
         // $tagNames = ;
-        if($categories->contains('family-life')) {
+        if ($categories->contains('family-life')) {
             return 'from-purple-900 to-pink-400';
-        }
-
-        else if ($tagNames->contains('laravel')) {
+        } elseif ($tagNames->contains('laravel')) {
             return 'from-red-400 to-red-700';
         }
 
