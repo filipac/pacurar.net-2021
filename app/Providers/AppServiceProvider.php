@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
             config()->set('app.url', 'https://filipac.net');
         }
 
-        dd(site_url());
+        // dd(site_url());
 
         add_action('wp_loaded', function () {
             if ($_SESSION['set_lang']  == '1') {
