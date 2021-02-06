@@ -70,8 +70,8 @@ class Post extends BaseModel
 
     public function ogImageBaseUrl()
     {
-        $info = wpml_get_language_information($this->id());
-        if (isset($info['locale']) && $info['locale'] == 'en') {
+        $info = wpml_get_language_information(null, $this->id());
+        if (is_array($info) && isset($info['locale']) && $info['locale'] == 'en') {
             return 'https://filipac.net/ogImage/'.$this->id();
         }
         return 'https://pacurar.net/ogImage/'.$this->id();
