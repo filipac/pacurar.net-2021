@@ -20,6 +20,33 @@ class AppServiceProvider extends ServiceProvider
         if (!WP_DEBUG) {
             error_reporting(E_CORE_ERROR | E_CORE_WARNING | E_COMPILE_ERROR | E_ERROR | E_WARNING | E_PARSE | E_USER_ERROR | E_USER_WARNING | E_RECOVERABLE_ERROR);
         }
+        if (!session_id()) {
+            session_start();
+        }
+
+        add_action('wp_loaded', function () {
+            if ($_SESSION['set_lang']  == '1') {
+                return ;
+            }
+
+            $country = request()->headers->get('CF-IPCountry', 'US');
+            if ($country == 'RO') {
+                $language = 'ro';
+            } else {
+                $language = 'en';
+            }
+            if (!isset($_SESSION['lang'])) {
+                $_SESSION['lang'] = $language;
+                global $sitepress;
+                global $sitepress;
+
+                $sitepress->set_default_language($language);
+                $sitepress->switch_lang($language);
+            }
+
+            $_SESSION['set_lang'] = 1;
+        });
+
 
         $this->shareViewData();
 
@@ -66,7 +93,7 @@ class AppServiceProvider extends ServiceProvider
 
             // Register the hidden submenu.
             add_submenu_page(
-                 null,
+                null,
                 'Regenerate og image',
                 '',
                 'manage_options',

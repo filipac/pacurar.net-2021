@@ -8,6 +8,7 @@ use Laraish\Support\Facades\WpRoute;
 
 WpRoute::home([Home::class, 'blog']);
 WpRoute::page('cauta', [Search::class, 'indexSearch']);
+WpRoute::page('search', [Search::class, 'indexSearch']);
 WpRoute::page([Page::class, 'index']);
 WpRoute::post('post', [Single::class, 'index']);
 WpRoute::autoDiscovery();

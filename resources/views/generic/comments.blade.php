@@ -5,7 +5,11 @@
     @endphp
     @if(count($byType['pings']) > 0)
     <div class="bg-green-200 shadow-box flex-1 w-full border-2 border-black px-2 py-2 text-xl mb-6">
+        @if(ICL_LANGUAGE_CODE == 'ro')
         <h3>Ping(pong)-uri la acest articol</h3>
+        @else
+        <h3>Ping(pongs) to this article</h3>
+        @endif
 
     <div class="prose max-w-none">
         <ul>
@@ -27,9 +31,13 @@
     @if(count($byType['comment']) > 0)
 <h3 id="comments">
     @if(1 == $byType['comment'])
-    Acest articol are doar un comentariu.
+    @if(ICL_LANGUAGE_CODE == 'ro')
+        Acest articol are doar un comentariu.
+        @else
+        This article has a single comment.
+        @endif
     @else
-        {{ ($byType['comment'] == 1 ? '1 comentariu la acest articol': count($byType['comment']).' comentarii la acest articol') }}
+        {{ ($byType['comment'] == 1 ? (ICL_LANGUAGE_CODE == 'ro' ? '1 comentariu la acest articol' : '1 comment to this article'): count($byType['comment']).(ICL_LANGUAGE_CODE == 'ro' ? ' comentarii la acest articol' : ' comments to this article')) }}
     @endif
 </h3>
 
@@ -65,6 +73,11 @@
 
     {!! comment_form() !!}
 @else
-<p class="nocomments">Acest post are o parola, introdu parola (daca o sti, haha) ca sa vezi comentariile.
+<p class="nocomments">
+    @if(ICL_LANGUAGE_CODE == 'ro')
+    Acest post are o parola, introdu parola (daca o sti, haha) ca sa vezi comentariile.
+    @else
+    This post is password protected, enter the password (if you know it, wink wink) to see the comments.
+    @endif
 </p>
 @endunless

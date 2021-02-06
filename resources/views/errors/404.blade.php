@@ -22,11 +22,19 @@
         <section class="flex flex-col text-center bg-splash text-white w-auto p-12 shadow-box hover:shadow-boxhvr perspective-sm">
             <img src="{{ public_url('fun/bad_vibes.gif') }}" alt="">
             <div>
+                @if(ICL_LANGUAGE_CODE == 'ro')
                 <h1 class="text-4xl">404</h1>
                 <p>Pagina pe care o cauti nu exista.<br/>
                 Dar m-am gandit ca iti va placea acest video mirobolant.<br />
                 Click oriunde in pagina sa porneasca si audio.<br/> <br/>
                 (browserele sunt rele si nu ne lasa sa dam play la un video cu sunet)</p>
+                @else
+                <h1 class="text-4xl">404</h1>
+                <p>The page you are looking for does not exist.<br/>
+                But... I thought you would like this awesome video.<br />
+                Click anywhere on the page so the audio starts too.<br/> <br/>
+                (browsers are evil and won't let us autoplay a video with sound)</p>
+                @endif
             </div>
             <div class="mt-6">
                 <a href="{{home_url()}}" class="inline-block bg-yellow perspective shadow-box hover:shadow-boxhvr text-black p-4">Inapoi la baza.</a>

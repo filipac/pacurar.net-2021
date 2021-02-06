@@ -5,7 +5,7 @@
         <div class="w-full flex flex-col justify-center items-center px-12 md:px-0">
             <div class="pt-2 relative w-full md:w-2/3 mx-auto text-gray-600">
         <input class="border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none w-full"
-          type="search" name="s" placeholder="Cauta aici..">
+          type="search" name="s" placeholder="{{ ICL_LANGUAGE_CODE == 'ro' ? 'Cauta aici' : 'Search here' }}..">
         <button type="submit" class="absolute right-0 top-0 mt-5 mr-4">
           <svg class="text-gray-600 h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px"
@@ -18,7 +18,7 @@
       </div>
       <div class="flex flex-col md:flex-row mt-2">
           <div><input type="submit" name="submit" value="Filipoogle Search" class="p-2"></div>
-          <div><input type="submit" name="submit" value="Ma simt baftos" class="p-2 mt-2 md:mt-0 ml-2"></div>
+          <div><input type="submit" name="submit" value="{{ ICL_LANGUAGE_CODE == 'ro' ? 'Ma simt baftos' : 'I feel lucky' }}" class="p-2 mt-2 md:mt-0 ml-2"></div>
       </div>
         </div>
     </form>
