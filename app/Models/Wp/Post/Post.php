@@ -71,6 +71,7 @@ class Post extends BaseModel
     public function ogImageBaseUrl()
     {
         $info = wpml_get_language_information(null, $this->id());
+        var_dump($info);die;
         if (is_array($info) && isset($info['locale']) && $info['locale'] == 'en') {
             return 'https://filipac.net/ogImage/'.$this->id();
         }
