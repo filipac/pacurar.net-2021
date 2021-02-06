@@ -41,7 +41,7 @@ There is no perfect solution though, that's why we can look for the best solutio
 <p class="mt-2">I work for clients all over the world, Canada, USA and of course, my home country Romania. So you're all welcomed.</p>
                 <p class="mt-2">If you want me to make an IT project with you that is not <strong>boring</strong>, we can get in touch on <a href="mailto:hello@filipac.net">hello@filipac.net</a>, let's talk.</p>
                 <p class="mt-4 py-12 text-center w-fulL">
-<a href="/despre-mine/consultanta-it" class="btn-cta-consultanta">I want IT consultancy</a>
+<a href="/about-me/it-consultancy" class="btn-cta-consultanta">I want IT consultancy</a>
 </p>
             </div>
         </div>
