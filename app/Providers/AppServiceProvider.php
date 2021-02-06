@@ -40,8 +40,8 @@ class AppServiceProvider extends ServiceProvider
                 global $sitepress;
                 global $sitepress;
 
-                $sitepress->set_default_language($language);
-                $sitepress->switch_lang($language);
+                // $sitepress->set_default_language($language);
+                // $sitepress->switch_lang($language);
             }
 
             $_SESSION['set_lang'] = 1;
