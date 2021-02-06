@@ -33,7 +33,7 @@
                             </figure>
                             <div>
                                 <h1 class="text-lg uppercase tracking-wider font-extrabold">
-                                    <a href="/">Pacurar.net</a>
+                                    <a href="/">{{ ICL_LANGUAGE_CODE == 'ro' ? 'Pacurar.net' : 'Filipac.net' }}</a>
                                 </h1>
                                 <p class="text-sm font-bold text-gray-600">
                                     <div class="inline-flex flex-wrap flex-gap text-xs mt-4 parentapp"
