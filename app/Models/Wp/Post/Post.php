@@ -70,6 +70,7 @@ class Post extends BaseModel
 
     public function ogImageBaseUrl()
     {
+        var_dump(wpml_get_language_information($this->id()));
         return site_url('/ogImage/'.$this->id());
     }
 }
