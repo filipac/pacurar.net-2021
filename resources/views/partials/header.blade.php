@@ -5,8 +5,8 @@
     @click.away="show = false"
  >
         <a href="{{ get_bloginfo('url') }}">
-        @includeWhen(!is_search() && !is_page('cauta'), 'partials.logo')
-        @includeWhen(is_search() || is_page('cauta'), 'partials.logo_search')
+        @includeWhen(!is_search() && !is_page('cauta') && !is_page('search'), 'partials.logo')
+        @includeWhen(is_search() || is_page('cauta') || is_page('search'), 'partials.logo_search')
             {{-- @include('partials.logo') --}}
         </a>
         <div class="ml-2 transition-opacity opacity-0" :class='{"opacity-0": !show}'>
