@@ -46,6 +46,8 @@ class AppServiceProvider extends ServiceProvider
                 global $sitepress;
                 global $sitepress;
 
+                // wp_redirect();
+
                 // $sitepress->set_default_language($language);
                 // $sitepress->switch_lang($language);
             }
