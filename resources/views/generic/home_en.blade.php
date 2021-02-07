@@ -10,7 +10,7 @@
             </div>
             <div class="px-2">
                 <p>I'm <strong>Filip Pacurar</strong>, welcome to my shiny retro website. I tried to make it as awkward looking as I could.</p>
-                <p>The main attraction of this website is <a href="/blog" class="font-bold underline">the blog</a>, but because this is an out of ordinary website, on the first page you cannot see the latest posts.</p>
+                <p>The main attraction of this website is <a href="/blog" class="font-bold underline">the blog</a>, but because this is an out of the ordinary website, on the first page you cannot see the latest posts.</p>
             </div>
         </div>
         <div class="bg-yellow w-full md:w-2/3 md:ml-4 mt-4 md:mt-0 flex flex-col p-4">
