@@ -17,7 +17,7 @@
             <div class="text-2xl w-full text-center">Paid sponsorship <small class="text-xs">(paid by me, of course)</small></div>
             <div>
                 <p>Hey, <span class="text-2xl font-bold">you</span>! Yes, I'm talking about you! Pay attention for a few minutes here.</p>
-                <p class="mt-2">There you go, no that my awesome marketing techniques worked and I have your attention, let's talk serios business.</p>
+                <p class="mt-2">There you go, no that my awesome marketing techniques worked and I have your attention, let's talk serious business.</p>
                 <p class="mt-2">I've been a full time programmer for more that 10 years. I've been a geek since general school and highschool and in my free time I exercised web programming, so I gained experience since sort of early in my life.</p>
                 <p class="mt-4">
 <span class="text-grey-200 text-xs hover:bg-red-400 hover:text-white hover:underline ml-1">#php</span>
