@@ -1,6 +1,6 @@
 <div class="bg-white p-6 h-full flex flex-col items-center justify-center">
     <div>
-        Iosua says:
+        {{ ICL_LANGUAGE_CODE == 'ro' ? 'Iosua' : 'Joshua' }} says:
     </div>
 <div  class="w-3/4">
     <audio src="{{get_stylesheet_directory_uri().'/resources/v2.mp3'}}" controls class="w-full"></audio>
@@ -15,7 +15,7 @@
             @else
             <p class="italic">Hello, welcome to my daddy's blog! You should now that you won't find any cartoons around. You've been warned!</p>
             @endif
-            <p class="text-right w-full font-bold">Iosua Pacurar</p>
+            <p class="text-right w-full font-bold">{{ ICL_LANGUAGE_CODE == 'ro' ? 'Iosua' : 'Joshua' }} Pacurar</p>
         </div>
     </div>
 </div>
