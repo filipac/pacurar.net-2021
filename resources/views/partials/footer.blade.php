@@ -4,13 +4,13 @@
 @endphp
 @if(ICL_LANGUAGE_CODE == 'ro')
 <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-53615822-4"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-31FN5CD470"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'UA-53615822-4');
+  gtag('config', 'G-31FN5CD470');
 </script>
 @else
 <!-- Global site tag (gtag.js) - Google Analytics -->
