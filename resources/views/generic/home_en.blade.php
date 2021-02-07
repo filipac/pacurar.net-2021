@@ -56,7 +56,6 @@ There is no perfect solution though, that's why we can look for the best solutio
                     <h1>Easter-egg hunt!</h1>
                     <p>Because this is not a boring blog, I've hidden a few interactive bits around here. Are you up to finding all of them? To be fair, I don't even know how many are there, because whenever I get a cool idea, I code it directly without thinking.</p>
                     <p class="mt-2">Let me give you an example hint: on this page you can see me waving my hand to you.</p>
-                    <p class="mt-4">Ai vazut? Asta e ceva simplu, dar sunt lucruri destul de bine ascunse pe toate paginile.</p>
                     <p class="mt-4">Saw it? This is a simple thing, but here are more well hidden things on all those pages.</p>
                     <div class="text-center">
                         <a class="cursor-pointer bg-red-400 p-4 shadow-box hover:shadow-boxhvr inline-block" href="/found-an-easter-egg">I've found an easter-egg!</a>
