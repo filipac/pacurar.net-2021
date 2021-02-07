@@ -40,7 +40,7 @@ proiectul tau.
 </span>
 </p>
 <p class="mt-2">Lucrez cu clienti din toata lumea, Canada, USA si desigur, Romania. Asa ca toti sunteti bineveniti.</p>
-                <p class="mt-2">Daca vrei sa facem impreuna un proiect IT care sa nu fie <strong>boring</strong>, ma poti contacta pe <a href="mailto:hello@filipac.net">hello@filipac.net</a> sa intram in legatura.</p>
+                <p class="mt-2">Daca vrei sa facem impreuna un proiect IT care sa nu fie <strong>boring</strong>, ma poti contacta pe <a href="mailto:filip@pacurar.dev">filip@pacurar.dev</a> sa intram in legatura.</p>
                 <p class="mt-4 py-12 text-center w-fulL">
 <a href="/despre-mine/consultanta-it" class="btn-cta-consultanta">Vreau consultanta IT</a>
 </p>

@@ -72,7 +72,7 @@ class Post extends BaseModel
     {
         $info = wpml_get_language_information(null, $this->id());
         if (is_array($info) && isset($info['language_code']) && $info['language_code'] == 'en') {
-            return 'https://filipac.net/ogImage/'.$this->id();
+            return 'https://pacurar.dev/ogImage/'.$this->id();
         }
         return 'https://pacurar.net/ogImage/'.$this->id();
     }

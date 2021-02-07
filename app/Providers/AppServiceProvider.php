@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
         }
 
         if (defined('ICL_LANGUAGE_CODE') && ICL_LANGUAGE_CODE == 'en') {
-            config()->set('app.url', 'https://filipac.net');
+            config()->set('app.url', 'https://pacurar.dev');
         }
 
         // dd(site_url());
