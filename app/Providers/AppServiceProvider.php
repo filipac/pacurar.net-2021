@@ -55,6 +55,17 @@ class AppServiceProvider extends ServiceProvider
             $_SESSION['set_lang'] = 1;
         });
 
+        add_filter('jetpack_relatedposts_filter_enabled_for_request', function ($enable) {
+            if (is_single()) {
+                $post = get_post();
+                $info = wpml_get_language_information(null, $post->ID);
+                if (is_array($info) && isset($info['language_code']) && $info['language_code'] == 'en') {
+                    return false;
+                }
+            }
+            return $enable;
+        });
+
 
         $this->shareViewData();
 
