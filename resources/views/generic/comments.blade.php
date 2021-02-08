@@ -28,6 +28,31 @@
     </div>
 
     @endif
+    @if(count($byType['webmention']) > 0)
+    <div class="bg-green-200 shadow-box flex-1 w-full border-2 border-black px-2 py-2 text-xl mb-6">
+        @if(ICL_LANGUAGE_CODE == 'ro')
+        <h3>Webmentions</h3>
+        @else
+        <h3>Webmentions</h3>
+        @endif
+
+    <div class="prose max-w-none">
+        <ul>
+        @foreach($byType['webmention'] as $comm)
+        @php
+            $GLOBALS['comment']       = $comm;
+        @endphp
+<li id="comment-{{ $comm->comment_ID }}" {!! comment_class( '', $comm) !!}>
+			<div class="comment-body">
+				{!! get_comment_author_link_blank( $comm ) !!} {!! edit_comment_link( __( 'Edit' ), '<span class="edit-link">', '</span>' ) !!}
+			</div>
+</li>
+        @endforeach
+        </ul>
+    </div>
+    </div>
+
+    @endif
     @if(count($byType['comment']) > 0)
 <h3 id="comments">
     @if(1 == $byType['comment'])
