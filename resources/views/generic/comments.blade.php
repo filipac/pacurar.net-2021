@@ -29,6 +29,12 @@
 
     @endif
     @if(isset($byType['webmention']) && count($byType['webmention']) > 0)
+    <style>.comment-body .avatar {
+        display: inline-block;
+        margin-top: 0;
+        margin-bottom: 0;
+        border-radius: 9999px !important;
+    }</style>
     <div class="bg-green-200 shadow-box flex-1 w-full border-2 border-black px-2 py-2 text-xl mb-6">
         @if(ICL_LANGUAGE_CODE == 'ro')
         <h3>Webmentions</h3>
@@ -44,7 +50,16 @@
         @endphp
 <li id="comment-{{ $comm->comment_ID }}" {!! comment_class( '', $comm) !!}>
 			<div class="comment-body">
-				{!! get_comment_author_link_blank( $comm ) !!} {!! edit_comment_link( __( 'Edit' ), '<span class="edit-link">', '</span>' ) !!}
+                @if($urlavatar = Linkbacks_Avatar_Handler::get_avatar_url( $comm ))
+                <img alt="" src="{{ $urlavatar }}" class="avatar avatar-20 photo avatar-default rounded-full" height="30" width="30" loading="lazy">
+                @else
+                {!! get_avatar( $comment, 30 ) !!}
+                @endif
+                @if(get_comment_meta($comm->comment_ID, 'semantic_linkbacks_type', true) != 'like')
+				    {!! get_comment_author_link_blank( $comm ) !!}  {!! get_comment_text($comm) !!}
+                @else
+                    {!! get_comment_text($comm) !!}
+                @endif
 			</div>
 </li>
         @endforeach
