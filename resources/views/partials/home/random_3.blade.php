@@ -3,7 +3,7 @@
         {{ ICL_LANGUAGE_CODE == 'ro' ? 'Iosua' : 'Joshua' }} says:
     </div>
 <div  class="w-3/4">
-    <audio src="{{get_stylesheet_directory_uri().'/resources/v2.mp3'}}" controls class="w-full"></audio>
+    <audio src="{{get_stylesheet_directory_uri().'/resources/'.(ICL_LANGUAGE_CODE == 'en' ? 'v2_en' : 'v2').'.mp3'}}" controls class="w-full"></audio>
 </div>
     <div class="mt-2" x-data="{show: false}">
         <div class="text-center">
