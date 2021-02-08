@@ -14,7 +14,7 @@
             </div>
         </div>
         <div class="bg-yellow w-full md:w-2/3 md:ml-4 mt-4 md:mt-0 flex flex-col p-4">
-            <div class="text-2xl w-full text-center">Paid sponsorship <small class="text-xs">(paid by me, of course)</small></div>
+            <div class="text-2xl w-full text-center">Paid sponsorship <small class="text-xs block mb-2 md:mb-0 md:inline">(paid by me, of course)</small></div>
             <div>
                 <p>Hey, <span class="text-2xl font-bold">you</span>! Yes, I'm talking about you! Pay attention for a few minutes here.</p>
                 <p class="mt-2">There you go, no that my awesome marketing techniques worked and I have your attention, let's talk serious business.</p>
