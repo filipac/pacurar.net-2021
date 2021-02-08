@@ -13,7 +13,7 @@
             @if(ICL_LANGUAGE_CODE == 'ro')
             <p class="italic">Salutare, bine ati venit pe blogul lui Tata! Sa stiti ca aici nu o sa gasiti desene, v-am avertizat!</p>
             @else
-            <p class="italic">Hello, welcome to daddy's blog! You should now that you won't find any cartoons around. You've been warned!</p>
+            <p class="italic">Hello, welcome to daddy's blog! You should know that you won't find any cartoons around. You've been warned!</p>
             @endif
             <p class="text-right w-full font-bold">{{ ICL_LANGUAGE_CODE == 'ro' ? 'Iosua' : 'Joshua' }} Pacurar</p>
         </div>
