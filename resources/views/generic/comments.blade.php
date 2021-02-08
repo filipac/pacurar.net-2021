@@ -28,7 +28,7 @@
     </div>
 
     @endif
-    @if(count($byType['webmention']) > 0)
+    @if(isset($byType['webmention']) && count($byType['webmention']) > 0)
     <div class="bg-green-200 shadow-box flex-1 w-full border-2 border-black px-2 py-2 text-xl mb-6">
         @if(ICL_LANGUAGE_CODE == 'ro')
         <h3>Webmentions</h3>
