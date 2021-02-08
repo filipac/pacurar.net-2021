@@ -69,22 +69,27 @@ proiectul tau.
                     <div class="font-bold text-xs">(chiar daca esti FBI sau ceva, nu am nimic de ascuns)</div>
                     <div class="flex flex-col md:flex-row items-center justify-center mt-4">
                         <div>
-                            <a href="https://twitter.com/filipacro" target="_blank">
+                            <a href="https://twitter.com/filipacro" rel="me" target="_blank">
                                 <img src="{{get_stylesheet_directory_uri().'/resources/tw.png'}}" class="w-16 h-16" alt="Twitter Filip Pacurar">
                             </a>
                         </div>
                         <div class="mt-2 md:mt-0 md:ml-2">
-                            <a href="https://www.facebook.com/filipacro/" target="_blank">
+                            <a href="https://github.com/filipac" rel="me" target="_blank">
+                                <img src="{{get_stylesheet_directory_uri().'/resources/github.png'}}" class="w-16 h-16" alt="Twitter Filip Pacurar">
+                            </a>
+                        </div>
+                        <div class="mt-2 md:mt-0 md:ml-2">
+                            <a href="https://www.facebook.com/filipacro/" rel="me" target="_blank">
                                 <img src="{{get_stylesheet_directory_uri().'/resources/fb.png'}}" class="w-16 h-16" alt="Facebook Filip Pacurar">
                             </a>
                         </div>
                         <div class="mt-2 md:mt-0 md:ml-2">
-                            <a href="https://www.tiktok.com/@filippacurar" target="_blank">
+                            <a href="https://www.tiktok.com/@filippacurar" rel="me" target="_blank">
                                 <img src="{{get_stylesheet_directory_uri().'/resources/tiktok.png'}}" class="w-16 h-16" alt="TikTok Filip Pacurar">
                             </a>
                         </div>
                         <div class="mt-2 md:mt-0 md:ml-2">
-                            <a href="https://www.instagram.com/filipacro/" target="_blank">
+                            <a href="https://www.instagram.com/filipacro/" rel="me" target="_blank">
                                 <img src="{{get_stylesheet_directory_uri().'/resources/insta.png'}}" class="w-16 h-16" alt="Instagram Filip Pacurar">
                             </a>
                         </div>
