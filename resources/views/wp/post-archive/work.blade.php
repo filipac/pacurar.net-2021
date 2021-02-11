@@ -24,10 +24,10 @@
     <div class="w-full bg-white rounded p-4 shadow-box mt-4 prose md:prose-xl max-w-none">
         <p class="font-bold" x-show="text">Hey there, just a quick heads-up!</p>
         <div class="w-full text-center">
-            <a href="#projects" x-show="text" x-on:click.prevent="text = false; $nextTick(() => window.location='#projects')" class="no-underline text-xs md:text-base group bg-yellow hover:bg-red-400 hover:shadow-boxhvr p-2 hover:pb-4 shadow-box border-2 border-black"><span class="relative show-border">No time for talking, show me the projects!</span></a>
+            <a href="#projects" x-show="text" x-on:click.prevent="text = false; $nextTick(() => window.location='#projects')" class="no-underline text-xxs md:text-base group bg-yellow hover:bg-red-400 hover:shadow-boxhvr p-2 hover:pb-4 shadow-box border-2 border-black"><span class="relative show-border">No time for talking, show me the projects!</span></a>
             <template x-if="!text">
                 <div class="my-6">
-                    <a href="#" x-on:click="text = true;" class="group no-underline text-xs md:text-base bg-red-400 hover:bg-yellow hover:shadow-boxhvr p-2 hover:pb-4 shadow-box border-2 border-black"><span class="relative show-border">Show me the intro text again!</span></a>
+                    <a href="#" x-on:click="text = true;" class="group no-underline text-xxs md:text-base bg-red-400 hover:bg-yellow hover:shadow-boxhvr p-2 hover:pb-4 shadow-box border-2 border-black"><span class="relative show-border">Show me the intro text again!</span></a>
                 </div>
             </template>
         </div>
