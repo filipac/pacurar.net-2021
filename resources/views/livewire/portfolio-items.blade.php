@@ -1,6 +1,6 @@
 <div class="grid gap-9 grid-cols-1 md:grid-cols-2 mt-4">
     @foreach($items as $item)
-        <div class="post-box bg-white col-span-{{ get_field('colspan', $item) ?: 1 }} shadow-box pb-4">
+        <div class="post-box bg-white col-span-1 md:col-span-{{ get_field('colspan', $item) ?: 1 }} shadow-box pb-4">
             @if(has_post_thumbnail($item))
                 @php
                     $_img = get_the_post_thumbnail_url( $item, 'full' );
