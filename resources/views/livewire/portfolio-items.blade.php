@@ -1,4 +1,4 @@
-<div class="grid grid-cols-1 md:grid-cols-2 mt-4">
+<div class="grid gap-9 grid-cols-1 md:grid-cols-2 mt-4">
     @foreach($items as $item)
         <div class="post-box bg-white col-span-1 shadow-box pb-4">
             @if(has_post_thumbnail($item))
