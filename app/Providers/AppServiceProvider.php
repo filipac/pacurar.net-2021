@@ -6,6 +6,7 @@ use App\Jobs\CreateOgImageJob;
 use App\Models\Wp\Post\Post;
 use Automattic\Jetpack\Jetpack_Lazy_Images;
 use Illuminate\Support\ServiceProvider;
+use Symfony\Component\HttpFoundation\Response;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +24,8 @@ class AppServiceProvider extends ServiceProvider
         if (!session_id()) {
             session_start();
         }
+
+        // dd(session()->getId(), session_id());
 
         if (defined('ICL_LANGUAGE_CODE') && ICL_LANGUAGE_CODE == 'en') {
             config()->set('app.url', 'https://pacurar.dev');
@@ -66,6 +69,23 @@ class AppServiceProvider extends ServiceProvider
             return $enable;
         });
 
+        add_shortcode('alpine', function ($atts, $content = null) {
+            $a = shortcode_atts(array(
+                'wrap' => 'div',
+            ), $atts);
+            $alpineAttrs = [];
+            if (is_array($atts)) {
+                $alpineAttrs = array_diff($atts, $a);
+            }
+            $alpineAttrs = str_replace("=", '="', http_build_query($alpineAttrs, '', '" ', PHP_QUERY_RFC3986)).'"';
+            // dd($alpineAttrs);
+            ob_start();
+            echo '<'.$a['wrap'].' '.$alpineAttrs.'>';
+            echo wpautop($content);
+            echo '</'.$a['wrap'].'>';
+            return ob_get_clean();
+        });
+
 
         $this->shareViewData();
 
@@ -105,6 +125,21 @@ class AppServiceProvider extends ServiceProvider
             $content = $inst->add_image_placeholders($content);
 
             return $content;
+        });
+
+        /**
+         * Fires before determining which template to load.
+         * Ensure work page is available only in English
+         */
+        add_action('template_redirect', function () : void {
+            global $wp;
+            if ($wp->request == 'my-work') {
+                if (defined('ICL_LANGUAGE_CODE') && ICL_LANGUAGE_CODE == 'ro') {
+                    $url = apply_filters('wpml_permalink', get_bloginfo('url').'/my-work', 'en');
+                    wp_redirect($url, Response::HTTP_MOVED_PERMANENTLY);
+                    die;
+                }
+            }
         });
 
 
@@ -180,6 +215,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->register(CustomFieldsServiceProvider::class);
+        $this->app->register(CustomPostTypesProvider::class);
         add_action('template_redirect', function () {
             if (is_search()) {
                 if (isset($_GET['submit']) && $_GET['submit'] = 'Ma+simt+baftos') {

@@ -3,7 +3,7 @@ import ScrollMagic from "scrollmagic";
 
 let controller = new ScrollMagic.Controller();
 
-jQuery(function() {
+const showAll = (window.showAll = () => {
     let all = document.querySelectorAll(".post-box");
     all.forEach(function(el, idx) {
         new ScrollMagic.Scene({
@@ -16,6 +16,10 @@ jQuery(function() {
             // .addIndicators() // add indicators (requires plugin)
             .addTo(controller);
     });
+});
+
+jQuery(function() {
+    showAll();
 });
 
 let imanok = function() {

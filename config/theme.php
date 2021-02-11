@@ -14,7 +14,7 @@ return [
     'add_theme_support' => [
         [
             'feature' => 'post-thumbnails',
-            'options' => ['post', 'page']
+            'options' => ['post', 'page', 'work']
         ],
         ['feature' => 'responsive-embeds']
     ],

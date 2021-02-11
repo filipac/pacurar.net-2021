@@ -22115,7 +22115,8 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
 var controller = new scrollmagic__WEBPACK_IMPORTED_MODULE_0___default.a.Controller();
-jQuery(function () {
+
+var showAll = window.showAll = function () {
   var all = document.querySelectorAll(".post-box");
   all.forEach(function (el, idx) {
     new scrollmagic__WEBPACK_IMPORTED_MODULE_0___default.a.Scene({
@@ -22129,6 +22130,10 @@ jQuery(function () {
     // .addIndicators() // add indicators (requires plugin)
     .addTo(controller);
   });
+};
+
+jQuery(function () {
+  showAll();
 });
 
 var imanok = function imanok() {
@@ -22198,16 +22203,14 @@ jQuery(document).on("click", ".prevent-if", function (e) {
     e.preventDefault();
     data.show = true;
   }
-});
-jQuery(document).on("click", ".menu-item-has-children", function (e) {
-  // e.preventDefault();
-  var data = this.__x.$data;
-
-  if (!data.open) {
-    e.preventDefault();
-    data.open = true;
-  }
-});
+}); // jQuery(document).on("click", ".menu-item-has-children", function(e) {
+//     // e.preventDefault();
+//     let data = this.__x.$data;
+//     if (!data.open) {
+//         e.preventDefault();
+//         data.open = true;
+//     }
+// });
 
 function setCookie(cname, cvalue, exdays) {
   var d = new Date();

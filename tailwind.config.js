@@ -21,7 +21,9 @@ module.exports = {
                 "col-span-3",
                 "md:col-span-1",
                 "md:col-span-2",
-                "md:col-span-3"
+                "md:col-span-3",
+                "-rotate-12",
+                "rotate-12"
             ]
         }
     },
@@ -202,7 +204,8 @@ module.exports = {
     },
     variants: {
         extend: {
-            boxShadow: ["dark"]
+            boxShadow: ["dark"],
+            padding: ["hover"]
         },
         // all the following default to ['responsive']
         textIndent: ["responsive"],

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Wp\Archive;
 use App\Models\Wp\Post\Post;
 
 Route::name('login')->get('loginSpotify', function () {
@@ -45,3 +46,5 @@ Route::get('/ogImage/{post}', function ($post) {
 // Route::any('page', 'Generic\Page@index');
 // Route::any('single', 'Generic\Single@index');
 // Route::any('404', 'Generic\NotFound@index');
+
+Route::get('my-work', [Archive::class, 'work']);

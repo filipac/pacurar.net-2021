@@ -41,7 +41,10 @@
             <div class="pb-6">
                 @include('partials.tags')
             </div>
-            <div class="entry-content pb-20 prose prose-lg max-w-none">
+            @php
+                $xdata = get_post_meta(get_post()->ID, 'x-data', true);
+            @endphp
+            <div class="entry-content pb-20 prose prose-lg max-w-none" @if($xdata) x-data='{{ $xdata }}' @endif>
                 {!! the_content() !!}
             </div>
         </div>
