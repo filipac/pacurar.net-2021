@@ -91,6 +91,9 @@ class AppServiceProvider extends ServiceProvider
 
         add_action('publish_post', function ($id, $post_obj) {
             $post = new Post($id);
+            if ($post->wpPost()->post_type == 'work') {
+                return;
+            }
             $job = new CreateOgImageJob($post);
             dispatch($job);
         }, 10, 2);
