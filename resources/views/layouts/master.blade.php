@@ -17,7 +17,7 @@ $cls = Cookie::get('containerfull', 0) == 1 ? 'containerfull' : 'container';
 
 <div class="{{ $cls }} maincontainer @yield('containerStyles')" x-data="{gem: false}" style="z-index: 1;"
 @creak.window="$refs.creak.play()">
-    <div class="my-8 w-full border-2 shadow-box shadow-button border-black p-4 bg-yellow flex-1 flex flex-col @yield('extraClassesContent')"
+    <div class="my-8 px-4 md:px-0 w-full border-2 shadow-box shadow-button border-black p-4 bg-yellow flex-1 flex flex-col @yield('extraClassesContent')"
          style="background-image: url('/wp-content/uploads/2019/11/panorama_nov-2.jpg');
             background-size: 100% auto;
             background-repeat: no-repeat;
