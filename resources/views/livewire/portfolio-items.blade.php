@@ -12,7 +12,7 @@
             @endif
             <div class="p-6">
             <div class="grid items-center flex-wrap" style="grid-template-columns: 1fr max-content">
-                <h2 class="font-bold text-xl">{!! get_the_title($item) !!} a very long name of tpfdasorfhdasjk dfskl</h2>
+                <h2 class="font-bold text-xl">{!! get_the_title($item) !!}</h2>
                 @if($type = get_field('type', $item))
                 <div class="pr-4">
                     <div
