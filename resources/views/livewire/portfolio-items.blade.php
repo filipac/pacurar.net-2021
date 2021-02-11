@@ -31,11 +31,17 @@
                 {!! get_the_content(null, false, $item) !!}
             </div>
 
+            @php
+                $categories = get_the_terms( $item, 'technology' ) ?: [];
+            @endphp
+
+            @if(count($categories) > 0)
             <div class="mt-2">
                 Technologies used in this project:
             </div>
 
             @include('partials.techs')
+            @endif
 
             @if($website = get_field('url', $item))
             <div class="mt-6 w-full text-center">
