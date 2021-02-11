@@ -45,6 +45,10 @@
     <livewire:portfolio-items />
 </div>
 
+<div class="mt-12">
+    @include('generic.comments', ['showOnly' => true])
+</div>
+
 @include('partials.copy')
 
 <script>

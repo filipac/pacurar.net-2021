@@ -47,4 +47,4 @@ Route::get('/ogImage/{post}', function ($post) {
 // Route::any('single', 'Generic\Single@index');
 // Route::any('404', 'Generic\NotFound@index');
 
-Route::get('my-work', [Archive::class, 'work']);
+// Route::get('my-work', [Archive::class, 'work']);

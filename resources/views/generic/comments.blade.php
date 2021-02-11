@@ -99,19 +99,22 @@
 
     @else
 
+    @if(!isset($showOnly))
     @if (comments_open())
-@else
-<!-- If comments are closed. -->
-<p class="nocomments">{{ _e('Comments are closed.') }}
-</p>
+    @else
+    <!-- If comments are closed. -->
+    <p class="nocomments">{{ _e('Comments are closed.') }}
+    </p>
+    @endif
 
 @endif
 
     @endif
-
+@if(!isset($showOnly))
     @php wp_enqueue_script( 'comment-reply' ); @endphp
 
     {!! comment_form() !!}
+@endif
 @else
 <p class="nocomments">
     @if(ICL_LANGUAGE_CODE == 'ro')
