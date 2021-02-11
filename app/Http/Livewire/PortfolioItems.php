@@ -13,8 +13,8 @@ class PortfolioItems extends Component
 
     public function mount()
     {
-        if (request()->active) {
-            $this->active = request()->active;
+        if (request()->narrowTo) {
+            $this->active = request()->narrowTo;
         }
     }
 
