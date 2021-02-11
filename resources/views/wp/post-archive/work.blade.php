@@ -32,7 +32,7 @@
             <li>Advanced app for marketing leads collection</li>
             <li>Online courses marketplace</li>
             <li>Web app to see information about movies</li>
-            <li>Dozens or tens of medium sized websites</li>
+            <li>Dozens or tens of medium sized websites. Actually, I've looked at all repositories I still have access to and <strong>since 2018 I've built 55 websites</strong>. That's 1 and a half per month. Sure, not all of them were only my job, I've had help, but I touched at least 55 websites since 2018. That's something, isn't it?</li>
             <li>Private social media for a niche category</li>
             <li>Backend for an international singer</li>
         </ul>
