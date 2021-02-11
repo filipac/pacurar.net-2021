@@ -31,6 +31,7 @@
             <li>Website for a national olympic team</li>
             <li>Advanced app for marketing leads collection</li>
             <li>Online courses marketplace</li>
+            <li>Web app to see information about movies</li>
             <li>Dozens or tens of medium sized websites</li>
             <li>Private social media for a niche category</li>
             <li>Backend for an international singer</li>
