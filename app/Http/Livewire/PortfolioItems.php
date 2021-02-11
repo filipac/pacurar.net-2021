@@ -24,6 +24,8 @@ class PortfolioItems extends Component
             'post_type' => 'work',
             'nopaging' => true,
             'tax_query' => ['relation' => 'AND'],
+            'orderby' => 'menu_order',
+            'order' => 'ASC',
         ];
 
         if (count($this->active) > 0) {
@@ -32,7 +34,6 @@ class PortfolioItems extends Component
 
 
         $q = new WP_Query($query);
-        // dump($q);
 
         return view('livewire.portfolio-items', [
             'items' => $q->posts,
