@@ -13,6 +13,7 @@ class CustomFieldsServiceProvider extends ServiceProvider
         $work
         ->addText('type')
         ->addUrl('url')
+        ->addNumber('colspan')
         ->setLocation('post_type', '==', 'work');
 
         add_action('acf/init', function () use ($work) {
