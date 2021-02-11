@@ -576,6 +576,7 @@ a#cancel-comment-reply-link {
 }
 
 .emulated-flex-gap>* {
+    flex: 1;
     margin: var(--gap) 0 0 var(--gap);
 }
 
