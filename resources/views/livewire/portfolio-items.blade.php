@@ -11,12 +11,12 @@
                 </div>
             @endif
             <div class="p-6">
-            <div class="grid items-center flex-wrap" style="grid-template-columns: 1fr max-content">
-                <h2 class="font-bold text-xl">{!! get_the_title($item) !!}</h2>
+            <div class="grid items-center flex-wrap grid-cols-1 md:two-cols-title-portfolio">
+                <h2 class="font-bold o-2 md:o-1 mt-4 md:mt-0 text-xl text-center md:text-left">{!! get_the_title($item) !!}</h2>
                 @if($type = get_field('type', $item))
-                <div class="pr-4">
+                <div class="md:pr-4 o-1 md:o-2">
                     <div
-                    class="ultra bg-yellow rounded shadow-box border border-black p-2 text-base transform {{ rand(1,2) == 2 ? '-' : '' }}rotate-12 font-bold text-white"
+                    class="max-w-fit mx-auto md:mx-0 ultra bg-yellow rounded shadow-box border border-black p-2 text-base transform {{ rand(1,2) == 2 ? '-' : '' }}rotate-12 font-bold text-white"
                     style="background: url({{ get_stylesheet_directory_uri() }}/public/images/noise.png);
                         font-variant: petite-caps;
                         -webkit-text-fill-color: white;

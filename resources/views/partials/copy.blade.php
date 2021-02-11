@@ -1,4 +1,4 @@
-<div class="w-full">
+<div class="w-full px-4 md:px-0">
 <div class="bg-green-400 shadow-box mt-8 mb-8 p-4 text-center">
     @if(ICL_LANGUAGE_CODE == 'ro')
     <div class="mt-2">Copyright &copy; {{ date('Y') }} toate drepturile <div class="italic inline font-bold">nu sunt</div> rezervate. Faceti ce vreti, e o tara libera.</div>

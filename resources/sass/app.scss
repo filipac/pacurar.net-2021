@@ -595,3 +595,21 @@ a#cancel-comment-reply-link {
             border-style: dashed;
             }
         }
+
+@responsive {
+    .two-cols-title-portfolio {
+        grid-template-columns: 1fr max-content !important;
+    }
+
+    .max-w-fit {
+        max-width: max-content !important;
+    }
+
+    .o-1 {
+        order: 1 !important;
+    }
+
+    .o-2 {
+        order: 2 !important;
+    }
+}
