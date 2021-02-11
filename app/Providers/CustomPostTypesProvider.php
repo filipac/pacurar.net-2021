@@ -25,6 +25,7 @@ class CustomPostTypesProvider extends ServiceProvider
                 'has_archive' => false,
                 'public' => false,
                 'show_ui' => true,
+                'hierarchical'      => false,
             ], array(
 
                     # Override the base names used for labels:
