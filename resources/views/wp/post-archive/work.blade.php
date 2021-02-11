@@ -46,6 +46,10 @@
 </div>
 
 <div class="mt-12">
+    @php
+        global $showOnly;
+        $showOnly = true;
+    @endphp
     {!! comments_template('/comments.php') !!}
 </div>
 

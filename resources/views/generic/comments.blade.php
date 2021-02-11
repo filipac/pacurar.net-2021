@@ -1,3 +1,6 @@
+@php
+    global $showOnly;
+@endphp
 @unless(post_password_required())
     @php
         $get_comments = get_comments('status=approve&post_id=' . get_post()->ID);
