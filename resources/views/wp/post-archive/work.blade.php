@@ -46,7 +46,7 @@
 </div>
 
 <div class="mt-12">
-    @include('generic.comments', ['showOnly' => true])
+    {!! comments_template('/comments.php') !!}
 </div>
 
 @include('partials.copy')
