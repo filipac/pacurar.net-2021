@@ -14,13 +14,13 @@
 </script>
 @else
 <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-HG03G6CK1E"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-53615822-14"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'G-HG03G6CK1E');
+  gtag('config', 'UA-53615822-14');
 </script>
 @endif
 @php
