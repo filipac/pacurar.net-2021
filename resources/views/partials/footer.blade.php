@@ -3,6 +3,7 @@
     wp_footer()
 @endphp
 @if(ICL_LANGUAGE_CODE == 'ro')
+<script async defer data-domain="pacurar.net" src="https://plausible.pacurar.dev/js/plausible.js"></script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-31FN5CD470"></script>
 <script>
