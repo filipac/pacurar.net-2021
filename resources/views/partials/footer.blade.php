@@ -13,6 +13,7 @@
   gtag('config', 'G-31FN5CD470');
 </script>
 @else
+<script async defer data-domain="pacurar.dev" src="https://plausible.pacurar.dev/js/plausible.js"></script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-53615822-14"></script>
 <script>
