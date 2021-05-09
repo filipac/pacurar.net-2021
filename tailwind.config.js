@@ -48,7 +48,8 @@ module.exports = {
             colors: {
                 splash: "#002f3c",
                 yellow: "#fdf767",
-                spotify: "#1DB954"
+                spotify: "#1DB954",
+                "blue-auto": "#3499cd"
             },
             boxShadow: {
                 box: "5px 5px #000",

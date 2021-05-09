@@ -14,10 +14,10 @@
     @endphp
 
     @foreach($categories as $cat)
-    <{{ $tagName }} class="bg-green-200 @if(isset($nolink)) dark:bg-gray-800 dark:text-white dark:shadow-box-white dark:hover:shadow-boxhvr-white @endif text-black p-2 shadow-box hover:shadow-boxhvr block prevent-if" href="{{ get_term_link($cat) }}">{!! $cat->name !!}</{{ $tagName }}>
+    <{{ $tagName }} class="bg-yellow @if(isset($nolink)) dark:bg-gray-800 dark:text-white dark:shadow-box-white dark:hover:shadow-boxhvr-white @endif text-black p-2 shadow-box hover:shadow-boxhvr block prevent-if" href="{{ get_term_link($cat) }}">{!! $cat->name !!}</{{ $tagName }}>
     @endforeach
     @if(count($tags) > 0)
-    <{{ $tagName }} class="bg-yellow @if(isset($nolink)) dark:bg-gray-600 dark:text-white dark:shadow-box-white dark:hover:shadow-boxhvr-white @endif text-black p-2 shadow-box hover:shadow-boxhvr block prevent-if"
+    <{{ $tagName }} class="bg-blue-auto @if(isset($nolink)) dark:bg-gray-600 dark:text-white dark:shadow-box-white dark:hover:shadow-boxhvr-white @endif text-black p-2 shadow-box hover:shadow-boxhvr block prevent-if"
     {{-- :class="{'opacity-0': !show, block: show}" --}}
      href="{{ get_term_link($tags[0]) }}" x-text='show ? "#{{ $tags[0]->name }}" : "#{{ str_repeat(".", strlen($tags[0]->name)) }}"' ></{{ $tagName }}>
     @endif
