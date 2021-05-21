@@ -21,7 +21,7 @@
 );
     @endphp
         @if(($data = wp_get_attachment_image_src($imgId, 'full')) && is_array($data))
-        <meta prefix="og: http://ogp.me/ns#" name="og:image" content="{{ $data[0] }}"/>
+        <meta name="image" property="og:image" content="{{ $data[0] }}"/>
         @endif
     @endif
     @endpush
