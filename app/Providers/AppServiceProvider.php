@@ -31,11 +31,21 @@ class AppServiceProvider extends ServiceProvider
             config()->set('app.url', 'https://pacurar.dev');
         }
 
+        \add_filter('oembed_response_data', function ($embedData, $post) {
+            $imgId = get_post_meta($post->ID, 'og_image', true);
+            if ($imgId) {
+                if (($data = wp_get_attachment_image_src($imgId, 'full')) && is_array($data)) {
+                    $embedData['thumbnail_url'] = $data[0];
+                }
+            }
+            return $embedData;
+        }, 11, 2);
+
         // dd(site_url());
 
         add_action('wp_loaded', function () {
             if ($_SESSION['set_lang']  == '1') {
-                return ;
+                return;
             }
 
             $country = request()->headers->get('CF-IPCountry', 'US');
@@ -77,12 +87,12 @@ class AppServiceProvider extends ServiceProvider
             if (is_array($atts)) {
                 $alpineAttrs = array_diff($atts, $a);
             }
-            $alpineAttrs = str_replace("=", '="', http_build_query($alpineAttrs, '', '" ', PHP_QUERY_RFC3986)).'"';
+            $alpineAttrs = str_replace("=", '="', http_build_query($alpineAttrs, '', '" ', PHP_QUERY_RFC3986)) . '"';
             // dd($alpineAttrs);
             ob_start();
-            echo '<'.$a['wrap'].' '.$alpineAttrs.'>';
+            echo '<' . $a['wrap'] . ' ' . $alpineAttrs . '>';
             echo wpautop($content);
-            echo '</'.$a['wrap'].'>';
+            echo '</' . $a['wrap'] . '>';
             return ob_get_clean();
         });
 
@@ -116,7 +126,6 @@ class AppServiceProvider extends ServiceProvider
                     }
                     echo "<div><a href='/wp-admin/options-general.php?page=fpac_regen_og&id={$post_id}' class='btn btn-primary'>Regenerate</a></div>";
                     break;
-
             }
         };
 
@@ -134,11 +143,11 @@ class AppServiceProvider extends ServiceProvider
          * Fires before determining which template to load.
          * Ensure work page is available only in English
          */
-        add_action('template_redirect', function () : void {
+        add_action('template_redirect', function (): void {
             global $wp;
             if ($wp->request == 'my-work') {
                 if (defined('ICL_LANGUAGE_CODE') && ICL_LANGUAGE_CODE == 'ro') {
-                    $url = apply_filters('wpml_permalink', get_bloginfo('url').'/my-work', 'en');
+                    $url = apply_filters('wpml_permalink', get_bloginfo('url') . '/my-work', 'en');
                     wp_redirect($url, Response::HTTP_MOVED_PERMANENTLY);
                     die;
                 }
@@ -174,17 +183,17 @@ class AppServiceProvider extends ServiceProvider
         });
 
 
-//        dd(get_stylesheet_directory_uri().'/resources/v1.mp3');
+        //        dd(get_stylesheet_directory_uri().'/resources/v1.mp3');
 
 
-//        add_filter( 'query_vars', function ( $vars ) {
-//            $vars[] = 'custom_page';
-//            return $vars;
-//        } );
-//
-//        add_action('init', function () {
-//            add_rewrite_rule('^api/?','index.php?page_id='.get_option( 'page_for_posts' ).'&custom_page=api','top');
-//        }, 10, 0);
+        //        add_filter( 'query_vars', function ( $vars ) {
+        //            $vars[] = 'custom_page';
+        //            return $vars;
+        //        } );
+        //
+        //        add_action('init', function () {
+        //            add_rewrite_rule('^api/?','index.php?page_id='.get_option( 'page_for_posts' ).'&custom_page=api','top');
+        //        }, 10, 0);
     }
 
     public function shareViewData()
@@ -203,7 +212,7 @@ class AppServiceProvider extends ServiceProvider
 
         add_filter('the_content', function ($content) {
             if (is_single()) {
-                if (has_tag('azi-am-invatat')):
+                if (has_tag('azi-am-invatat')) :
                     $content .= '<p class="block w-full bg-green-200 p-4">Vezi ce alte lucruri am mai invatat in alte zile urmarind postari similare: <a href="/tag/azi-am-invatat/">toate postarile "azi am invatat"</a>.</p>';
                 endif;
             }
