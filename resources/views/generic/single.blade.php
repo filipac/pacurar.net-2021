@@ -25,7 +25,7 @@
         \add_filter( 'oembed_response_data', function($embedData, $post) use($data) {
             $embedData['thumbnail_url'] = $data[0];
             return $embedData;
-        }, 1, 2 );
+        }, 11, 2 );
         @endphp
         <meta prefix="og: http://ogp.me/ns#" name="image" property="og:image" content="{{ $data[0] }}"/>
         <meta prefix="og: http://ogp.me/ns#" property="og:url" content="{{ get_the_permalink() }}">
