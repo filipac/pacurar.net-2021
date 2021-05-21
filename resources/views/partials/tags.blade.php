@@ -25,7 +25,7 @@
     @if($loop->index == 0)
     @continue
     @endif
-    <{{ $tagName }} class="bg-yellow @if(isset($nolink)) dark:bg-gray-600 dark:text-white dark:shadow-box-white dark:hover:shadow-boxhvr-white @endif text-black p-2 shadow-box hover:shadow-boxhvr transition-opacity prevent-if"
+    <{{ $tagName }} class="bg-blue-auto @if(isset($nolink)) dark:bg-gray-600 dark:text-white dark:shadow-box-white dark:hover:shadow-boxhvr-white @endif text-black p-2 shadow-box hover:shadow-boxhvr transition-opacity prevent-if"
     :class="{'opacity-0': !show, block: show}"
      href="{{ get_term_link($tag) }}">#{!! $tag->name !!}</{{ $tagName }}>
     @endforeach
