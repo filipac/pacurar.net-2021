@@ -39,6 +39,8 @@ Route::get('/ogImage/{post}', function ($post) {
     var_dump($post);
 });
 
+Route::view('/selling-my-blog', 'rick');
+
 
 // Route::any('front_page', 'Generic\Home@index');
 

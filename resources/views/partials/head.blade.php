@@ -1,5 +1,5 @@
 <head>
-    <title>{{wp_title()}}</title>
+    <title>@yield('title', wp_title('&raquo;', false))</title>
 
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
