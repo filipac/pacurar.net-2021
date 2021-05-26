@@ -10,6 +10,8 @@
     "type": "project",
     "require": {
         "php": "^7.3",
+        "amrshawky/laravel-currency": "^4.0",
+        "ccxt/ccxt": "^1.50",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
