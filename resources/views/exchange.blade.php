@@ -1,4 +1,4 @@
-@section('title') Selling my blog @endsection
+@section('title') Pay me in EGLD @endsection
 
 @extends('layouts.master')
 
