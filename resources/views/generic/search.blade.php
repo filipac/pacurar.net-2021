@@ -1,7 +1,7 @@
 @extends('layouts.search')
 
 @php
-global $orgseries;
+global $orgseries, $wp_query;
 remove_filter('the_excerpt', array($orgseries, 'add_series_meta_excerpt'));
 
 function wps_highlight_results($text){
@@ -23,6 +23,8 @@ add_action('the_excerpt', function($content) {
 @endphp
 {{--  --}}
 @section('below-content')
+@include('partials.search_bar')
+    @unless($wp_query->found_posts == 0)
     <div class="px-6 md:px-0">
         {{-- @include('partials.posts') --}}
         @while(have_posts())
@@ -48,4 +50,11 @@ add_action('the_excerpt', function($content) {
         @endwhile
         @include('partials.pagination')
     </div>
+    @else
+    <div class="flex flex-col items-center mt-4 py-12 px-12">
+        <div class="text-6xl uppercase font-bold rotate-6 transform skew-x-6 skew-y-6">Eroare 404!</div>
+        <div class="mt-12 text-2xl">Nu am gasit nimic pentru ceea ce incerci tu sa cauti.</div>
+        <div class="mt-12 text-2xl">Nu am raspunsul chiar la tot in viata.</div>
+    </div>
+    @endunless
 @overwrite
