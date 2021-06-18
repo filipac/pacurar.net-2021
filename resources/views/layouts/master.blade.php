@@ -25,7 +25,7 @@ $cls = Cookie::get('containerfull', 0) == 1 ? 'containerfull' : 'container';
             background-image: url('{{get_stylesheet_directory_uri().'/resources/panorama_9may-min.jpg'}}');
             background-size: 100% auto;
             background-repeat: no-repeat;
-            background-blend-mode: overlay;
+            background-blend-mode: darken;
             background-clip: border-box;
             background-position: 54% 0%;">
         @include('partials.header')
