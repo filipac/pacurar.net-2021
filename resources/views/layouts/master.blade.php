@@ -20,7 +20,7 @@ $cls = Cookie::get('containerfull', 0) == 1 ? 'containerfull' : 'container';
   src: ['{{ public_url('fun/wood.mp3') }}'],
   autoplay: true,
 })">
-    <div class="my-8 w-full border-2 shadow-box shadow-button border-black p-4 bg-blue-auto flex-1 flex flex-col @yield('extraClassesContent')"
+    <div class="my-8 w-full border-2 shadow-box shadow-button border-black p-4 bg-yellow flex-1 flex flex-col @yield('extraClassesContent')"
          style="
             background-image: url('{{get_stylesheet_directory_uri().'/resources/panorama_9may-min.jpg'}}');
             background-size: 100% auto;
