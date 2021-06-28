@@ -57,7 +57,7 @@
                 {{ ICL_LANGUAGE_CODE == 'ro' ? 'Eroare 404!' : 'Error 404' }}
             </div>
             <div class="mt-12 text-2xl">
-                {{ ICL_LANGUAGE_CODE == 'ro' ? 'Nu am gasit nimic pentru ceea ce incerci tu sa cauti.' : 'I did not find anything you\'re searching for. }}</div>
+                {{ ICL_LANGUAGE_CODE == 'ro' ? 'Nu am gasit nimic pentru ceea ce incerci tu sa cauti.' : 'I did not find anything you\'re searching for.' }}</div>
             <div
                 class="mt-12 text-2xl">{{ ICL_LANGUAGE_CODE == 'ro' ? 'Nu am raspunsul chiar la tot in viata.' : "I don't have the answer to everything in life."}}</div>
         </div>
