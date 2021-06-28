@@ -626,3 +626,10 @@ a#cancel-comment-reply-link {
 .avatar.avatar-20 {
     max-height: 32px;
 }
+
+li.blocks-gallery-item {
+    padding-left: 0 !important;
+    &:before {
+        content: none !important;
+    }
+}
