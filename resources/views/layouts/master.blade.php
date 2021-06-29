@@ -22,10 +22,10 @@ $cls = Cookie::get('containerfull', 0) == 1 ? 'containerfull' : 'container';
 })">
     <div class="my-8 w-full border-2 shadow-box shadow-button border-black p-4 bg-yellow flex-1 flex flex-col @yield('extraClassesContent')"
          style="
-            background-image: url('{{get_stylesheet_directory_uri().'/resources/panorama_9may-min.jpg'}}');
+            background-image: url('https://pacurar.net/wp-content/uploads/2021/06/west-min.jpeg');
             background-size: 100% auto;
             background-repeat: no-repeat;
-            background-blend-mode: darken;
+            background-blend-mode: normal;
             background-clip: border-box;
             background-position: 54% 0%;">
         @include('partials.header')
