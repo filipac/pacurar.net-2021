@@ -25,6 +25,8 @@ class AppServiceProvider extends ServiceProvider
             session_start();
         }
 
+        add_filter('acf/settings/remove_wp_meta_box', '__return_false');
+
         // dd(session()->getId(), session_id());
 
         if (defined('ICL_LANGUAGE_CODE') && ICL_LANGUAGE_CODE == 'en') {
