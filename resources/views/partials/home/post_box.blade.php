@@ -11,7 +11,7 @@
 <a href="{{ get_the_permalink($_post->wpPost) }}"><h2 class="font-bold text-xl">{!! get_the_title($_post->wpPost) !!}</h2></a>
 
 <div class="mt-2">
-    {!! get_the_excerpt($_post->wpPost) !!}
+    {!! has_category('story', $_post->wpPost) ? apply_filters( 'the_content', get_the_content(null, false, $_post->wpPost) ) : get_the_excerpt($_post->wpPost) !!}
 </div>
 
 @include('partials.tags')
