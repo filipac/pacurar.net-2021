@@ -65,7 +65,7 @@ class Post extends BaseModel
             return 'from-yellow to-orange-500';
         }
 
-        return 'from-yellow to-green-200';
+        return 'from-yellow to-green-400';
     }
 
     public function ogImageBaseUrl()

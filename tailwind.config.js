@@ -14,6 +14,7 @@ module.exports = {
                 "to-orange-500",
                 "from-yellow",
                 "to-green-200",
+                "to-green-400",
                 "from-purple-900",
                 "to-pink-400",
                 "col-span-1",
