@@ -16,7 +16,7 @@
                         <p class="text-3xl font-bold">{!! $post->title !!}</p>
                     </div>
                     <div class="pt-6 text-base leading-6 font-bold sm:text-lg sm:leading-7">
-                        <div class=" flex flex-row-reverse items-center">
+                        <div class=" flex flex-row-reverse justify-between items-center">
                             <figure class="inline-block mb-1 md:mb-0 md:mr-3">
                                 <a href="/" title="">
                                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
