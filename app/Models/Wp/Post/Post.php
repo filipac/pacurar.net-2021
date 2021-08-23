@@ -50,7 +50,6 @@ class Post extends BaseModel
     {
         $tagNames = $this->tags()->map(fn ($item) => $item->name());
         $categories = $this->categories()->map(fn ($item) => $item->slug());
-        var_dump($categories);
         // $tagNames = ;
         if ($categories->contains('family-life')) {
             return 'from-purple-900 to-pink-400';
