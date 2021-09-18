@@ -80,11 +80,11 @@ proiectul tau.
     <div class="flex flex-col lg:flex-row w-full border-8 border-yellow mt-4">
         <div class="flex-1 flex flex-col items-center justify-center p-10 border-b-8 lg:border-r-8 lg:border-b-0 border-yellow">
             <div class="text-2xl font-bold">Streak-ul current</div>
-            <div class="text-6xl font-bold mt-4">{{ ($streak = get_option('current_daily_streak_100d') ?: 0) }} {{ $streak == 0 ? '😢' : '' }} {{ $streak != 0 && $streak < 5 ? '😄' : '' }} {{ $streak != 0 && $streak > 5 ? '💪' : '' }}</div>
+            <div class="text-6xl font-bold mt-4">{{ ($streak = get_option('current_daily_streak_100d')) }} {{ $streak == 0 ? '😢' : '' }} {{ $streak != 0 && $streak < 5 ? '😄' : '' }} {{ $streak != 0 && $streak > 5 ? '💪' : '' }}</div>
         </div>
         <div class="flex-1 flex flex-col items-center justify-center p-10">
             <div class="text-2xl font-bold">Cel mai bun streak</div>
-            <div class="text-6xl font-bold mt-4">{{ get_option('best_daily_streak_100d') ?: 0 }} 🔥</div>
+            <div class="text-6xl font-bold mt-4">{{ get_option('best_daily_streak_100d') }} 🔥</div>
         </div>
     </div>
 </div>
