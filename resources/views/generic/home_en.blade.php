@@ -62,7 +62,7 @@
             </div>
         </div>
     </div>
-<div class="bg-purple-300 w-full p-3 my-4 shadow-box">
+<div class="bg-purple-300 w-full p-3 my-4 shadow-box" id="writeDaily">
     <h3 class="text-xl"><span class="font-bold strikethroughLink">#writeDaily</span> challenge ✍️</h3>
     <p>I've challenged myself in September 2021 to try and write something daily on this blog, as often as I can.</p>
     <p>The rulse for this challenge are the following:</p>

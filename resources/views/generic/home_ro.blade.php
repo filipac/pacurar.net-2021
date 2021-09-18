@@ -78,7 +78,7 @@
         </div>
     </div>
 </div>
-<div class="bg-purple-300 w-full p-3 my-4 shadow-box">
+<div class="bg-purple-300 w-full p-3 my-4 shadow-box" id="writeDaily">
     <h3 class="text-xl"><span class="font-bold strikethroughLink">#writeDaily</span> challenge ✍️</h3>
     <p>Eu singur m-am provocat in Septembrie 2021 sa incerc sa scriu zilnic ceva aici pe blog, cat de des pot.</p>
     <p>Regulile pentru acest challenge sunt urmatoarele:</p>
