@@ -47,7 +47,7 @@ class AppServiceProvider extends ServiceProvider
         // dd(site_url());
 
         add_action('wp_loaded', function () {
-            if ($_SESSION['set_lang']  == '1') {
+            if (isset($_SESSION['set_lang']) && $_SESSION['set_lang']  == '1') {
                 return;
             }
 
