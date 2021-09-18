@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Jobs\CalculateStreak;
 use App\Jobs\CreateOgImageJob;
 use App\Models\Wp\Post\Post;
 use Automattic\Jetpack\Jetpack_Lazy_Images;
@@ -108,6 +109,7 @@ class AppServiceProvider extends ServiceProvider
             }
             $job = new CreateOgImageJob($post);
             dispatch($job);
+            CalculateStreak::dispatch();
         }, 10, 2);
 
         add_filter('manage_posts_columns', function ($columns) {
