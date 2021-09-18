@@ -638,46 +638,49 @@ li.blocks-gallery-item {
 .strikethroughLink {
     position: relative;
     z-index: 2;
-}
-.strikethroughLink:before {
-    transition: all ease .5s;
-    z-index: -1;
-    position: absolute;
-    content: "";
-    left: 0;
-    bottom: 5%;
-    right: 0;
-    border-top: 10px solid;
-    border-color: rgba(253, 247, 103, 0.9);
+    &:before {
+        transition: all ease .5s;
+        z-index: -1;
+        position: absolute;
+        content: "";
+        left: 0;
+        bottom: 5%;
+        right: 0;
+        border-top: 10px solid;
+        border-color: rgba(253, 247, 103, 0.9);
 
-    -webkit-transform:rotate(-3deg);
-    -moz-transform:rotate(-3deg);
-    -ms-transform:rotate(-3deg);
-    -o-transform:rotate(-3deg);
-    transform:rotate(-3deg);
-}
-.strikethroughLink:hover:before {
-    /*z-index: 1;*/
-    bottom: 25%;
-    -webkit-transform:rotate(-10deg);
-    -moz-transform:rotate(-10deg);
-    -ms-transform:rotate(-10deg);
-    -o-transform:rotate(-10deg);
-    transform:rotate(-10deg);
-}
-.strikethroughLink.inverse:before {
-    -webkit-transform:rotate(3deg);
-    -moz-transform:rotate(3deg);
-    -ms-transform:rotate(3deg);
-    -o-transform:rotate(3deg);
-    transform:rotate(3deg);
-}
-.strikethroughLink.inverse:hover:before {
-    /*z-index: 1;*/
-    bottom: 25%;
-    -webkit-transform:rotate(10deg);
-    -moz-transform:rotate(10deg);
-    -ms-transform:rotate(10deg);
-    -o-transform:rotate(10deg);
-    transform:rotate(10deg);
+        -webkit-transform:rotate(-3deg);
+        -moz-transform:rotate(-3deg);
+        -ms-transform:rotate(-3deg);
+        -o-transform:rotate(-3deg);
+        transform:rotate(-3deg);
+    }
+    &.black:before {
+        border-color: rgba(220, 38, 38, 0.5);
+    }
+    &:hover:before {
+        /*z-index: 1;*/
+        bottom: 25%;
+        -webkit-transform:rotate(-10deg);
+        -moz-transform:rotate(-10deg);
+        -ms-transform:rotate(-10deg);
+        -o-transform:rotate(-10deg);
+        transform:rotate(-10deg);
+    }
+    &.inverse:before {
+        -webkit-transform:rotate(3deg);
+        -moz-transform:rotate(3deg);
+        -ms-transform:rotate(3deg);
+        -o-transform:rotate(3deg);
+        transform:rotate(3deg);
+    }
+    &.inverse:hover:before {
+        /*z-index: 1;*/
+        bottom: 25%;
+        -webkit-transform:rotate(10deg);
+        -moz-transform:rotate(10deg);
+        -ms-transform:rotate(10deg);
+        -o-transform:rotate(10deg);
+        transform:rotate(10deg);
+    }
 }
