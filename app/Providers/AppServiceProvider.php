@@ -6,6 +6,7 @@ use App\Jobs\CalculateStreak;
 use App\Jobs\CreateOgImageJob;
 use App\Models\Wp\Post\Post;
 use Automattic\Jetpack\Jetpack_Lazy_Images;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\ServiceProvider;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -108,8 +109,10 @@ class AppServiceProvider extends ServiceProvider
                 return;
             }
             $job = new CreateOgImageJob($post);
-            dispatch($job);
-            CalculateStreak::dispatch();
+            Bus::chain([
+                new CalculateStreak(),
+                $job
+            ]);
         }, 10, 2);
 
         add_filter('manage_posts_columns', function ($columns) {
