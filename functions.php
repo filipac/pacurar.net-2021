@@ -86,9 +86,9 @@ $app['events']->listen(RequestHandled::class, function (RequestHandled $event) u
     $kernel->terminate($event->request, $event->response);
 });
 
-global $woothemes_sensei;
-remove_action('sensei_before_main_content', array( $woothemes_sensei->frontend, 'sensei_output_content_wrapper' ), 10);
-remove_action('sensei_after_main_content', array( $woothemes_sensei->frontend, 'sensei_output_content_wrapper_end' ), 10);
+//global $woothemes_sensei;
+//remove_action('sensei_before_main_content', array( $woothemes_sensei->frontend, 'sensei_output_content_wrapper' ), 10);
+//remove_action('sensei_after_main_content', array( $woothemes_sensei->frontend, 'sensei_output_content_wrapper_end' ), 10);
 
 // add_filter('sensei_show_main_footer', '__return_false');
 // add_filter('sensei_show_main_header', '__return_false');
