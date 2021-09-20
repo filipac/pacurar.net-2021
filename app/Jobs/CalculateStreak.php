@@ -90,5 +90,9 @@ class CalculateStreak implements ShouldQueue
         update_option('current_daily_streak_100d', $streak);
         update_option('current_daily_streak_100d_started', $startedOn);
         update_option('best_daily_streak_100d', max($streaks));
+
+        if(function_exists('w3tc_flush_all')) {
+            w3tc_flush_all();
+        }
     }
 }
