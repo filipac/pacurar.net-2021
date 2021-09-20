@@ -31,28 +31,52 @@ class CalculateStreak implements ShouldQueue
      */
     public function handle()
     {
+        global $sitepress;
+// WPML Super power language switcher...
+
+        $sitepress->switch_lang('ro');
+
         $args = [
-            'orderby'          => 'date',
-            'status'           => 'approve',
-            'order'            => 'DESC',
-            'post_type'        => 'post',
-            'post_status'      => ['publish', 'private'],
-            'date_query'       => [
+            'orderby'        => 'date',
+            'status'         => 'approve',
+            'order'          => 'DESC',
+            'post_type'      => 'post',
+            'post_status'    => ['publish', 'private'],
+            'date_query'     => [
                 [
                     'after' => '100 days ago',
                 ],
             ],
-            'posts_per_page'   => -1,
-            'suppress_filters' => true,
+            'posts_per_page' => -1,
         ];
 
         $query = new \WP_Query($args);
 
         $posts = $query->posts;
 
-        $all = collect($posts)
-            ->map(fn($post) => (object)['id' => $post->ID, 'date' => Carbon::parse($post->post_date, 'Europe/Bucharest')->endOfDay()])
-            ->sortBy->date;
+
+        $sitepress->switch_lang('en');
+
+        $args = [
+            'orderby'        => 'date',
+            'status'         => 'approve',
+            'order'          => 'DESC',
+            'post_type'      => 'post',
+            'post_status'    => ['publish', 'private'],
+            'date_query'     => [
+                [
+                    'after' => '100 days ago',
+                ],
+            ],
+            'posts_per_page' => -1,
+        ];
+
+        $query = new \WP_Query($args);
+
+        $all = collect(array_values(array_merge($posts, $query->posts)))
+            ->map(fn($post
+            ) => (object)['id' => $post->ID, 'post_name' => $post->post_name, 'date' => Carbon::parse($post->post_date, 'Europe/Bucharest')->endOfDay()])
+            ->sortBy(fn($el) => (int)$el->date->format('U'), SORT_NUMERIC);
 
         $streak    = 0;
         $streaks   = [0];
@@ -65,22 +89,24 @@ class CalculateStreak implements ShouldQueue
                     if (!$startedOn) {
                         $startedOn = $last->date->format('U');
                     }
-                    if($streak == 0) {
+                    if ($streak == 0) {
                         $streak = 1;
                     }
                     $streak += 1;
                 } else {
-                    $startedOn = 0;
-                    $streaks[] = $streak;
-                    $streak    = 0;
+                    if (!$p->date->isSameDay($last->date)) {
+                        $startedOn = 0;
+                        $streaks[] = $streak;
+                        $streak    = 0;
+                    }
                 }
             }
             $last = $p;
         }
         $streaks[] = $streak;
 
-        if($last) {
-            if(!$last->date->isToday() && !$last->date->isYesterday()) {
+        if ($last) {
+            if (!$last->date->isToday() && !$last->date->isYesterday()) {
                 $streak = 0;
             }
         }
@@ -91,7 +117,7 @@ class CalculateStreak implements ShouldQueue
         update_option('current_daily_streak_100d_started', $startedOn);
         update_option('best_daily_streak_100d', max($streaks));
 
-        if(function_exists('w3tc_flush_all')) {
+        if (function_exists('w3tc_flush_all')) {
             w3tc_flush_all();
         }
     }
