@@ -185,6 +185,17 @@ class AppServiceProvider extends ServiceProvider
                     return $resp->send();
                 }
             );
+
+            add_submenu_page(
+                null,
+                'Call calculate',
+                '',
+                'manage_options',
+                'fpac_calc_man',
+                function () {
+                    CalculateStreak::dispatch();
+                }
+            );
         });
 
 
