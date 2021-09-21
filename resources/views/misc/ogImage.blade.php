@@ -21,11 +21,11 @@
                     @if($streak > 0)
                         <div class="p-2 bg-yellow text-sm mb-2">
                             @if(ICL_LANGUAGE_CODE == 'en')
-                                I'm currently on a #dailyWrite streak. Posted daily
+                                I'm currently on a #writeDaily streak. Posted daily
                                 for {{ $streak }} {{ $streak == 0 ? '😢' : '' }} {{ $streak != 0 && $streak < 5 ? '😄' : '' }} {{ $streak != 0 && $streak > 5 ? '💪' : '' }}
                                 consecutive days.
                             @else
-                                Sunt intr-un streak la challenge-ul #dailyWrite. Am postat
+                                Sunt intr-un streak la challenge-ul #writeDaily. Am postat
                                 pentru {{$streak}} {{ $streak == 0 ? '😢' : '' }} {{ $streak != 0 && $streak < 5 ? '😄' : '' }} {{ $streak != 0 && $streak > 5 ? '💪' : '' }}
                                 zile consecutive.
                             @endif
