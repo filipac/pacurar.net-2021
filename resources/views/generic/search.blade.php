@@ -27,12 +27,15 @@
     @unless($wp_query->found_posts == 0)
         <div class="px-6 md:px-0">
             {{-- @include('partials.posts') --}}
+            @php
+            $i = 0;
+            @endphp
             @while(have_posts())
                 @php
                     the_post()
                 @endphp
                 <a href="{{ the_permalink() }}"
-                   class="block dark:text-white dark:border-white border border-black w-full px-2 md:px-12 py-4 md:py-8 shadow-box hover:shadow-boxhvr dark:shadow-box-white dark:hover:shadow-boxhvr-white flex flex-col">
+                   class="block dark:text-white dark:border-white border border-black w-full px-2 md:px-12 py-4 md:py-8 shadow-box hover:shadow-boxhvr dark:shadow-box-white dark:hover:shadow-boxhvr-white @unless($i === 0) mt-4 @endunless flex flex-col">
                     <div class="text-xs text-gray-400">
                         {{ the_permalink() }}
                     </div>
@@ -48,6 +51,9 @@
                     </div>
                     <div>@include('partials.tags', ['nolink' => true])</div>
                 </a>
+            @php
+                $i++;
+            @endphp
             @endwhile
             @include('partials.pagination')
         </div>
