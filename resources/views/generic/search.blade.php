@@ -32,7 +32,7 @@
                     the_post()
                 @endphp
                 <a href="{{ the_permalink() }}"
-                   class="block dark:text-white dark:border-white border border-black w-full px-2 md:px-12 py-4 md:py-8 shadow-box hover:shadow-boxhvr dark:shadow-box-white dark:hover:shadow-boxhvr-white @unless($loop->first) mt-4 @endunless flex flex-col">
+                   class="block dark:text-white dark:border-white border border-black w-full px-2 md:px-12 py-4 md:py-8 shadow-box hover:shadow-boxhvr dark:shadow-box-white dark:hover:shadow-boxhvr-white flex flex-col">
                     <div class="text-xs text-gray-400">
                         {{ the_permalink() }}
                     </div>
