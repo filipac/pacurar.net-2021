@@ -5,7 +5,7 @@
         @mouseover="geek = true;"
         @mouseout="geek = false;"
         :class='{"bit-rotated": geek}'
-        x-text='geek ? "{{ get_the_date('U') }}" : "{{ get_the_date('j F Y') }}"'></div>
+        x-text='geek ? "{{ get_the_date('U') }}" : "{{ get_the_date('j F Y'.(is_single() ? ' H:i' : '')) }}"'></div>
     </div>
     <div class=" hidden md:block md:ml-2">//</div>
     <div class=" md:ml-2 ">
