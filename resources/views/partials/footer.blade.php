@@ -16,13 +16,13 @@
 @else
 <script async defer data-domain="pacurar.dev" src="https://plausible.pacurar.dev/js/plausible.js"></script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-53615822-14"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HG03G6CK1E"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'UA-53615822-14');
+  gtag('config', 'G-HG03G6CK1E');
 </script>
 @endif
 @php
