@@ -251,7 +251,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        add_image_size('large-not-cropped', $width = 621, $height = 309, $crop = false);
+        add_image_size('large-not-cropped', $width = 1000, $height = 498, $crop = false);
 
         add_filter('image_size_names_choose', function ($sizes) {
             $addsizes = [
