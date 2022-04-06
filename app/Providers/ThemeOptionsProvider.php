@@ -59,21 +59,21 @@ class ThemeOptionsProvider extends ProvidersThemeOptionsProvider
                 if (!has_tag('aside', $postId)) {
                     wp_set_post_tags($postId, 'aside', true);
                 }
-            }
-            $title = get_the_title($postId);
-            if (!$title) {
-                // set the title to the first 5 words of the content with ... suffix
-                $content = get_post_field('post_content', $postId);
-                $content = strip_tags($content);
-                if (strlen($content) > 5) {
-                    $content = preg_replace('/\s+/', ' ', $content);
-                    $content = explode(' ', $content);
-                    $title   = implode(' ', array_slice($content, 0, 5));
-                    $title   .= '...';
-                    wp_update_post([
-                        'ID'         => $postId,
-                        'post_title' => $title,
-                    ]);
+                $title = get_the_title($postId);
+                if (!$title) {
+                    // set the title to the first 5 words of the content with ... suffix
+                    $content = get_post_field('post_content', $postId);
+                    $content = strip_tags($content);
+                    if (strlen($content) > 5) {
+                        $content = preg_replace('/\s+/', ' ', $content);
+                        $content = explode(' ', $content);
+                        $title   = implode(' ', array_slice($content, 0, 5));
+                        $title   .= '...';
+                        wp_update_post([
+                            'ID'         => $postId,
+                            'post_title' => $title,
+                        ]);
+                    }
                 }
             }
         });

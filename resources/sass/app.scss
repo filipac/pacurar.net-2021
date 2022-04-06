@@ -688,3 +688,7 @@ li.blocks-gallery-item {
         transform:rotate(10deg);
     }
 }
+
+.wp-block-group:where(.has-background) {
+  padding: 1.25em 2.375em;
+}
