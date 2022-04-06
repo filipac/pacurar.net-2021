@@ -20,7 +20,15 @@ class AppServiceProvider extends ServiceProvider
     {
         // Change the error reporting level to match WordPress's
         if (!WP_DEBUG) {
-            error_reporting(E_CORE_ERROR | E_CORE_WARNING | E_COMPILE_ERROR | E_ERROR | E_WARNING | E_PARSE | E_USER_ERROR | E_USER_WARNING | E_RECOVERABLE_ERROR);
+            error_reporting(E_CORE_ERROR
+                | E_CORE_WARNING
+                | E_COMPILE_ERROR
+                | E_ERROR
+                | E_WARNING
+                | E_PARSE
+                | E_USER_ERROR
+                | E_USER_WARNING
+                | E_RECOVERABLE_ERROR);
         }
         if (!session_id()) {
             session_start();
@@ -47,7 +55,7 @@ class AppServiceProvider extends ServiceProvider
         // dd(site_url());
 
         add_action('wp_loaded', function () {
-            if (isset($_SESSION['set_lang']) && $_SESSION['set_lang']  == '1') {
+            if (isset($_SESSION['set_lang']) && $_SESSION['set_lang'] == '1') {
                 return;
             }
 
@@ -83,9 +91,9 @@ class AppServiceProvider extends ServiceProvider
         });
 
         add_shortcode('alpine', function ($atts, $content = null) {
-            $a = shortcode_atts(array(
+            $a           = shortcode_atts([
                 'wrap' => 'div',
-            ), $atts);
+            ], $atts);
             $alpineAttrs = [];
             if (is_array($atts)) {
                 $alpineAttrs = array_diff($atts, $a);
@@ -109,7 +117,7 @@ class AppServiceProvider extends ServiceProvider
             }
             $job = new CreateOgImageJob($post);
             dispatch(new CalculateStreak())->chain([
-                $job
+                $job,
             ]);
         }, 10, 2);
 
@@ -138,7 +146,7 @@ class AppServiceProvider extends ServiceProvider
         add_action('manage_page_posts_custom_column', $og, 10, 2);
 
         add_action('manual_lazy_image', function ($content) {
-            $inst = Jetpack_Lazy_Images::instance();
+            $inst    = Jetpack_Lazy_Images::instance();
             $content = $inst->add_image_placeholders($content);
 
             return $content;
@@ -173,13 +181,13 @@ class AppServiceProvider extends ServiceProvider
                     if (!request()->get('id')) {
                         return;
                     }
-                    $id = request()->get('id');
-                    $post = get_post((int) $id);
+                    $id   = request()->get('id');
+                    $post = get_post((int)$id);
                     if (!$post) {
                         return;
                     }
                     $post = new Post($id);
-                    $job = new CreateOgImageJob($post);
+                    $job  = new CreateOgImageJob($post);
                     $job->forced()->handle();
                     $resp = redirect()->to(request()->headers->get('referer', '/wp-admin/edit.php'));
                     return $resp->send();
@@ -243,6 +251,17 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        add_image_size('large-not-cropped', $width = 621, $height = 309, $crop = false);
+
+        add_filter('image_size_names_choose', function ($sizes) {
+            $addsizes = [
+                "large-not-cropped" => 'Large (not cropped)',
+            ];
+            $newsizes = array_merge($sizes, $addsizes);
+            return $newsizes;
+        });
+
+
         $this->app->register(CustomFieldsServiceProvider::class);
         $this->app->register(CustomPostTypesProvider::class);
         add_action('template_redirect', function () {
