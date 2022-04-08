@@ -8,7 +8,7 @@
         </div>
         <div @touchstart="$refs.hi.play()" @touchend="$refs.hi.pause();" @mouseover="$refs.hi.play()"
              @mouseout="$refs.hi.pause(); $refs.hi.currentTime = 0;">
-            <video poster="{{get_stylesheet_directory_uri().'/resources/hi2.jpg'}}" muted x-ref="hi" loop
+            <video poster="{{get_stylesheet_directory_uri().'/resources/hi2.jpg'}}" muted preload="auto" x-ref="hi" loop
                    style="object-fit: cover">
                 <source src="{{get_stylesheet_directory_uri().'/resources/hi2.mp4'}}" type="video/mp4">
             </video>
