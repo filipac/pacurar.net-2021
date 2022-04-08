@@ -6,9 +6,9 @@
             <div class="p-2 flex">
                 <h1 class="strikethroughLink inverse">#aboutMe</h1>
             </div>
-            <div @touchstart="$refs.hi.play()" @touchend="$refs.hi.pause();" @mouseover="$refs.hi.play()" @mouseout="$refs.hi.pause();">
-                <video poster="{{get_stylesheet_directory_uri().'/resources/hi_poster.jpg'}}" muted x-ref="hi" loop style="object-fit: cover">
-                    <source src="{{get_stylesheet_directory_uri().'/resources/hi.mp4'}}" type="video/mp4">
+            <div @touchstart="$refs.hi.play()" @touchend="$refs.hi.pause();" @mouseover="$refs.hi.play()" @mouseout="$refs.hi.pause(); $refs.hi.currentTime = 0;">
+                <video poster="{{get_stylesheet_directory_uri().'/resources/hi2.jpg'}}" muted x-ref="hi" loop style="object-fit: cover">
+                    <source src="{{get_stylesheet_directory_uri().'/resources/hi2.mp4'}}" type="video/mp4">
                 </video>
             </div>
             <div class="px-2">
