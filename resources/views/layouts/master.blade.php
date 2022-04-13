@@ -20,14 +20,14 @@ $cls = Cookie::get('containerfull', 0) == 1 ? 'containerfull' : 'container';
   src: ['{{ public_url('fun/wood.mp3') }}'],
   autoplay: true,
 })">
-    <div class="my-8 w-full border-2 shadow-box shadow-button border-black p-4 bg-yellow flex-1 flex flex-col @yield('extraClassesContent')"
+    <div class="my-8 w-full border-2 shadow-box shadow-button border-black p-4 bg-blue-auto flex-1 flex flex-col @yield('extraClassesContent')"
          style="
-            background-image: url('https://pacurar.net/wp-content/uploads/2021/06/west-min.jpeg');
+            background-image: url('https://pacurar.net/wp-content/uploads/2022/04/drone-april-2022.jpg');
             background-size: 100% auto;
             background-repeat: no-repeat;
             background-blend-mode: normal;
             background-clip: border-box;
-            background-position: 54% 0%;">
+            background-position: 50% 40%;">
         @include('partials.header')
 
         @yield('content')

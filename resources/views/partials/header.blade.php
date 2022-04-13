@@ -21,36 +21,4 @@
             'items_wrap'           => '<ul id="%1$s" class="%2$s navigation flex">%3$s</ul>',
             'walker' => new App\Classes\Pacurar_Walker,
         ]) !!}
-    {{-- <div class="navigation flex">
-        <div>
-            <a href="/" class="ultra menu-item-text nav-item" @mouseover="$refs.creak.play()">
-                Baza
-            </a>
-        </div>
-        <div>
-            <a href="/blog" class="ultra menu-item-text nav-item" @mouseover="$refs.creak.play()">
-                Blog
-            </a>
-        </div>
-        <div>
-            <a href="#" class="ultra menu-item-text nav-item" @mouseover="$refs.creak.play()">
-                Uses
-            </a>
-        </div>
-        <div>
-            <a href="#" class="ultra menu-item-text nav-item" @mouseover="$refs.creak.play()">
-                Despre mine
-            </a>
-        </div>
-        <div>
-            <a href="/404" class="ultra menu-item-text nav-item" @mouseover="$refs.creak.play()">
-                Arhive
-            </a>
-        </div>
-        <div>
-            <a href="/random" class="ultra menu-item-text nav-item" @mouseover="$refs.creak.play()">
-                Random
-            </a>
-        </div>
-    </div> --}}
 </div>

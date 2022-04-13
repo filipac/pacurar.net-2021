@@ -20,7 +20,7 @@
                 este un site ciudat, pe prima pagina nu vei vedea ultimile postari.</p>
         </div>
     </div>
-    <div class="bg-yellow w-full md:w-2/3 md:ml-4 mt-4 md:mt-0 flex flex-col p-4">
+    <div class="bg-blue-auto text-white w-full md:w-2/3 md:ml-4 mt-4 md:mt-0 flex flex-col p-4">
         <div class="w-full flex justify-center">
             <div class="text-2xl strikethroughLink black">#reclamaSponsorizata <small class="text-xs">de mine...</small>
             </div>

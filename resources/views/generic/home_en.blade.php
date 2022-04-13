@@ -16,7 +16,7 @@
                 <p>The main attraction of this website is <a href="/blog" class="font-bold underline">the blog</a>, but because this is an out of the ordinary website, on the first page you cannot see the latest posts.</p>
             </div>
         </div>
-        <div class="bg-yellow w-full md:w-2/3 md:ml-4 mt-4 md:mt-0 flex flex-col p-4">
+        <div class="bg-blue-auto text-white w-full md:w-2/3 md:ml-4 mt-4 md:mt-0 flex flex-col p-4">
             <div class="w-full flex justify-center">
                 <div class="text-2xl strikethroughLink black">#paidSponsorship <small class="text-xs">(paid by me, of course)</small>
                 </div>
