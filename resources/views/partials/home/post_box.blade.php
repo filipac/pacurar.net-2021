@@ -1,4 +1,4 @@
-@if(has_post_thumbnail($_post->wpPost))
+@if(has_post_thumbnail($_post->wpPost->ID))
     @php
         $_img = get_the_post_thumbnail_url( $_post->wpPost, 'full' );
     @endphp
@@ -6,17 +6,17 @@
         {!! apply_filters('manual_lazy_image', '<img src="'.$_img.'" class="featured-image  sm:max-w-full sm:w-full" />') !!}
     </a>
 @endif
-@unless(has_post_format('aside'))
+@unless(has_post_format('aside', $_post->wpPost->ID))
     @include('partials.meta_bar')
 @endunless
 <div class="p-6">
-    @unless(has_post_format('aside'))
+    @unless(has_post_format('aside', $_post->wpPost->ID))
         <a href="{{ get_the_permalink($_post->wpPost) }}"><h2
             class="font-bold text-xl">{!! get_the_title($_post->wpPost) !!}</h2></a>
     @endunless
 
     <div class="mt-2">
-        @unless(has_post_format('aside'))
+        @unless(has_post_format('aside', $_post->wpPost->ID))
             {!! has_category('story', $_post->wpPost) ? apply_filters( 'the_content', get_the_content(null, false, $_post->wpPost) ) : get_the_excerpt($_post->wpPost) !!}
         @else
         <div class="prose-xl">
@@ -25,7 +25,7 @@
         @endif
     </div>
 
-    @unless(has_post_format('aside'))
+    @unless(has_post_format('aside', $_post->wpPost->ID))
         @include('partials.tags')
     @else
         <div class="mt-2 text-xs">

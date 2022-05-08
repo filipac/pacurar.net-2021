@@ -34,10 +34,7 @@
 @foreach($posts as $_post)
 @php
     global $post;
-    if($_post instanceof App\Models\Wp\Post\Post) {
-        $post  = $_post->wpPost();
-        setup_postdata($_post->wpPost());
-    }
+
     if(!$now) {
         $now = rand(1,3);
     } else {

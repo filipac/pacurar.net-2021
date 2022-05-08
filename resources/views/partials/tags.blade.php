@@ -4,8 +4,8 @@
  >
     @php
         $p = isset($_post) ? $_post->wpPost() : get_post();
-        $tags = get_the_tags($p) ?: [];
-        $categories = get_the_terms( $p, 'category' ) ?: [];
+        $tags = get_the_tags($p->ID) ?: [];
+        $categories = get_the_terms( $p->ID, 'category' ) ?: [];
 
         $tagName = 'a';
         if(isset($nolink)) {
