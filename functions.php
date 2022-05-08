@@ -5,15 +5,7 @@ use Illuminate\Support\Str;
 
 remove_filter('template_redirect', 'redirect_canonical');
 
-if(!defined('ICL_LANGUAGE_CODE')) {
-    define('ICL_LANGUAGE_CODE', 'ro');
-}
-
 global $wp_filesystem;
-if($wp_filesystem === null) {
-    require_once(ABSPATH . '/wp-admin/includes/file.php');
-    WP_Filesystem();
-}
 $classRequired = $wp_filesystem->wp_plugins_dir() . '/semantic-linkbacks/includes/class-linkbacks-avatar-handler.php';
 if (file_exists($classRequired)) {
     require_once $classRequired;
