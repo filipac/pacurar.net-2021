@@ -8,7 +8,7 @@
          if(is_search()){
          $sr = get_query_var('s');
          $keys = explode(" ",$sr);
-         $text = preg_replace('/('.implode('|', $keys) .')/iu', '<strong class="relevanssi-query-term">'.$sr.'</strong>', $text);
+         $text = preg_replace('/('.str_replace('/', '\/', implode('|', $keys)) .')/iu', '<strong class="relevanssi-query-term">'.$sr.'</strong>', $text);
          }
          return $text;
     }
