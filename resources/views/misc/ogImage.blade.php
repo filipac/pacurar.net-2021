@@ -10,7 +10,7 @@
         class="absolute shadow-box inset-0 bg-gradient-to-r {{ $post->gradient_colors }} shadow-lg"
         @if($featured_image = get_the_post_thumbnail_url($post->id, 'full'))
             style="
-            background-image: url('{{ $featured_image }}');
+            background-image: url('{{ $featured_image }}') !important;
             background-size: cover;
             "
         @endif
