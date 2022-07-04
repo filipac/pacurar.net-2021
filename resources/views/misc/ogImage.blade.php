@@ -7,7 +7,14 @@
 <body>
 <div class="min-h-screen bg-splash py-6 flex flex-col justify-center sm:py-12 p-20">
     <div
-        class="absolute shadow-box inset-0 bg-gradient-to-r {{ $post->gradient_colors }} shadow-lg"></div>
+        class="absolute shadow-box inset-0 bg-gradient-to-r {{ $post->gradient_colors }} shadow-lg"
+        @if($featured_image = get_the_post_thumbnail_url($post->id, 'full'))
+            style="
+            background-image: url('{{ $featured_image }}');
+            background-size: cover;
+            "
+        @endif
+    ></div>
     <div class="relative py-3">
         <div class="relative px-4 py-10 bg-white shadow-xl sm:p-10 shadow-boxhvr">
             <div class="mx-auto">
