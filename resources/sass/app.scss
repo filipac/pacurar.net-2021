@@ -240,7 +240,7 @@ body:not(.search) {
         .pages,
         span,
         a {
-            @apply inline-block bg-blue-auto border-black p-2 shadow-box #{!important} text-xs;
+            @apply inline-block bg-yellow border-black p-2 shadow-box #{!important} text-xs;
 
             @screen md {
                 @apply p-4 #{!important} text-base;
@@ -651,7 +651,7 @@ li.blocks-gallery-item {
         bottom: 5%;
         right: 0;
         border-top: 10px solid;
-        border-color: theme('colors.blue-auto');
+        border-color: theme('colors.yellow');
         //border-color: rgba(253, 247, 103, 0.9);
 
         -webkit-transform:rotate(-3deg);

@@ -279,7 +279,7 @@ class AppServiceProvider extends ServiceProvider
                     return collect([
                         'bg-blue-600 text-white',
                         'bg-red-600  text-white',
-                        'bg-blue-auto',
+                        'bg-yellow',
                         'bg-green-600',
                     ])->random(2)->first();
                 };
