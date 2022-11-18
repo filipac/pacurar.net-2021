@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html prefix="og: http://ogp.me/ns#">
 @include('partials.head')
-<body {!! body_class('bg-white dark:bg-black min-h-screen flex flex-col') !!}>
+<body {!! body_class('bg-white dark:bg-black min-h-screen flex flex-col') !!}
+    style="cursor: url({{get_stylesheet_directory_uri().'/resources/bagel.cur'}}), auto !important;">
 
 @if(env('APP_ENV')==='production')
     <script>
