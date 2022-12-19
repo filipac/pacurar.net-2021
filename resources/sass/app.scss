@@ -696,3 +696,9 @@ li.blocks-gallery-item {
 
 // include sidebar.scss
 @import "sidebar";
+
+pre {
+    max-width: 100%;
+    word-wrap: break-word;
+    white-space: break-spaces;
+}
