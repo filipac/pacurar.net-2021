@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Widgets\ThemeWidgetExample;
 use Laraish\Support\Wp\Providers\WidgetProvider as ProvidersWidgetProvider;
 
 class WidgetProvider extends ProvidersWidgetProvider
@@ -11,9 +10,7 @@ class WidgetProvider extends ProvidersWidgetProvider
      * Array of Class names that will be passed to `register_widget()`
      * @type array
      */
-    protected $widgets = [
-        ThemeWidgetExample::class,
-    ];
+    protected $widgets = [];
 
     /**
      * Array of arguments(array) passed to `register_sidebar()`
