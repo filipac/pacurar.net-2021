@@ -18,7 +18,8 @@
 @section('extraClassesContent') min-h-header-home @endsection
 
 @section('below-content')
-<div x-data='{text: true}'>
+<x-content-with-sidebar>
+    <div x-data='{text: true}'>
     <div class="px-4 md:px-0">
     <h1 class="text-white text-center text-3xl">My work and portfolio</h1>
     <div class="w-full bg-white rounded p-4 shadow-box mt-4 prose md:prose-xl max-w-none">
@@ -67,6 +68,7 @@
     @endphp
     {!! comments_template('/comments.php') !!}
 </div>
+</x-content-with-sidebar>
 
 @include('partials.copy')
 
