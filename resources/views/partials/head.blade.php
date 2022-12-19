@@ -59,7 +59,6 @@
         }
     ?>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.1/howler.min.js" integrity="sha512-L6Z/YtIPQ7eU3BProP34WGU5yIRk7tNHk7vaC2dB1Vy1atz6wl9mCkTPPZ2Rn1qPr+vY2mZ9odZLdGYuaBk7dQ==" crossorigin="anonymous"></script>
-    <script data-ad-client="ca-pub-0536502685587122" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <style>
         * {
             cursor: url({{get_stylesheet_directory_uri().'/resources/bagel.cur'}}), auto !important;
