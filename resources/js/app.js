@@ -124,11 +124,10 @@ function setCookie(cname, cvalue, exdays) {
 window.expandiste = () => {
     let main = jQuery(".maincontainer");
     if (main.hasClass("containerfull")) {
-        document.cookie =
-            "containerfull=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        setCookie("containerfull", "nu", 60);
         main.removeClass("containerfull").addClass("container");
     } else {
-        setCookie("containerfull", "1", 60);
+        setCookie("containerfull", "da", 60);
         main.addClass("containerfull").removeClass("container");
     }
 };

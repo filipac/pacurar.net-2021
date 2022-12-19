@@ -12,7 +12,7 @@
 @stack('beforeContainer')
 
 @php
-$cls = Cookie::get('containerfull', 0) == 1 ? 'containerfull' : 'container';
+$cls = Cookie::get('containerfull1', 'da') == 'da' ? 'containerfull' : 'container';
 @endphp
 
 <div class="{{ $cls }} maincontainer @yield('containerStyles')" x-data="{gem: false}" style="z-index: 1;"
@@ -20,7 +20,7 @@ $cls = Cookie::get('containerfull', 0) == 1 ? 'containerfull' : 'container';
   src: ['{{ public_url('fun/wood.mp3') }}'],
   autoplay: true,
 })">
-    <div class="my-8 w-full border-2 shadow-box shadow-button border-black p-4 bg-yellow flex-1 flex flex-col
+    <div class="my-8 w-full border-2 shadow-box shadow-button border-black p-4 bg-primary flex-1 flex flex-col
         @yield('extraClassesContent')"
          style="
             background-image: url('https://pacurar.net/wp-content/uploads/2022/04/drone-april-2022.jpg');

@@ -46,11 +46,19 @@ module.exports = {
             // => @media (min-width: 1536px) { ... }
         },
         extend: {
+            gridTemplateColumns: {
+                'blog-list': '1fr 0.3fr',
+                'blog-list-mobile': '1fr',
+            },
             colors: {
-                splash: "#002f3c",
-                yellow: "#fdf767",
+                // "blue-auto": "#3499cd"
+                // splash: "#002f3c",
+                splash: "#235E6F",
+                primary: "#34A65F",
+                // primary: "#fdf767",
+                secondary: "#F5624D",
+                // secondary: "#bbf7d0",
                 spotify: "#1DB954",
-                "blue-auto": "#3499cd"
             },
             boxShadow: {
                 box: "5px 5px #000",

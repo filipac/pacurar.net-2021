@@ -179,6 +179,7 @@ return [
         App\Providers\HorizonServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\ThemeOptionsProvider::class,
+        App\Providers\WidgetProvider::class,
 
     ],
 

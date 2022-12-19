@@ -1,0 +1,46 @@
+.sidebar {
+    .widget {
+        @apply bg-white shadow-box mt-4;
+
+        &:first-child {
+            @apply mt-0;
+        }
+
+        .widget-title, h2 {
+            @apply text-xl font-bold bg-primary px-4 py-2 border-2 border-black;
+        }
+
+        .widget-inner, .wp-widget-group__inner-blocks {
+            &:not(.no-padding) {
+                @apply p-4;
+            }
+
+            .menu {
+                @apply list-none;
+            //    any ul inside a li add a margin, nested menus
+                li {
+                    @apply w-full;
+                    a {
+                        @apply cursor-pointer w-full block p-4 line-dotted;
+                    }
+                    &, & * {
+                        cursor: pointer !important;
+                    }
+                    &:hover > a, &.current-menu-item > a {
+                        @apply bg-primary text-white;
+                    }
+                    ul {
+                        @apply ml-4 mt-2;
+                    }
+                }
+            }
+
+            .tag-cloud-link {
+                cursor: pointer !important;
+                &:hover {
+                    @apply bg-secondary;
+                }
+            }
+        }
+    }
+}

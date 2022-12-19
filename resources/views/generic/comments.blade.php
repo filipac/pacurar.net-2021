@@ -7,7 +7,7 @@
         $byType = separate_comments($get_comments);
     @endphp
     @if(count($byType['pings']) > 0)
-    <div class="bg-green-200 shadow-box flex-1 w-full border-2 border-black px-2 py-2 text-xl mb-6">
+    <div class="bg-secondary shadow-box flex-1 w-full border-2 border-black px-2 py-2 text-xl mb-6">
         @if(ICL_LANGUAGE_CODE == 'ro')
         <h3>Ping(pong)-uri la acest articol</h3>
         @else
@@ -38,7 +38,7 @@
         margin-bottom: 0;
         border-radius: 9999px !important;
     }</style>
-    <div class="bg-green-200 shadow-box flex-1 w-full border-2 border-black px-2 py-2 text-xl mb-6">
+    <div class="bg-secondary shadow-box flex-1 w-full border-2 border-black px-2 py-2 text-xl mb-6">
         @if(ICL_LANGUAGE_CODE == 'ro')
         <h3>Webmentions</h3>
         @else

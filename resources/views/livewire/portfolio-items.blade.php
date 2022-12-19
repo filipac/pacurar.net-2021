@@ -16,7 +16,7 @@
                 @if($type = get_field('type', $item))
                 <div class="md:pr-4 o-1 md:o-2">
                     <div
-                    class="max-w-fit mx-auto md:mx-0 ultra bg-yellow rounded shadow-box border border-black p-2 text-base transform {{ rand(1,2) == 2 ? '-' : '' }}rotate-12 font-bold text-white"
+                    class="max-w-fit mx-auto md:mx-0 ultra bg-primary rounded shadow-box border border-black p-2 text-base transform {{ rand(1,2) == 2 ? '-' : '' }}rotate-12 font-bold text-white"
                     style="background: url({{ get_stylesheet_directory_uri() }}/public/images/noise.png);
                         font-variant: petite-caps;
                         -webkit-text-fill-color: white;
@@ -45,7 +45,7 @@
 
             @if($website = get_field('url', $item))
             <div class="mt-6 w-full text-center">
-                <a href="{{ $website }}" target="_blank" class="group hover:bg-yellow hover:shadow-boxhvr p-2 hover:pb-4 shadow-box border-2 border-black">
+                <a href="{{ $website }}" target="_blank" class="group hover:bg-primary hover:shadow-boxhvr p-2 hover:pb-4 shadow-box border-2 border-black">
                     <span class="relative show-border">Visit project</span>
                 </a>
             </div>

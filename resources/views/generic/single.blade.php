@@ -1,7 +1,8 @@
 @extends('layouts.master')
 
 @section('content')
-    @while(have_posts()) @php
+
+        @while(have_posts()) @php
         the_post()
     @endphp
 
@@ -32,7 +33,8 @@
             <p>{{ the_title() }}</p>
         </div>
     @endunless
-    @if(has_post_thumbnail())
+
+        <x-content-with-sidebar>@if(has_post_thumbnail())
         <div class='w-full shadow-box border-2 border-black'>
             <img src="{{ get_the_post_thumbnail_url(get_post()->ID, 'full') }}" class="w-full" alt="">
         </div>
@@ -72,7 +74,9 @@
     <div class="mt-12">
         {!! comments_template('/comments.php') !!}
     </div>
+        </x-content-with-sidebar>
     @endwhile
+{{--    </x-content-with-sidebar>--}}
 @endsection
 
 @section('below-content')

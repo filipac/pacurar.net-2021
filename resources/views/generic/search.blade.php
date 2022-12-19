@@ -25,7 +25,8 @@
 @section('below-content')
     @include('partials.search_bar')
     @unless($wp_query->found_posts == 0)
-        <div class="px-6 md:px-0">
+        <div class="px-6 md:px-0 py-6">
+        <x-content-with-sidebar>
             {{-- @include('partials.posts') --}}
             @php
             $i = 0;
@@ -56,6 +57,7 @@
             @endphp
             @endwhile
             @include('partials.pagination')
+        </x-content-with-sidebar>
         </div>
     @else
         <div class="flex flex-col items-center mt-4 py-12 px-12">

@@ -240,14 +240,14 @@ body:not(.search) {
         .pages,
         span,
         a {
-            @apply inline-block bg-yellow border-black p-2 shadow-box #{!important} text-xs;
+            @apply inline-block bg-primary border-black p-2 shadow-box #{!important} text-xs;
 
             @screen md {
                 @apply p-4 #{!important} text-base;
             }
 
             &.current {
-                @apply bg-green-200 #{!important};
+                @apply bg-secondary #{!important};
             }
 
             &:hover {
@@ -277,7 +277,7 @@ body.search {
             }
 
             &.current {
-                @apply bg-green-200 #{!important};
+                @apply bg-secondary #{!important};
             }
 
             &:hover {
@@ -459,7 +459,7 @@ ul.wp-block-gallery {
     .reply {
         @apply my-4;
         a {
-            @apply bg-green-200 text-black p-2 shadow-box hover:shadow-boxhvr text-base;
+            @apply bg-secondary text-black p-2 shadow-box hover:shadow-boxhvr text-base;
         }
     }
 }
@@ -491,7 +491,7 @@ ul.wp-block-gallery {
     .form-submit {
         @apply mt-6 mb-6;
         input.submit {
-        @apply bg-green-200 text-black p-2 shadow-box hover:shadow-boxhvr text-base cursor-pointer;
+        @apply bg-secondary text-black p-2 shadow-box hover:shadow-boxhvr text-base cursor-pointer;
         }
     }
 
@@ -651,7 +651,7 @@ li.blocks-gallery-item {
         bottom: 5%;
         right: 0;
         border-top: 10px solid;
-        border-color: theme('colors.yellow');
+        border-color: theme('colors.primary');
         //border-color: rgba(253, 247, 103, 0.9);
 
         -webkit-transform:rotate(-3deg);
@@ -693,3 +693,6 @@ li.blocks-gallery-item {
 .wp-block-group:where(.has-background) {
   padding: 1.25em 2.375em;
 }
+
+// include sidebar.scss
+@import "sidebar";

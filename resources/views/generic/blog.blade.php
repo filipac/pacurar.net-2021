@@ -3,10 +3,9 @@
 @section('extraClassesContent') min-h-header-home @endsection
 
 @section('below-content')
-    <div class="">
+    <x-content-with-sidebar>
         @include('partials.posts')
         @include('partials.pagination')
-    </div>
-
+    </x-content-with-sidebar>
     @include('partials.copy')
 @overwrite

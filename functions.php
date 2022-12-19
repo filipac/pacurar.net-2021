@@ -6,11 +6,11 @@ use Illuminate\Support\Str;
 remove_filter('template_redirect', 'redirect_canonical');
 
 global $wp_filesystem;
-if($wp_filesystem === null) {
+if ($wp_filesystem === null) {
     require_once(ABSPATH . '/wp-admin/includes/file.php');
     WP_Filesystem();
 }
-if(!defined('ICL_LANGUAGE_CODE')) {
+if (!defined('ICL_LANGUAGE_CODE')) {
     define('ICL_LANGUAGE_CODE', 'ro');
 }
 $classRequired = $wp_filesystem->wp_plugins_dir() . '/semantic-linkbacks/includes/class-linkbacks-avatar-handler.php';
@@ -74,6 +74,11 @@ add_action(
     }
 );
 
+add_action('after_setup_theme', function () {
+    \Carbon_Fields\Carbon_Fields::boot();
+});
+
+
 // add_action('sensei_before_main_content', function () {
 //     $html = view('generic.sensei')->render();
 //     echo Str::before($html, '<!--content here!-->');
@@ -109,8 +114,8 @@ $app['events']->listen(RequestHandled::class, function (RequestHandled $event) u
 function get_comment_author_link_blank($comment_ID = 0)
 {
     $comment = get_comment($comment_ID);
-    $url     = get_comment_author_url($comment);
-    $author  = get_comment_author($comment);
+    $url = get_comment_author_url($comment);
+    $author = get_comment_author($comment);
 
     if (empty($url) || 'http://' === $url) {
         $return = $author;
@@ -121,13 +126,13 @@ function get_comment_author_link_blank($comment_ID = 0)
     /**
      * Filters the comment author's link for display.
      *
-     * @since 1.5.0
+     * @param string $return The HTML-formatted comment author link.
+     *                           Empty for an invalid URL.
+     * @param string $author The comment author's username.
+     * @param int $comment_ID The comment ID.
      * @since 4.1.0 The `$author` and `$comment_ID` parameters were added.
      *
-     * @param string $return     The HTML-formatted comment author link.
-     *                           Empty for an invalid URL.
-     * @param string $author     The comment author's username.
-     * @param int    $comment_ID The comment ID.
+     * @since 1.5.0
      */
     return apply_filters('get_comment_author_link', $return, $author, $comment->comment_ID);
 }

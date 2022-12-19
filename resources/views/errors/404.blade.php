@@ -37,7 +37,7 @@
                 @endif
             </div>
             <div class="mt-6">
-                <a href="{{home_url()}}" class="inline-block bg-yellow perspective shadow-box hover:shadow-boxhvr text-black p-4">Inapoi la baza.</a>
+                <a href="{{home_url()}}" class="inline-block bg-primary perspective shadow-box hover:shadow-boxhvr text-black p-4">Inapoi la baza.</a>
             </div>
         </section>
     </div>

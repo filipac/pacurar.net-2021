@@ -26,7 +26,7 @@
                         $streak = get_option('current_daily_streak_100d');
                     @endphp
                     @if($streak > 0)
-                        <div class="p-2 bg-yellow text-sm mb-2">
+                        <div class="p-2 bg-primary text-sm mb-2">
                             @if(ICL_LANGUAGE_CODE == 'en')
                                 I'm currently on a #writeDaily streak. Posted daily
                                 for {{ $streak }} {{ $streak == 0 ? '😢' : '' }} {{ $streak != 0 && $streak < 5 ? '😄' : '' }} {{ $streak != 0 && $streak > 5 ? '💪' : '' }}
@@ -72,18 +72,18 @@
                                     @endphp
 
                                     @foreach($categories as $cat)
-                                        <a class="bg-green-200 text-black p-2 shadow-box hover:shadow-boxhvr block prevent-if"
+                                        <a class="bg-secondary text-black p-2 shadow-box hover:shadow-boxhvr block prevent-if"
                                            href="{{ get_term_link($cat) }}">{!! $cat->name !!}</a>
                                     @endforeach
                                     @if(count($tags) > 0)
-                                        <a class="bg-yellow text-black p-2 shadow-box hover:shadow-boxhvr block prevent-if"
+                                        <a class="bg-primary text-black p-2 shadow-box hover:shadow-boxhvr block prevent-if"
                                            href="{{ get_term_link($tags[0]) }}">#{!! $tags[0]->name !!}</a>
                                     @endif
                                     @foreach($tags as $tag)
                                         @if($loop->index == 0)
                                             @continue
                                         @endif
-                                        <a class="bg-yellow text-black p-2 shadow-box hover:shadow-boxhvr transition-opacity prevent-if"
+                                        <a class="bg-primary text-black p-2 shadow-box hover:shadow-boxhvr transition-opacity prevent-if"
                                            href="{{ get_term_link($tag) }}">#{!! $tag->name !!}</a>
                                     @endforeach
                                 </div>

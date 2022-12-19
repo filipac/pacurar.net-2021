@@ -9,8 +9,10 @@
         Vezi tot ce a scris
     </div>
     @endif --}}
+<x-content-with-sidebar>
     <div class="">
         @include('partials.posts')
         @include('partials.pagination')
     </div>
+</x-content-with-sidebar>
 @overwrite

@@ -16,7 +16,7 @@
                 <p>The main attraction of this website is <a href="/blog" class="font-bold underline">the blog</a>, but because this is an out of the ordinary website, on the first page you cannot see the latest posts.</p>
             </div>
         </div>
-        <div class="bg-yellow w-full md:w-2/3 md:ml-4 mt-4 md:mt-0 flex flex-col p-4">
+        <div class="bg-primary w-full md:w-2/3 md:ml-4 mt-4 md:mt-0 flex flex-col p-4">
             <div class="w-full flex justify-center">
                 <div class="text-2xl strikethroughLink black">#paidSponsorship <small class="text-xs">(paid by me, of course)</small>
                 </div>
@@ -78,9 +78,9 @@
             href="https://github.com/filipac/pacurar.net-2021/blob/master/app/Jobs/CalculateStreak.php" target="_blank"
             class="strikethroughLink inverse">here</a>
     </p>
-    <div class="flex flex-col lg:flex-row w-full border-8 border-yellow mt-4">
+    <div class="flex flex-col lg:flex-row w-full border-8 border-primary mt-4">
         <div
-            class="flex-1 flex flex-col items-center justify-center p-10 border-b-8 lg:border-r-8 lg:border-b-0 border-yellow">
+            class="flex-1 flex flex-col items-center justify-center p-10 border-b-8 lg:border-r-8 lg:border-b-0 border-primary">
             <div class="text-2xl font-bold">Current streak</div>
             <div
                 class="text-6xl font-bold mt-4">{{ ($streak = get_option('current_daily_streak_100d')) }} {{ $streak == 0 ? '😢' : '' }} {{ $streak != 0 && $streak < 5 ? '😄' : '' }} {{ $streak != 0 && $streak > 5 ? '💪' : '' }}</div>
@@ -91,7 +91,7 @@
         </div>
     </div>
 </div>
-    <a class="block w-full bg-green-200 my-4 p-2 py-4 shadow-box hover:shadow-boxhvr text-center font-bold" href="/blog">
+    <a class="block w-full bg-secondary my-4 p-2 py-4 shadow-box hover:shadow-boxhvr text-center font-bold" href="/blog">
         Read the blog, probabily that's why you are here.
     </a>
     <div class="flex flex-col md:flex-row mb-32">
