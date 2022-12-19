@@ -21,7 +21,7 @@
 <x-content-with-sidebar>
     <div x-data='{text: true}'>
     <div class="px-4 md:px-0">
-    <h1 class="text-white text-center text-3xl">My work and portfolio</h1>
+    <h1 class="text-white text-center text-3xl niceBorder">My work and portfolio</h1>
     <div class="w-full bg-white rounded p-4 shadow-box mt-4 prose md:prose-xl max-w-none">
         <p class="font-bold" x-show="text">Hey there, just a quick heads-up!</p>
         <div class="w-full text-center">

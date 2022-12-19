@@ -8,6 +8,9 @@
         'fallback_cb' => 'wp_page_menu',
         'items_wrap' => '<ul id="%1$s" class="%2$s">%3$s</ul>',
         'depth' => 0,
+//        add span inside the a tag
+        'link_before' => '<span>',
+        'link_after' => '</span>',
     ])
     !!}
 </x-widget>

@@ -1,3 +1,4 @@
+
 .sidebar {
     .widget {
         @apply bg-white shadow-box mt-4;
@@ -22,12 +23,24 @@
                     @apply w-full;
                     a {
                         @apply cursor-pointer w-full block p-4 line-dotted;
+                        span {
+                            @apply relative;
+                        }
+                        &:hover span:after {
+                            @include niceBorder;
+                        }
                     }
                     &, & * {
                         cursor: pointer !important;
                     }
                     &:hover > a, &.current-menu-item > a {
                         @apply bg-primary text-white;
+                        span {
+                            @apply relative;
+                            &:after {
+                                @include niceBorder;
+                            }
+                        }
                     }
                     ul {
                         @apply ml-4 mt-2;
