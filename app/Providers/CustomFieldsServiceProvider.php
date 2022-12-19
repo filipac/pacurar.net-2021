@@ -9,8 +9,6 @@ class CustomFieldsServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-
-add_filter( 'jetpack_offline_mode', '__return_true' );
         add_action('acf/init', function () {
             acf_add_local_field_group($this->getWork()->build());
             acf_add_local_field_group($this->getMenuItems()->build());
