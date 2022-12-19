@@ -13,7 +13,7 @@
          return $text;
     }
     // add_filter('the_excerpt', 'wps_highlight_results');
-    add_filter('the_title', 'wps_highlight_results');
+//    add_filter('the_title', 'wps_highlight_results');
 
     add_action('the_excerpt', function($content) {
         $pos = strpos($content, '<p>');
