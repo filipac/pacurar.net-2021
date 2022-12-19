@@ -43,4 +43,10 @@
             }
         }
     }
+
+    .widget_top-posts {
+        ul {
+            @apply list-disc list-inside p-4;
+        }
+    }
 }
