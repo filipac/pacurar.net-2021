@@ -37,6 +37,7 @@ let imanok = function() {
             jQuery(item)
                 .addClass("kon")
                 .addClass(orientation);
+            document.querySelector('.grid-cols-blog-list-mobile').classList.remove('xl:grid-cols-blog-list')
             document.getElementsByClassName(
                 "maincontainer"
             )[0].__x.$data.gem = true;
@@ -45,6 +46,7 @@ let imanok = function() {
                 .removeClass("kon")
                 .removeClass("left")
                 .removeClass("right");
+            document.querySelector('.grid-cols-blog-list-mobile').classList.add('xl:grid-cols-blog-list')
             document.getElementsByClassName(
                 "maincontainer"
             )[0].__x.$data.gem = false;
