@@ -12,7 +12,7 @@
 @stack('beforeContainer')
 
 @php
-$cls = Cookie::get('containerfull1', 'da') == 'da' ? 'containerfull' : 'container';
+$cls = Cookie::get('containerfull', 'nu') == 'da' ? 'containerfull' : 'container';
 @endphp
 
 <div class="{{ $cls }} maincontainer @yield('containerStyles')" x-data="{gem: false}" style="z-index: 1;"
