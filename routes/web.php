@@ -45,6 +45,10 @@ Route::get('egld', function() {
     return view('exchange', []);
 });
 
+Route::get('info', function () {
+    return phpinfo();
+});
+
 
 // Route::any('front_page', 'Generic\Home@index');
 
