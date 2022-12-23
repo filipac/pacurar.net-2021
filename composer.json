@@ -9,33 +9,61 @@
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": "^7.3",
-        "amrshawky/laravel-currency": "^4.0",
+        "php": "^7.3|^8.0",
+        "amrshawky/laravel-currency": "^5.0",
         "ccxt/ccxt": "^1.50",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "htmlburger/carbon-fields": "^3.3",
         "johnbillion/extended-cpts": "^4.5",
-        "jwilsson/spotify-web-api-php": "^3.4",
-        "laraish/framework": "^2.0.0",
-        "laravel/horizon": "^5.5",
+        "jwilsson/spotify-web-api-php": "^5.5",
+        "laraish/framework": "*",
+        "laraish/contracts": "*",
+        "laraish/support": "*",
+        "laraish/pagination": "*",
+        "laraish/options": "*",
+        "laravel/horizon": "^5.10",
         "laravel/socialite": "^5.1",
         "laravel/tinker": "^2.0",
-        "livewire/livewire": "^2.3",
-        "socialiteproviders/spotify": "^3.1",
+        "livewire/livewire": "^2.10",
+        "illuminate/contracts": "^9.0",
+        "illuminate/support": "^9.0",
+        "socialiteproviders/spotify": "^4.1",
         "spatie/browsershot": "^3.41",
         "spatie/ray": "^1.1",
         "stoutlogic/acf-builder": "^1.10"
     },
     "require-dev": {
-        "facade/ignition": "^2.3.6"
+        "spatie/laravel-ignition": "^1.0"
     },
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
         "sort-packages": true
     },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "laraish/*"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/thanasisxan/laraish-contracts"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/thanasisxan/laraish-support"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/thanasisxan/laraish-pagination"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/thanasisxan/laraish-options"
+        }
+    ],
     "extra": {
         "laravel": {
             "dont-discover": []
