@@ -30,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
                 | E_USER_WARNING
                 | E_RECOVERABLE_ERROR);
         }
-        if (!session_id() && !app()->runningInConsole()) {
+        if (!session_id() && !app()->runningInConsole() && !headers_sent()) {
             session_start();
         }
 
