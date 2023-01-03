@@ -34,7 +34,11 @@
         </div>
     @endunless
 
-        <x-content-with-sidebar>@if(has_post_thumbnail())
+        <x-content-with-sidebar>
+            @php
+            $hide_thumbnail = get_post_meta(get_the_ID(), 'hide_thumbnail', true);
+            @endphp
+    @if(has_post_thumbnail() && !$hide_thumbnail)
         <div class='w-full shadow-box border-2 border-black'>
             <img src="{{ get_the_post_thumbnail_url(get_post()->ID, 'full') }}" class="w-full" alt="">
         </div>
