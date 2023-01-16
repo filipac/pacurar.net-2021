@@ -34,7 +34,7 @@
                         cursor: pointer !important;
                     }
                     &:hover > a, &.current-menu-item > a {
-                        @apply bg-primary text-white;
+                        @apply bg-primary text-black;
                         span {
                             @apply relative;
                             &:after {
