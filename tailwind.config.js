@@ -54,10 +54,10 @@ module.exports = {
                 // "blue-auto": "#3499cd"
                 // splash: "#002f3c",
                 splash: "#235E6F",
-                primary: "#34A65F",
-                // primary: "#fdf767",
-                secondary: "#F5624D",
-                // secondary: "#bbf7d0",
+                // primary: "#34A65F",
+                primary: "#fdf767",
+                // secondary: "#F5624D",
+                secondary: "#bbf7d0",
                 spotify: "#1DB954",
             },
             boxShadow: {
