@@ -34,6 +34,7 @@
 {{--    @else--}}
 {{--    <link rel="stylesheet" href="{{ mix('css/app.css') }}"/>--}}
 {{--    @endif--}}
+    <!-- Styles blog -->
     @vite(['resources/sass/app.scss'])
 {{--    @if(($post = get_post()) && ($imgId = get_post_meta($post, 'og_image')))--}}
 {{--    @dd($imgId)--}}
