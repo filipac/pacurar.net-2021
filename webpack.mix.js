@@ -13,8 +13,6 @@ const path = require('path');
  |
  */
 
-console.log(path.resolve('wp-content/themes/pacurar2020/public'))
-
 mix.setResourceRoot('/wp-content/themes/pacurar2020/public/')
 
 mix.options({ processCssUrls: false })

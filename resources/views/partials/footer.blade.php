@@ -30,9 +30,10 @@
     $isPs = strpos($browser, 'Chrome-Lighthouse') !== false;
 @endphp
 @if(!$isPs)
-@if(Str::startsWith(mix('js/app.js'), '/'))
-<script src="{{ public_url(mix('js/app.js')) }}"></script>
-@else
-<script src="{{ mix('js/app.js') }}"></script>
-@endif
+    @vite(['resources/js/app.js'])
+{{--@if(Str::startsWith(mix('js/app.js'), '/'))--}}
+{{--<script src="{{ public_url(mix('js/app.js')) }}"></script>--}}
+{{--@else--}}
+{{--<script src="{{ mix('js/app.js') }}"></script>--}}
+{{--@endif--}}
 @endif

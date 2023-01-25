@@ -29,11 +29,12 @@
 {{--    <link href="https://fonts.googleapis.com/css?family=Sigmar+One&display=swap" rel="stylesheet">--}}
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
     <link rel="preload" as="font" href="https://pacurar.net/wp-content/themes/pacurar2020/resources/fonts/bariol_regular-webfont.woff" type="font/woff" crossorigin="anonymous">
-    @if(Str::startsWith(mix('css/app.css'), '/'))
-    <link rel="stylesheet" href="{{ public_url(mix('css/app.css')) }}"/>
-    @else
-    <link rel="stylesheet" href="{{ mix('css/app.css') }}"/>
-    @endif
+{{--    @if(Str::startsWith(mix('css/app.css'), '/'))--}}
+{{--    <link rel="stylesheet" href="{{ public_url(mix('css/app.css')) }}"/>--}}
+{{--    @else--}}
+{{--    <link rel="stylesheet" href="{{ mix('css/app.css') }}"/>--}}
+{{--    @endif--}}
+    @vite(['resources/sass/app.scss'])
 {{--    @if(($post = get_post()) && ($imgId = get_post_meta($post, 'og_image')))--}}
 {{--    @dd($imgId)--}}
 {{--    @endif--}}
