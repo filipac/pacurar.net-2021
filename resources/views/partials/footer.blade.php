@@ -3,7 +3,7 @@
     wp_footer()
 @endphp
 @if(ICL_LANGUAGE_CODE == 'ro')
-<script async defer data-domain="pacurar.net" src="https://plausible.pacurar.dev/js/plausible.js"></script>
+{{--<script async defer data-domain="pacurar.net" src="https://plausible.pacurar.dev/js/plausible.js"></script>--}}
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-31FN5CD470"></script>
 <script>
@@ -14,7 +14,7 @@
   gtag('config', 'G-31FN5CD470');
 </script>
 @else
-<script async defer data-domain="pacurar.dev" src="https://plausible.pacurar.dev/js/plausible.js"></script>
+{{--<script async defer data-domain="pacurar.dev" src="https://plausible.pacurar.dev/js/plausible.js"></script>--}}
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-HG03G6CK1E"></script>
 <script>
@@ -31,6 +31,7 @@
 @endphp
 @if(!$isPs)
     @vite(['resources/js/app.js'])
+    @stack('scripts')
 {{--@if(Str::startsWith(mix('js/app.js'), '/'))--}}
 {{--<script src="{{ public_url(mix('js/app.js')) }}"></script>--}}
 {{--@else--}}
