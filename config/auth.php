@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
+        'guard' => 'wordpress',
         'passwords' => 'users',
     ],
 
@@ -46,6 +46,11 @@ return [
             'provider' => 'users',
             'hash' => false,
         ],
+
+        'wordpress' => [
+            'driver' => 'session',
+            'provider' => 'wordpress',
+        ],
     ],
 
     /*
@@ -69,6 +74,11 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\User::class,
+        ],
+
+        'wordpress' => [
+            'driver' => 'eloquent.wordpress',
+            'model' => \App\Models\WordpressUser::class,
         ],
 
         // 'users' => [
@@ -95,6 +105,11 @@ return [
     'passwords' => [
         'users' => [
             'provider' => 'users',
+            'table' => 'password_resets',
+            'expire' => 60,
+        ],
+        'wordpress' => [
+            'provider' => 'wordpress',
             'table' => 'password_resets',
             'expire' => 60,
         ],

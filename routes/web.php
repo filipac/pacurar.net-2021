@@ -47,6 +47,7 @@ Route::get('egld', function() {
 });
 
 Route::get('info', function () {
+    dump(App::version());
     return phpinfo();
 });
 

@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Wp\Post\Post;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Laraish\Foundation\Debugger\ViewDebugger;
 use Illuminate\Routing\Controller as BaseController;
 use Laraish\Routing\Traits\ViewDebugger as TraitsViewDebugger;
 use Laraish\Routing\Traits\ViewResolver;
@@ -14,7 +12,7 @@ use Laraish\Support\Wp\Query\QueryResults;
 
 class Controller extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests, TraitsViewDebugger, ViewResolver;
+    use AuthorizesRequests, ValidatesRequests, TraitsViewDebugger, ViewResolver;
 
     protected function postsWithRandomInsert()
     {

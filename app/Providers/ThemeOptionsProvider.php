@@ -6,7 +6,7 @@ use Laraish\Support\Wp\Providers\ThemeOptionsProvider as ProvidersThemeOptionsPr
 
 class ThemeOptionsProvider extends ProvidersThemeOptionsProvider
 {
-    public function boot()
+    public function boot(): void
     {
         //
 
@@ -38,7 +38,7 @@ class ThemeOptionsProvider extends ProvidersThemeOptionsProvider
         parent::boot();
     }
 
-    public function register()
+    public function register(): void
     {
         add_theme_support('post-formats', [
             'aside',

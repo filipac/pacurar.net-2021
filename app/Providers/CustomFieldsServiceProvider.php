@@ -7,7 +7,7 @@ use StoutLogic\AcfBuilder\FieldsBuilder;
 
 class CustomFieldsServiceProvider extends ServiceProvider
 {
-    public function boot()
+    public function boot(): void
     {
         add_action('acf/init', function () {
             acf_add_local_field_group($this->getWork()->build());
@@ -40,7 +40,6 @@ class CustomFieldsServiceProvider extends ServiceProvider
     }
 
     /**
-     * @return FieldsBuilder
      * @throws \StoutLogic\AcfBuilder\FieldNameCollisionException
      */
     private function getWork(): FieldsBuilder
@@ -55,7 +54,6 @@ class CustomFieldsServiceProvider extends ServiceProvider
     }
 
     /**
-     * @return FieldsBuilder
      * @throws \StoutLogic\AcfBuilder\FieldNameCollisionException
      */
     private function getMenuItems(): FieldsBuilder

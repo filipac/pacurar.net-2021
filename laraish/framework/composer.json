@@ -20,8 +20,8 @@
     ],
     "require": {
         "php": "^7.3|^8.0",
-        "laravel/framework": "^9.0",
-        "illuminate/contracts": "^9.0"
+        "laravel/framework": "^10.0",
+        "illuminate/contracts": "^10.0"
     },
     "autoload": {
         "files": [

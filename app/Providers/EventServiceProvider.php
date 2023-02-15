@@ -42,10 +42,8 @@ class EventServiceProvider extends ProvidersEventServiceProvider
 
     /**
      * Register any events for your application.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         parent::boot();
 

@@ -30,9 +30,8 @@ class Handler extends ExceptionHandler
      * Report or log an exception.
      *
      * @param  \Exception  $exception
-     * @return void
      */
-    public function report(\Throwable $exception)
+    public function report(\Throwable $exception): void
     {
         parent::report($exception);
     }
@@ -42,9 +41,8 @@ class Handler extends ExceptionHandler
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Exception  $exception
-     * @return \Illuminate\Http\Response
      */
-    public function render($request, \Throwable $exception)
+    public function render($request, \Throwable $exception): \Illuminate\Http\Response
     {
         return parent::render($request, $exception);
     }

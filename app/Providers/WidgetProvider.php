@@ -32,7 +32,7 @@ class WidgetProvider extends ProvidersWidgetProvider
     ];
 
 
-    public function boot()
+    public function boot(): void
     {
         //
 
