@@ -1,5 +1,6 @@
+<div class="px-6 lg:px-0">
 <div class="bg-white px-12 py-6">
-    <div class="sigmar text-3xl w-full text-center text-shadow my-6 md:my-2 hidden lg:block">
+    <div class="sigmar text-3xl w-full text-center text-shadow my-6 lg:my-2 hidden lg:block">
         My Board Games
     </div>
     <div class="entry-content pb-2 prose prose-lg max-w-none">
@@ -12,10 +13,11 @@
             repeated calls.</p>
     </div>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+    </div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6 px-6 lg:px-0">
     @foreach($nfts as $nft)
-        <div class="bg-white">
-            <div class="sigmar text-xl w-full text-center text-shadow my-6 md:my-2 hidden lg:block">
+        <div class="bg-white flex flex-col">
+            <div class="sigmar text-base lg:text-xl w-full text-center text-shadow my-6 lg:my-2 block px-4">
                 <a href="https://xspotlight.com/nfts/{{$nft['identifier']}}" target="_blank">
                     @if(isset($nft['metadata']['description']))
                         {{ $nft['metadata']['description'] }}
@@ -29,7 +31,7 @@
                     <img src="{{ $nft['url'] }}" alt="{{ $nft['name'] }}"/>
                 </a>
             </div>
-            <div class="flex flex-col justify-center items-center mt-6 pb-6">
+            <div class="flex flex-col justify-end items-center mt-6 pb-6 flex-1 px-4">
                 <div>
                     <a href="https://xspotlight.com/nfts/{{$nft['identifier']}}" target="_blank"
                        class="inline-block group bg-mxYellow hover:shadow-boxhvr p-2 hover:pb-4 shadow-box border-2 border-black">

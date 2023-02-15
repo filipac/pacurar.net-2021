@@ -1,4 +1,4 @@
-@section('title') About the developer in me - Filip Pacurar @endsection
+@section('title') My board games - Filip Pacurar @endsection
 
 @extends('layouts.master')
 
