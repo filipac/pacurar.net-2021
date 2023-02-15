@@ -11,6 +11,10 @@
                                                              target="_blank">xSpotlight website</a>, but I will also
             list those below, fetched directly from the blockchain, sorted randomly and cached for 30 minutes to avoid
             repeated calls.</p>
+        <p class="text-xs bg-primary p-4">
+            You can read the "behind the scenes" of this page and the NFTs <a href="https://twitter.com/filipacro/status/1625897421069852673"
+                                                                              target="_blank">on this Twitter thread</a>.
+        </p>
     </div>
 </div>
     </div>
