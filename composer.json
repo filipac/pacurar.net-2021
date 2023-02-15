@@ -33,6 +33,7 @@
         "nuwave/lighthouse": "dev-master",
         "peerme/mx-sdk-laravel": "dev-patch-1",
         "peerme/mx-sdk-php": "dev-patch-1 as 1.0.2",
+        "psr/log": "^3.0",
         "socialiteproviders/spotify": "^4.1",
         "spatie/browsershot": "^3.41",
         "spatie/ray": "^1.1",
