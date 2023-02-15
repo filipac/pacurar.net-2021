@@ -59,6 +59,8 @@ module.exports = {
                 // secondary: "#F5624D",
                 secondary: "#bbf7d0",
                 spotify: "#1DB954",
+                mx: 'rgba(35,247,221, 1)',
+                mxYellow: '#fbca1c',
             },
             boxShadow: {
                 box: "5px 5px #000",
