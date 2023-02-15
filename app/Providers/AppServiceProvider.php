@@ -6,6 +6,7 @@ use App\Jobs\CalculateStreak;
 use App\Jobs\CreateOgImageJob;
 use App\Models\Wp\Post\Post;
 use Automattic\Jetpack\Jetpack_Lazy_Images;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\ServiceProvider;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -120,6 +121,10 @@ class AppServiceProvider extends ServiceProvider
                 $job,
             ]);
         }, 10, 2);
+
+        add_action('w3tc_flush_all', function ($flush) {
+            Artisan::call('cache:clear');
+        });
 
         add_filter('manage_posts_columns', function ($columns) {
             $columns['og_image'] = 'OG';
