@@ -11,5 +11,7 @@
 @endpush
 
 @section('below-content')
-    <livewire:board-games />
+    <x-content-with-sidebar>
+        <livewire:board-games />
+    </x-content-with-sidebar>
 @endsection
