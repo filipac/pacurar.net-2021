@@ -1,8 +1,11 @@
 {
   "resources/sass/app.scss": {
-    "file": "assets/app-b29ac62d.css",
+    "file": "assets/app-29af69c5.css",
     "src": "resources/sass/app.scss",
     "isEntry": true
+  },
+  "__commonjsHelpers-725317a4.js": {
+    "file": "assets/_commonjsHelpers-725317a4.js"
   },
   "resources/js/App.tsx": {
     "file": "assets/App-a7c21b14.js",
@@ -12,9 +15,6 @@
       "resources/js/react-app.tsx",
       "__commonjsHelpers-725317a4.js"
     ]
-  },
-  "__commonjsHelpers-725317a4.js": {
-    "file": "assets/_commonjsHelpers-725317a4.js"
   },
   "resources/js/react-app.tsx": {
     "file": "assets/react-app-15f0b85c.js",
