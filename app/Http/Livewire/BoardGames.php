@@ -26,8 +26,6 @@ class BoardGames extends Component
                 ->toArray();
         });
         $this->nfts = $nfts;
-
-        ray($this->nfts);
     }
     public function render()
     {
