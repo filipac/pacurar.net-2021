@@ -19,6 +19,7 @@
             You can read the "behind the scenes" of this page and the NFTs <a href="https://twitter.com/filipacro/status/1625897421069852673"
                                                                               target="_blank">on this Twitter thread</a>.
         </p>
+        <x-web3-ad spaceName="page-top" format="dark" />
     </div>
 </div>
     </div>
