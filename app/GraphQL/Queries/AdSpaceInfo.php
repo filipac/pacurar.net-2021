@@ -2,6 +2,7 @@
 
 namespace App\GraphQL\Queries;
 
+use App\DecodeSpaceInfo;
 use Peerme\Mx\Utils\Decoder;
 use Peerme\MxLaravel\Multiversx;
 
@@ -19,8 +20,17 @@ final class AdSpaceInfo
             $args['spaceName'],
         ]);
 
+        if(!isset($args['initial'])) {
+            cache()->forget('ad-space-info-' . $args['spaceName']);
+        }
+
         if($resp->code === 'ok') {
-            return $resp->data[0];
+            $space = DecodeSpaceInfo::fromBase64($resp->data[0]);
+            $space['name'] = $args['spaceName'];
+
+            cache()->put('ad-space-info-' . $args['spaceName'], $space, now()->addMinutes(5));
+
+            return $space;
         }
 
         return null;

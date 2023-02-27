@@ -38,3 +38,6 @@
 {{--<script src="{{ mix('js/app.js') }}"></script>--}}
 {{--@endif--}}
 @endif
+<div class="dapp-required">
+
+</div>

@@ -4,12 +4,18 @@ scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date
 "Indicates what fields are available at the top level of a query operation."
 type Query {
     sessionInfo: SessionInfoResponse!
-    adSpaceInfo(spaceName: String!): String @activeWallet
+    adSpaceInfo(spaceName: String!, initial: Boolean): BlockchainSpace!
+    acceptedTokens: [String!]!
     verifyToken(token: String!): VerifyTokenResponse!
+
+    validatePing(address: String!, signature: String!): Boolean!
+
+    space(spaceName: String!): Space!
 }
 
 type Mutation {
-    verifyLogin(address: String!, signature: String!): LoginResult!
+    verifyLogin(address: String!, signature: String!, offline: Boolean, token: String): LoginResult!
+    updateSpace(spaceName: String!, content: String!): Space
 }
 
 type SessionInfoResponse {
@@ -33,4 +39,21 @@ type VerifyTokenResponse {
     success: Boolean!
     error_code: Int
     validForAddress: String
+}
+
+type Space {
+    id: ID
+    name: String!
+    content: String
+    last_modified_by: String
+    created_at: DateTime
+    updated_at: DateTime
+}
+
+type BlockchainSpace {
+    name: String!
+    owner: String!
+    paid_amount: Float!
+    paid_until: Int!
+    is_new: Boolean!
 }

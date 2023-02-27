@@ -3,6 +3,8 @@
 namespace App\GraphQL\Directives;
 
 use App\Exceptions\MissingAuthorizationToken;
+use App\Jwt;
+use App\JwtParseResult;
 use Nuwave\Lighthouse\Schema\Directives\BaseDirective;
 use Nuwave\Lighthouse\Schema\ResolverProvider;
 use Nuwave\Lighthouse\Schema\Values\FieldValue;
@@ -16,7 +18,9 @@ final class ActiveWalletDirective extends BaseDirective implements FieldResolver
     {
         return /** @lang GraphQL */ <<<'GRAPHQL'
 "A directive that requires an active wallet connection token"
-directive @activeWallet on FIELD_DEFINITION
+directive @activeWallet(
+ tiedToSession: Boolean = true
+) on FIELD_DEFINITION
 GRAPHQL;
     }
 
@@ -35,12 +39,36 @@ GRAPHQL;
 
         $errorPool = app(\Nuwave\Lighthouse\Execution\ErrorPool::class);
 
-        if(!session()->has('authorization')) {
+        if (!request()->headers->has('authorization')) {
             $errorPool->record(new MissingAuthorizationToken());
             return $fieldValue->setResolver(function () {
                 return null;
             });
         }
+
+        $tied = $this->directiveArgValue('tiedToSession') ?? true;
+
+        $validateResult = Jwt::validate(
+            token: \Str::of(request()->header('authorization'))->after('Bearer '),
+            sessionId: !$tied ? null : session()->getId()
+        );
+
+        if ($validateResult !== JwtParseResult::ERR_NONE) {
+            $errorPool->record(
+                (new MissingAuthorizationToken())->setMessage(
+                    match ($validateResult) {
+                        JwtParseResult::ERR_EXPIRED => 'Token expired',
+                        JwtParseResult::ERR_SESSION_ID_MISMATCH => 'Token is not valid for this session',
+                        default => 'Token is invalid',
+                    }
+                )
+            );
+            return $fieldValue->setResolver(function () {
+                return null;
+            });
+        }
+
+        ray($validateResult);
 
         $fieldValue->setResolver(
             $resolverProvider->provideResolver($fieldValue)

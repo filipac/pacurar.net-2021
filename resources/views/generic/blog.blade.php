@@ -4,14 +4,14 @@
 
 @section('below-content')
     <x-content-with-sidebar>
-{{--        <div data-replace-vue-app></div>--}}
-{{--        <div data-replace-vue-app></div>--}}
+        <div class="mb-4">
+            <x-web3-ad spaceName="blog-top" />
+        </div>
         @include('partials.posts')
+        <div class="mt-4">
+            <x-web3-ad spaceName="blog-after" />
+        </div>
         @include('partials.pagination')
     </x-content-with-sidebar>
-{{--    @push('scripts')--}}
-{{--        @viteReactRefresh--}}
-{{--        @vite(['resources/js/react-app.tsx'])--}}
-{{--    @endpush--}}
     @include('partials.copy')
 @overwrite

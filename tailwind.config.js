@@ -1,33 +1,36 @@
+const colors = require('tailwindcss/colors')
+
 module.exports = {
     important: true,
-    darkMode: "media",
-    purge: {
-        content: ["./resources/**/*.blade.php", "./resources/**/*.js"],
-        options: {
-            safelist: [
-                "z-50",
-                "from-red-400",
-                "to-red-700",
-                "from-blue-500",
-                "to-blue-800",
-                "from-yellow-400",
-                "to-orange-500",
-                "from-yellow",
-                "to-green-200",
-                "to-green-400",
-                "from-purple-900",
-                "to-pink-400",
-                "col-span-1",
-                "col-span-2",
-                "col-span-3",
-                "md:col-span-1",
-                "md:col-span-2",
-                "md:col-span-3",
-                "-rotate-12",
-                "rotate-12"
-            ]
-        }
-    },
+    content: [
+        "./resources/**/*.blade.php",
+        "./resources/**/*.js",
+        "./resources/**/*.jsx",
+        "./resources/**/*.ts",
+        "./resources/**/*.tsx",
+    ],
+    safelist: [
+        "z-50",
+        "from-red-400",
+        "to-red-700",
+        "from-blue-500",
+        "to-blue-800",
+        "from-yellow-400",
+        "to-orange-500",
+        "from-yellow",
+        "to-green-200",
+        "to-green-400",
+        "from-purple-900",
+        "to-pink-400",
+        "col-span-1",
+        "col-span-2",
+        "col-span-3",
+        "md:col-span-1",
+        "md:col-span-2",
+        "md:col-span-3",
+        "-rotate-12",
+        "rotate-12"
+    ],
     theme: {
         screens: {
             sm: "640px",
@@ -51,6 +54,10 @@ module.exports = {
                 'blog-list-mobile': '1fr',
             },
             colors: {
+                green: colors.emerald,
+                yellow: colors.amber,
+                purple: colors.violet,
+                gray: colors.neutral,
                 // "blue-auto": "#3499cd"
                 // splash: "#002f3c",
                 splash: "#235E6F",
@@ -214,36 +221,30 @@ module.exports = {
             }
         })
     },
-    variants: {
-        extend: {
-            boxShadow: ["dark"],
-            padding: ["hover"]
+    daisyui: {
+        prefix: 'd-',
+        themes: [
+            {
+        mytheme: {
+          primary: "#235E6F",
+          secondary: "#fdf767",
+          accent: "#fff",
+          neutral: "#3d4451",
+          "base-100": "#ffffff",
         },
-        // all the following default to ['responsive']
-        textIndent: ["responsive"],
-        textShadow: ["responsive"],
-        textDecorationStyle: ["responsive"],
-        textDecorationColor: ["responsive"],
-        ellipsis: ["responsive"],
-        hyphens: ["responsive"],
-        kerning: ["responsive"],
-        textUnset: ["responsive"],
-        fontVariantCaps: ["responsive"],
-        fontVariantNumeric: ["responsive"],
-        fontVariantLigatures: ["responsive"],
-        textRendering: ["responsive"],
-        fontWeight: ["responsive", "hover", "focus"],
-        fontSize: ["responsive", "hover", "focus"]
+      },
+        ]
     },
     plugins: [
+        require("daisyui"),
         require("@tailwindcss/typography"),
-        require("tailwindcss-typography")({
-            // all these options default to the values specified here
-            ellipsis: true, // whether to generate ellipsis utilities
-            hyphens: true, // whether to generate hyphenation utilities
-            kerning: true, // whether to generate kerning utilities
-            textUnset: true, // whether to generate utilities to unset text properties
-            componentPrefix: "c-" // the prefix to use for text style classes
-        })
+        // require("tailwindcss-typography")({
+        //     // all these options default to the values specified here
+        //     ellipsis: true, // whether to generate ellipsis utilities
+        //     hyphens: true, // whether to generate hyphenation utilities
+        //     kerning: true, // whether to generate kerning utilities
+        //     textUnset: true, // whether to generate utilities to unset text properties
+        //     componentPrefix: "c-" // the prefix to use for text style classes
+        // })
     ]
 };

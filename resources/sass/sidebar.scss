@@ -22,7 +22,7 @@
                 li {
                     @apply w-full;
                     a {
-                        @apply cursor-pointer w-full block p-4 line-dotted;
+                        @apply cursor-pointer w-full block p-4;
                         span {
                             @apply relative;
                         }
@@ -31,7 +31,7 @@
                         }
                     }
                     &, & * {
-                        cursor: pointer !important;
+                        cursor: pointer #{'!important'};
                     }
                     &:hover > a, &.current-menu-item > a {
                         @apply bg-primary text-black;
@@ -49,7 +49,7 @@
             }
 
             .tag-cloud-link {
-                cursor: pointer !important;
+                cursor: pointer #{'!important'};
                 &:hover {
                     @apply bg-secondary;
                 }

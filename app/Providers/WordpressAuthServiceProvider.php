@@ -39,7 +39,7 @@ class WordpressAuthServiceProvider extends ServiceProvider
             return new WordpressGuard(
                 callback: function () {
                     return true;
-//                    dd(func_get_args());
+                //                    dd(func_get_args());
                 },
                 request: $app['request'],
                 provider: new EloquentWordpressUserProvider($app['wordpress-auth'], $config['model'])

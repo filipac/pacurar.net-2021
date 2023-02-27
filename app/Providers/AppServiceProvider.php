@@ -7,6 +7,7 @@ use App\Jobs\CreateOgImageJob;
 use App\Models\Wp\Post\Post;
 use Automattic\Jetpack\Jetpack_Lazy_Images;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -40,6 +41,15 @@ class AppServiceProvider extends ServiceProvider
         if (defined('ICL_LANGUAGE_CODE') && ICL_LANGUAGE_CODE == 'en') {
             config()->set('app.url', 'https://pacurar.dev');
         }
+
+        // prepend every page content with a div
+        add_filter('the_content', function ($content) {
+            if(is_admin() || !is_page() && get_post()->post_name != 'uses') {
+                return $content;
+            }
+            $cc = Blade::render('<x-web3-ad spaceName="page-top" format="dark" />');
+            return '<div class="web3">'.$cc.'</div>' . $content;
+        }, 999);
 
         \add_filter('oembed_response_data', function ($embedData, $post) {
             $imgId = get_post_meta($post->ID, 'og_image', true);

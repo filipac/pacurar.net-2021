@@ -3,13 +3,16 @@
 namespace App\Exceptions;
 
 use Exception;
-use Nuwave\Lighthouse\Exceptions\RendersErrorsExtensions;
+use GraphQL\Error\ClientAware;
+use GraphQL\Error\ProvidesExtensions;
 
-class MissingAuthorizationToken extends Exception implements RendersErrorsExtensions
+class MissingAuthorizationToken extends Exception implements ClientAware, ProvidesExtensions
 {
-    const CATEGORY = 'authorization';
+    public const CATEGORY = 'authorization';
 
-    public function isClientSafe()
+    private ?string $msg;
+
+    public function isClientSafe(): bool
     {
         return true;
     }
@@ -19,10 +22,17 @@ class MissingAuthorizationToken extends Exception implements RendersErrorsExtens
         return self::CATEGORY;
     }
 
-    public function extensionsContent(): array
+    public function setMessage(?string $message): self
+    {
+        $this->msg = $message;
+
+        return $this;
+    }
+
+    public function getExtensions(): array
     {
         return [
-            'message' => 'Missing authorization token',
+            'message' => isset($this->msg) ? $this->msg : 'Missing authorization token',
         ];
     }
 }

@@ -42,7 +42,7 @@ Route::get('/ogImage/{post}', function ($post) {
 
 Route::view('/selling-my-blog', 'rick');
 
-Route::get('egld', function() {
+Route::get('egld', function () {
     return view('exchange', []);
 });
 
@@ -51,15 +51,15 @@ Route::get('info', function () {
     return phpinfo();
 });
 
-Route::get('board-games', function() {
-   if(defined('ICL_LANGUAGE_CODE')) {
-       $lang = ICL_LANGUAGE_CODE;
-   } else {
-       $lang = 'en';
-   }
-   if($lang != 'en') {
+Route::get('board-games', function () {
+    if (defined('ICL_LANGUAGE_CODE')) {
+        $lang = ICL_LANGUAGE_CODE;
+    } else {
+        $lang = 'en';
+    }
+    if ($lang != 'en') {
          return redirect()->to('https://pacurar.dev/board-games');
-   }
+    }
     return view('misc.board-games', []);
 });
 

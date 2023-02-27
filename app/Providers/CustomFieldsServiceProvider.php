@@ -36,6 +36,17 @@ class CustomFieldsServiceProvider extends ServiceProvider
                 'category' => 'widgets',
                 'icon' => 'admin-links',
             ]);
+
+            acf_register_block([
+                'name' => 'ad_space',
+                'title' => __('Ad space'),
+                'render_callback' => function ($attrs) {
+                    $title = defined('ICL_LANGUAGE_CODE') && ICL_LANGUAGE_CODE == 'en' ? 'Ad space' : 'Spațiu publicitar';
+                    echo view('widgets.ad', compact('title', 'attrs'))->render();
+                },
+                'category' => 'widgets',
+                'icon' => 'admin-links',
+            ]);
         });
     }
 

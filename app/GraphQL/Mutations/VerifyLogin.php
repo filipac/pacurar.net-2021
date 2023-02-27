@@ -30,7 +30,7 @@ final class VerifyLogin
             ];
         }
         $signature = new Signature($args['signature']);
-        $token = session()->getId();
+        $token = $args['token'] ?? session()->getId();
 
         $verifiable = new SignableMessage(
             message: "{$address->bech32()}{$token}{}", // how wallet providers sign login messages
@@ -38,13 +38,15 @@ final class VerifyLogin
             address: $address,
         );
 
+        $verified = UserVerifier::fromAddress($address)
+                ->verify($verifiable);
+
         return [
-            'success' => UserVerifier::fromAddress($address)
-                ->verify($verifiable),
-            'token' => Jwt::generateFor(
-                sessionId: $token,
+            'success' => $verified,
+            'token' => $verified ? Jwt::generateFor(
+                sessionId: isset($args['offline']) && $args['offline'] ? null : $token,
                 address: $address->bech32(),
-            )->toString(),
+            )->toString() : null,
         ];
     }
 }

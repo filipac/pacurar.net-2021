@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Jobs\CalculateStreak;
+use App\Jobs\RemoveExpiredAdSpaces;
 use Illuminate\Console\Scheduling\Schedule;
 use Laraish\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -21,6 +22,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $schedule->job(CalculateStreak::class)->everySixHours();
+        $schedule->job(RemoveExpiredAdSpaces::class)->everyTwoHours();
     }
 
     protected function commands(): void

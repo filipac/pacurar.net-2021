@@ -1,5 +1,5 @@
 import './bootstrap'
-import ScrollMagic from "scrollmagic";
+import ScrollMagic from "scrollmagic/scrollmagic/minified/ScrollMagic.min";
 
 let controller = new ScrollMagic.Controller();
 

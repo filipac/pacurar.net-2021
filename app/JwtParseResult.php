@@ -9,4 +9,5 @@ enum JwtParseResult: int
     case ERR_AUDIENCE_MISMATCH = 2;
     case ERR_ISSUER_MISMATCH = 3;
     case ERR_EXPIRED = 4;
+    case ERR_INVALID = 5;
 }

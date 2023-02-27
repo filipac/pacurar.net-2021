@@ -34,11 +34,18 @@ return [
     |
     */
 
+    'deprecations' => env('LOG_DEPRECATIONS_CHANNEL', 'null'),
+
     'channels' => [
         'stack' => [
             'driver' => 'stack',
             'channels' => ['daily'],
             'ignore_exceptions' => false,
+        ],
+
+        'deprecations' => [
+            'driver' => 'monolog',
+            'handler' => NullHandler::class,
         ],
 
         'single' => [

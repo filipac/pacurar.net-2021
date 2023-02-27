@@ -30,6 +30,4 @@ return [
     ],
 
     'jwt_secret' => env('MULTIVERSX_JWT_SECRET', 'IIfFDszOvasz9Eb/AaOX1qpC2jImDxTxuDj2lwKxPyE='),
-
-
 ];
