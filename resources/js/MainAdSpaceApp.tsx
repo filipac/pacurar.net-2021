@@ -423,8 +423,8 @@ const MainAdSpaceApp: React.FC<Props> = ({name = '', language, html, format, sid
                     {!accountInfo.address && <>
 
                         <div className={
-                            classnames('mt-2', {
-                                'flex flex-col gap-2': sidebar,
+                            classnames('flex mt-2 flex-col items-center md:flex-row', {
+                                'flex flex-col md:flex-col gap-2': sidebar,
                             })
                         }>
                             <WalletConnectLoginButton isWalletConnectV2 token={sessionId}
