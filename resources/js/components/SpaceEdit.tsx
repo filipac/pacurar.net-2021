@@ -104,12 +104,24 @@ const SpaceEdit: React.FC<Props> = ({spaceInfo, sidebar, close, language, refres
 
     useEffect(() => {
         if (model && editorRef.current) {
-            editorRef.current.setContent(model.content)
+            // editorRef.current.setContent(model.content)
         }
-        if (model) {
+        if (model?.content) {
             setTempValue(model.content)
         }
-    }, [model, editorRef])
+    }, [model?.content || ''])
+
+    useEffect(() => {
+        if(editMode === 'wysiwyg' && editorRef.current) {
+            setTimeout(() => {
+                try {
+                    editorRef.current.setContent(tempValue)
+                } catch (e) {
+                    console.log(e)
+                }
+            }, 1)
+        }
+    }, [editMode, editorRef.current])
 
     const content = (<>
             {/* html or wysiwyg chooser */}
@@ -127,12 +139,13 @@ const SpaceEdit: React.FC<Props> = ({spaceInfo, sidebar, close, language, refres
                     Code
                 </button>
             </div>
-            {editMode === 'wysiwyg' && <Editor
+            <div style={{display: editMode === 'wysiwyg' ? 'block' : 'none'}}>
+            <Editor
                 tinymceScriptSrc={window.location.origin + '/tinymce/tinymce.min.js'}
                 onInit={(evt, editor) => editorRef.current = editor}
-                initialValue={tempValue || ''}
-                onChange={(content, editor) => {
-                    setTempValue(content.target.getContent())
+                // initialValue={tempValue || ''}
+                onEditorChange={(content, editor) => {
+                    setTempValue(content)
                 }}
                 init={{
                     height: 500,
@@ -148,7 +161,8 @@ const SpaceEdit: React.FC<Props> = ({spaceInfo, sidebar, close, language, refres
                         'removeformat | help',
                     content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
                 }}
-            />}
+            />
+                </div>
             {editMode === 'code' && <MonacoEditor
                 height="30vh"
                 language="html"
