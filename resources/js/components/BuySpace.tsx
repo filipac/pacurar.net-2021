@@ -364,7 +364,7 @@ export const BuySpace: React.FC<Props> = ({
                                 <div className={`${padding}`}>
                                     <Formik
                                         validationSchema={object().shape({
-                                            token: string().required('Required'),
+                                            token: accountInfo?.address === contractOwner ? string().nullable() : string().required('Required'),
                                             amount: schema
                                         })}
                                         onSubmit={(x) => {
@@ -387,7 +387,7 @@ export const BuySpace: React.FC<Props> = ({
                                               handleSubmit,
                                               setFieldValue
                                           }) => {
-                                            if (!accountBalances.length || !accountBalances.some(x => x.balance.gt(0))) {
+                                            if ((!accountBalances.length || !accountBalances.some(x => x.balance.gt(0))) && accountInfo?.address !== contractOwner) {
                                                 return <div className={'text-center'}>
                                                     <p className={'text-lg font-bold'}>
                                                         {language == 'en' ? 'No tokens available' : 'Nu există token-uri disponibile'}
