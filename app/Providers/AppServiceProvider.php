@@ -229,6 +229,30 @@ class AppServiceProvider extends ServiceProvider
                     return new \WP_REST_Response($games->toArray(), 200);
                 },
             ]);
+            register_rest_route('filipac/v1', '/work', [
+                'methods'  => 'GET',
+                'callback' => function () {
+                    $query = [
+            'post_type' => 'work',
+            'nopaging' => true,
+            'tax_query' => ['relation' => 'AND'],
+            'orderby' => 'menu_order',
+            'order' => 'ASC',
+        ];
+        $q = new \WP_Query($query);
+        $posts = collect($q->posts)->map(function($post) {
+            $categories = get_the_terms( $post, 'technology' ) ?: [];
+            return [
+                'title' => $post->post_title,
+                'image' => get_the_post_thumbnail_url($post->ID, 'full'),
+                'categories' => collect($categories)->map(function($category) {
+                    return $category->name;
+                })->implode(', '),
+            ];
+        });
+                    return new \WP_REST_Response($posts, 200);
+                },
+            ]);
         });
 
 
