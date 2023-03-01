@@ -343,8 +343,8 @@ const MainAdSpaceApp: React.FC<Props> = ({name = '', language, html, format, sid
                     {language == 'en' && <>Cancel outbid</>}
                     {language == 'ro' && <>Renunta</>}
                 </>}
-                {!showLogin && <>{language == 'en' && <>Outbid this space</>}
-                    {language == 'ro' && <>Cumpara acest spatiu</>}</>}
+                {!showLogin && <>{language == 'en' && <>Replace with your advertisement</>}
+                    {language == 'ro' && <>Inlocuieste cu reclama ta</>}</>}
             </button>
         ),
         showLogin && <WalletConnectLoginButton isWalletConnectV2 token={sessionId}
