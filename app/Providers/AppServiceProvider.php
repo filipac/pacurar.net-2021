@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Http\Livewire\BoardGames;
 use App\Jobs\CalculateStreak;
 use App\Jobs\CreateOgImageJob;
 use App\Models\Wp\Post\Post;
@@ -217,6 +218,17 @@ class AppServiceProvider extends ServiceProvider
                     CalculateStreak::dispatch();
                 }
             );
+        });
+
+        // custom rest endpoint to list my board games
+        add_action('rest_api_init', function () {
+            register_rest_route('filipac/v1', '/board-games', [
+                'methods'  => 'GET',
+                'callback' => function () {
+                    $games = BoardGames::getNfts();
+                    return new \WP_REST_Response($games->toArray(), 200);
+                },
+            ]);
         });
 
 
