@@ -208,11 +208,14 @@ export const BuySpace: React.FC<Props> = ({
     }, [address, AcceptedTokens])
 
     const sendRentTransaction = async (token: string, amount: string) => {
-        if (accountBalances.length === 0) return;
-        const index = AcceptedTokens.indexOf(token)
-        if (index === -1) return;
-        const balance = accountBalances[index].balance
-        if (balance.isLessThan(amount)) return;
+
+        if (accountInfo?.address !== contractOwner) {
+            if (accountBalances.length === 0) return;
+            const index = AcceptedTokens.indexOf(token)
+            if (index === -1) return;
+            const balance = accountBalances[index].balance
+            if (balance.isLessThan(amount)) return;
+        }
 
         const serializer = new ArgSerializer();
         let data = 'ESDTTransfer';
@@ -276,7 +279,7 @@ export const BuySpace: React.FC<Props> = ({
 
     useEffect(() => {
         console.log({formikRef: formikRef.current})
-    }, [formikRef.current,spaceInfo])
+    }, [formikRef.current, spaceInfo])
 
     return (
         <Transition.Root show={open} as={'div'}>
@@ -451,7 +454,8 @@ export const BuySpace: React.FC<Props> = ({
                                                                     if (x.balance.eq(0)) {
                                                                         return null;
                                                                     }
-                                                                    return <option key={i} value={x.token} selected={values.token === x.token} >{x.token}
+                                                                    return <option key={i} value={x.token}
+                                                                                   selected={values.token === x.token}>{x.token}
                                                                         ({denominated(x.balance.toString())})</option>
                                                                 })}
                                                             </select>
