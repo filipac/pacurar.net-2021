@@ -271,8 +271,8 @@ const MainAdSpaceApp: React.FC<Props> = ({name = '', language, html, format, sid
                         e.preventDefault()
                         setBuyOpen(true)
                     }}>
-                {language == 'en' && <>Outbid this space</>}
-                {language == 'ro' && <>Cumpara acest spatiu</>}
+                {language == 'en' && <>Replace with your advertisement</>}
+                {language == 'ro' && <>Inlocuieste cu reclama ta</>}
             </button>
         ),
         accountInfo.address && accountInfo.address == spaceInfo?.owner && !spaceInfo?.is_new && !editOpen && (
