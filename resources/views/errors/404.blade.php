@@ -2,10 +2,7 @@
 
 @push('beforeContainer')
     <div class="overflow-hidden">
-        {{-- <iframe width="560" height="315" class="w-full h-screen fixed skip"
-        style="z-index: -1;object-fit: cover;"
-        src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?controls=0&autoplay=1&disablekb=1&fs=0&loop=1&modestbranding=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> --}}
-        <video width="100%" id="rick" class="w-full h-screen fixed skip" autoplay muted style="z-index: -1;object-fit: cover;">
+        <video width="100%" id="rick" class="w-full h-screen fixed skip" autoplay muted style="z-index: 0;object-fit: cover;">
             <!-- HTML 5 browsers will play one of these -->
             <source src="{{ public_url('fun/rick.webm') }}" type="video/webm" /></source>
             <source src="{{ public_url('fun/rick.mp4') }}" type="video/mp4" /></source>

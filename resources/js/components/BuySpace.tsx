@@ -276,11 +276,6 @@ export const BuySpace: React.FC<Props> = ({
 
     const padding = 'rounded-lg px-4 pt-5 pb-4 sm:p-6 ';
 
-
-    useEffect(() => {
-        console.log({formikRef: formikRef.current})
-    }, [formikRef.current, spaceInfo])
-
     return (
         <Transition.Root show={open} as={'div'}>
             <Dialog
