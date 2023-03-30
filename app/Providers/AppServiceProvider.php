@@ -178,6 +178,12 @@ class AppServiceProvider extends ServiceProvider
                     wp_redirect($url, Response::HTTP_MOVED_PERMANENTLY);
                     die;
                 }
+            } else if ($wp->request == 'uses') {
+                if (defined('ICL_LANGUAGE_CODE') && ICL_LANGUAGE_CODE == 'ro') {
+                    $url = apply_filters('wpml_permalink', get_bloginfo('url') . '/uses', 'en');
+                    wp_redirect($url, Response::HTTP_MOVED_PERMANENTLY);
+                    die;
+                }
             }
         });
 
