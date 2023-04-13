@@ -43,9 +43,9 @@ class CreateOgImageJob implements ShouldQueue
                 ->devicePixelRatio(2)
                 ->windowSize(1200, 630);
             if (!defined('LOCAL_WP')) {
-                $bshot->setNodeBinary('/home/forge/.nvm/versions/node/v12.16.1/bin/node');
-                $bshot->setNpmBinary('/home/forge/.nvm/versions/node/v12.16.1/bin/npm');
-                $bshot->setChromePath("/home/forge/.nvm/versions/node/v12.16.1/lib/node_modules/puppeteer/.local-chromium/linux-818858/chrome-linux/chrome");
+                $bshot->setNodeBinary('/home/forge/.nvm/versions/node/v14.21.3/bin/node');
+                $bshot->setNpmBinary('/home/forge/.nvm/versions/node/v14.21.3/bin/npm');
+                $bshot->setChromePath("/home/forge/.cache/puppeteer/chrome/linux-1108766/chrome-linux");
             }
 //
             $base64Image = $bshot->base64Screenshot();
