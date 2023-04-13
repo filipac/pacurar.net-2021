@@ -15,17 +15,23 @@ class DecodeSpaceInfo
 
     /**
      * @param $base64Data
+     *
      * @return mixed
      * @throws \Exception
      */
     public static function fromBase64($base64Data)
     {
-        $isMacos = stripos(PHP_OS, 'DAR') !== false;
+        $isMacos       = stripos(PHP_OS, 'DAR') !== false;
+        $uname         = php_uname('a');
+        $isArm64       = stripos($uname, 'aarch64') !== false || stripos($uname, 'arm64') !== false;
         $decoderBinary = match (true) {
             $isMacos => 'struct-decoder-macos-arm64',
-            default => 'struct-decoder-linux-x64',
+            default => match(true) {
+                $isArm64 => 'struct-decoder-linux-arm64',
+                default => 'struct-decoder-linux-x64',
+            },
         };
-        $process = resource_path('js/' . $decoderBinary);
+        $process       = resource_path('js/' . $decoderBinary);
 
         // [{"name":"owner","type":"Address"},{"name":"paid_amount","type":"BigUint"},{"name":"paid_until","type":"BigUint"},{"name":"is_new","type":"bool"}]
 
@@ -35,9 +41,9 @@ class DecodeSpaceInfo
         if ($prc->isSuccessful()) {
             $base64Data = json_decode($prc->getOutput(), true);
 
-            $base64Data['owner'] = $base64Data['owner']['bech32'];
-            $base64Data['paid_amount'] = (float) bcdiv($base64Data['paid_amount'], bcpow(10, 6), 2);
-            $base64Data['paid_until'] = (int)$base64Data['paid_until'];
+            $base64Data['owner']       = $base64Data['owner']['bech32'];
+            $base64Data['paid_amount'] = (float)bcdiv($base64Data['paid_amount'], bcpow(10, 6), 2);
+            $base64Data['paid_until']  = (int)$base64Data['paid_until'];
 
             return $base64Data;
 
