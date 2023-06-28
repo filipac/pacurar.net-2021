@@ -4,6 +4,7 @@ namespace App\GraphQL\Mutations;
 
 use App\Jwt;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Cookie;
 use Lcobucci\JWT\Encoding\ChainedFormatter;
 use Lcobucci\JWT\Encoding\JoseEncoder;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
@@ -41,12 +42,20 @@ final class VerifyLogin
         $verified = UserVerifier::fromAddress($address)
                 ->verify($verifiable);
 
-        return [
-            'success' => $verified,
-            'token' => $verified ? Jwt::generateFor(
+        $token = $verified ? Jwt::generateFor(
                 sessionId: isset($args['offline']) && $args['offline'] ? null : $token,
                 address: $address->bech32(),
-            )->toString() : null,
+            )->toString() : null;
+
+        if($verified) {
+            Cookie::queue('blog_token', $token);
+        }
+
+        \Session::flash('temp_token', !isset($args['offline']) ? $token : null);
+
+        return [
+            'success' => $verified,
+            'token' => isset($args['offline']) ? $token : null,
         ];
     }
 }

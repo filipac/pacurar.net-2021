@@ -90,17 +90,24 @@ class Jwt
 
     public static function getToken(): ?string
     {
-        $header = request()->header('Authorization');
+        $val = request()->header('Authorization');
 
-        if(is_array($header)) {
-            $header = $header[0];
+        $isHttpCookieOnly = false;
+
+        if(!$val) {
+            $val = request()->cookie('blog_token');
+            $isHttpCookieOnly = true;
         }
 
-        if(!$header || str_contains($header, 'Bearer') === false) {
+        if(is_array($val)) {
+            $val = $val[0];
+        }
+
+        if(!$val || (!$isHttpCookieOnly && str_contains($val, 'Bearer') === false)) {
             return null;
         }
 
-        $token = str_replace('Bearer ', '', $header);
+        $token = $isHttpCookieOnly ? $val : str_replace('Bearer ', '', $val);
 
         return $token;
     }

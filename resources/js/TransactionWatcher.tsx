@@ -18,6 +18,27 @@ export const TransactionWatcher = () => {
 
     const [sessionId, setSessionId] = useRecoilState(sessionAtom)
 
+    const unsetLocalStorage = () => {
+        // delete all session storage keys that start with authToken
+        for (let i = 0; i < sessionStorage.length; i++) {
+            let key = sessionStorage.key(i)
+            if (key?.startsWith('authToken')) {
+                sessionStorage.removeItem(key)
+            }
+        }
+    }
+
+    const hasTokenInStorage = () => {
+        for (let i = 0; i < sessionStorage.length; i++) {
+            let key = sessionStorage.key(i)
+            if (key?.startsWith('authToken')) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     useEffect(() => {
         let one = document.querySelector('[data-web3-space]')
         if (one) {
@@ -33,17 +54,28 @@ export const TransactionWatcher = () => {
     }, [])
 
     useEffect(() => {
-        if (!loginInfo?.tokenLogin?.loginToken || !accountInfo.address) {
-            GqlClient.setHeader('Authorization', undefined)
+        if ((!loginInfo?.tokenLogin?.loginToken || !accountInfo.address)) {
+            const query = gql`
+                mutation {
+                    logout
+                }
+            `
+            if (hasTokenInStorage()) {
+                GqlClient.request(query)
+                // GqlClient.setHeader('Authorization', undefined)
+                unsetLocalStorage()
+            }
             return
         }
+        const has = sessionStorage.getItem(`authToken${accountInfo.address}${loginInfo.tokenLogin.loginToken}`);
+
         (async () => {
-            if (!sessionStorage.getItem(`authToken${accountInfo.address}${loginInfo.tokenLogin.loginToken}`)) {
+            if (!has) {
                 const query = gql`
                     mutation($address: String!, $signature: String!, $token: String) {
                         verifyLogin(address: $address, signature: $signature, token: $token) {
                             success
-                            token
+                            # token
                         }
                     }
                 `
@@ -55,13 +87,15 @@ export const TransactionWatcher = () => {
 
 
                 if (result.verifyLogin.success) {
-                    GqlClient.setHeader('Authorization', 'Bearer ' + result.verifyLogin.token)
-                    sessionStorage.setItem(`authToken${accountInfo.address}${loginInfo.tokenLogin.loginToken}`, result.verifyLogin.token)
+                    // GqlClient.setHeader('Authorization', 'Bearer ' + result.verifyLogin.token)
+                    const res = '1'; // result.verifyLogin.token
+                    sessionStorage.setItem(`authToken${accountInfo.address}${loginInfo.tokenLogin.loginToken}`, res)
                 }
-            } else {
-                let token = sessionStorage.getItem(`authToken${accountInfo.address}${loginInfo.tokenLogin.loginToken}`)
-                GqlClient.setHeader('Authorization', 'Bearer ' + token)
             }
+            // } else {
+            //     let token = sessionStorage.getItem(`authToken${accountInfo.address}${loginInfo.tokenLogin.loginToken}`)
+            //     GqlClient.setHeader('Authorization', 'Bearer ' + token)
+            // }
         })()
 
     }, [loginInfo?.tokenLogin?.loginToken, accountInfo.address])

@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Auth\EloquentWordpressUserProvider;
 use App\Guard\WordpressGuard;
 use App\Hashing\WordPressHasher;
+use App\Jwt;
 use Hautelook\Phpass\PasswordHash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
@@ -57,6 +58,14 @@ class WordpressAuthServiceProvider extends ServiceProvider
 
         Auth::provider('eloquent.wordpress', function ($app, array $config) {
             return new EloquentWordpressUserProvider($app['wordpress-auth'], $config['model']);
+        });
+
+        $this->app->bindIf('current_wallet', function() {
+            try {
+                return Jwt::getRequiredWallet();
+            } catch (\Throwable $th) {
+                return null;
+            }
         });
     }
 }

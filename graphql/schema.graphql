@@ -15,6 +15,7 @@ type Query {
 
 type Mutation {
     verifyLogin(address: String!, signature: String!, offline: Boolean, token: String): LoginResult!
+    logout: Boolean!
     updateSpace(spaceName: String!, content: String!): Space
 }
 
