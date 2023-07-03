@@ -69,7 +69,10 @@
             <strong>DV-2023</strong> - ❌ {{ defined('ICL_LANGUAGE_CODE') && ICL_LANGUAGE_CODE === 'en' ? 'No luck' : 'Fara noroc' }}
         </li>
         <li>
-            <strong>DV-2024</strong> - 🕧 {{ defined('ICL_LANGUAGE_CODE') && ICL_LANGUAGE_CODE === 'en' ? 'We find out in ' : 'Aflam in ' }}
+            <strong>DV-2024</strong> - 🚨 {{ defined('ICL_LANGUAGE_CODE') && ICL_LANGUAGE_CODE === 'en' ? 'Nope' : 'Nup' }}
+        </li>
+        <li>
+            <strong>DV-2025</strong> - 🕧 {{ defined('ICL_LANGUAGE_CODE') && ICL_LANGUAGE_CODE === 'en' ? 'We find out in ' : 'Aflam in ' }}
             <span x-text="time().days"></span>
             <span>{{ ICL_LANGUAGE_CODE == 'ro' ? 'zile' : 'days' }},</span>
             <span x-text="time().hours"></span>
