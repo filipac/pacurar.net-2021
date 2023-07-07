@@ -22,7 +22,7 @@ import {
     Transaction,
     TransactionPayload
 } from "@multiversx/sdk-core/out";
-import {contractAddress, contractOwner} from "../config";
+import {contractAddressAd, contractOwner} from "../config";
 import {removeSignedTransaction, sendTransactions} from "@multiversx/sdk-dapp/services";
 import {Loader} from "@multiversx/sdk-dapp/UI";
 import {
@@ -74,7 +74,7 @@ export const BuySpace: React.FC<Props> = ({
             return false
         }
         const transaction: Transaction = Transaction.fromPlainObject(tx[1].transactions[0])
-        if (transaction.getReceiver().bech32() === contractAddress) {
+        if (transaction.getReceiver().bech32() === contractAddressAd) {
             let data = TransactionPayload.fromEncoded(transaction.getData().encoded())
             let args = data.getEncodedArguments();
             if (args.length === 5) {
@@ -152,7 +152,7 @@ export const BuySpace: React.FC<Props> = ({
                 setLoadingAcceptedTokens(true)
                 const resp1 = await (new ApiNetworkProvider(network.apiAddress)).queryContract(
                     (new SmartContract({
-                        address: Address.fromBech32(contractAddress)
+                        address: Address.fromBech32(contractAddressAd)
                     })).createQuery({
                         func: new ContractFunction('getAcceptedTokens'),
                     })
@@ -239,7 +239,7 @@ export const BuySpace: React.FC<Props> = ({
         const rentTransaction = {
             value: '0',
             data: data,
-            receiver: contractAddress,
+            receiver: contractAddressAd,
             gasLimit: '60000000'
         };
         await refreshAccount();

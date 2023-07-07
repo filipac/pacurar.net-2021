@@ -11,6 +11,10 @@ type Query {
     validatePing(address: String!, signature: String!): Boolean!
 
     space(spaceName: String!): Space!
+
+    timesPlayedNft(identifier: String!, nonce: Int!, guestAddress: String): TimesPlayedNftInfo!
+
+    clearPlayCount(identifier: String!, nonce: Int!, guestAddress: String): Boolean!
 }
 
 type Mutation {
@@ -57,4 +61,10 @@ type BlockchainSpace {
     paid_amount: Float!
     paid_until: Int!
     is_new: Boolean!
+}
+
+type TimesPlayedNftInfo {
+    nonce: Int!
+    played_by_filip: Int!
+    played_by_you: Int
 }

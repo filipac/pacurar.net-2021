@@ -11,3 +11,8 @@ export const tempAdAtom = atom({
         _title: '',
     },
 })
+
+export const timesPlayedAtom = atom({
+    key: 'timesPlayed',
+    default: {}
+})

@@ -17,6 +17,11 @@ class AddLoginCookieGql
     {
         $resp = $next($request);
 
+        $resp->headers->add([
+            'Content-Type' => 'application/json',
+            'Gogo' => 'gaga',
+        ]);
+
         if(str($request->getContent())->contains('verifyLogin')) {
             $data = json_decode($resp->getContent(), true);
             if($data['data']['verifyLogin']['success']) {

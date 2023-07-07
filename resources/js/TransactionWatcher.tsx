@@ -1,5 +1,11 @@
 import React, {useEffect} from 'react';
-import {Transaction, TransactionPayload} from "@multiversx/sdk-core/out";
+import {
+    ArgSerializer,
+    EndpointParameterDefinition,
+    StringValue,
+    Transaction,
+    TransactionPayload, U64Type
+} from "@multiversx/sdk-core/out";
 import {updateSignedTransactions, updateSignedTransactionStatus} from "@multiversx/sdk-dapp/reduxStore/slices";
 import {TransactionBatchStatusesEnum, TransactionServerStatusesEnum} from "@multiversx/sdk-dapp/types";
 import {useGetAccountInfo, useGetLoginInfo, useGetSignedTransactions} from "@multiversx/sdk-dapp/hooks";
@@ -8,6 +14,7 @@ import {GqlClient} from "./graphql_client";
 import {gql} from "graphql-request";
 import {useRecoilState} from "recoil/es/index.mjs";
 import {sessionAtom} from "./state/dapp";
+import {U64Value} from "@multiversx/sdk-core/out/smartcontracts/typesystem/numerical";
 
 export const TransactionWatcher = () => {
     const signed = useGetSignedTransactions()
@@ -102,7 +109,8 @@ export const TransactionWatcher = () => {
 
 
     useEffect(() => {
-        let all = signed.signedTransactionsArray.filter(x => x[1].status === 'signed')
+        let all = signed.signedTransactionsArray.filter(x => x[1].status === 'signed' || x[1].status === 'success')
+
         for (const t of all) {
             const [id, trans] = t
             for (let transaction of trans.transactions) {
@@ -110,18 +118,42 @@ export const TransactionWatcher = () => {
                 transaction = new Transaction(transaction)
                 const payload = TransactionPayload.fromEncoded(transaction.getData())
                 let args = payload.getEncodedArguments()
-                if (args.length > 0 && args[0] === 'signComment') {
-                    setTimeout(() => {
-                        dispatch(updateSignedTransactionStatus({
-                            transactionHash: originalTransaction.hash,
-                            sessionId: id,
-                            status: TransactionServerStatusesEnum.success
-                        }))
-                        dispatch(updateSignedTransactions({
-                            sessionId: id,
-                            status: TransactionBatchStatusesEnum.success
-                        }))
-                    }, 1000)
+                if (args.length > 0) {
+                    if (args[0] === 'signComment') {
+                        setTimeout(() => {
+                            dispatch(updateSignedTransactionStatus({
+                                transactionHash: originalTransaction.hash,
+                                sessionId: id,
+                                status: TransactionServerStatusesEnum.success
+                            }))
+                            dispatch(updateSignedTransactions({
+                                sessionId: id,
+                                status: TransactionBatchStatusesEnum.success
+                            }))
+                        }, 1000)
+                    }
+                }
+                // if last arg is increment
+                if (args.length > 0 && args[args.length - 1] === '6d61726b506c61796564' && trans.status === 'success') {
+                    const collection = StringValue.fromHex(args[1])
+                    const serializer = new ArgSerializer();
+                    let nonce = serializer.stringToValues(args[2], [
+                        new EndpointParameterDefinition('nonce', 'nonce of nft', new U64Type()),
+                    ])
+                    nonce = nonce[0].value.toNumber()
+                    GqlClient.request(gql`
+                        query clearCache($identifier: String!, $nonce: Int!, $guestAddress: String) {
+                            clearPlayCount(identifier: $identifier, nonce: $nonce, guestAddress: $guestAddress)
+                        }
+                    `, {
+                        identifier: collection.valueOf(),
+                        nonce,
+                        guestAddress: accountInfo.address,
+                    }).then(() => {
+                        window.dispatchEvent(
+                            new CustomEvent('clearPlayCount', {})
+                        )
+                    })
                 }
             }
         }

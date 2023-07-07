@@ -98,7 +98,19 @@ $kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
 
 $kernel->handle($request = Illuminate\Http\Request::capture());
 
+add_action('wp_headers', function ($headers) {
+    global $wp;
+    if($wp->request == 'gql') {
+        $headers['Content-Type'] = 'application/json';
+    }
+    return $headers;
+});
+
 $app['events']->listen(RequestHandled::class, function (RequestHandled $event) use ($kernel) {
+
+    if ($event->response->getStatusCode() === 404 || $event->request->fullUrlIs('*.js')) {
+        return;
+    }
     $event->response->send();
 
     $kernel->terminate($event->request, $event->response);
@@ -114,8 +126,8 @@ $app['events']->listen(RequestHandled::class, function (RequestHandled $event) u
 function get_comment_author_link_blank($comment_ID = 0)
 {
     $comment = get_comment($comment_ID);
-    $url = get_comment_author_url($comment);
-    $author = get_comment_author($comment);
+    $url     = get_comment_author_url($comment);
+    $author  = get_comment_author($comment);
 
     if (empty($url) || 'http://' === $url) {
         $return = $author;
@@ -126,10 +138,11 @@ function get_comment_author_link_blank($comment_ID = 0)
     /**
      * Filters the comment author's link for display.
      *
-     * @param string $return The HTML-formatted comment author link.
+     * @param string $return     The HTML-formatted comment author link.
      *                           Empty for an invalid URL.
-     * @param string $author The comment author's username.
-     * @param int $comment_ID The comment ID.
+     * @param string $author     The comment author's username.
+     * @param int    $comment_ID The comment ID.
+     *
      * @since 4.1.0 The `$author` and `$comment_ID` parameters were added.
      *
      * @since 1.5.0

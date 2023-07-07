@@ -28,11 +28,11 @@ return [
          * make sure to return spec-compliant responses in case an error is thrown.
          */
         'middleware' => [
-            \Nuwave\Lighthouse\Support\Http\Middleware\AcceptJson::class,
+//            Nuwave\Lighthouse\Http\Middleware\AcceptJson::class,
 
             // Logs in a user if they are authenticated. In contrast to Laravel's 'auth'
             // middleware, this delegates auth and permission checks to the field level.
-            \Nuwave\Lighthouse\Support\Http\Middleware\AttemptAuthentication::class,
+            Nuwave\Lighthouse\Http\Middleware\AttemptAuthentication::class,
 
             \App\Http\Middleware\AddLoginCookieGql::class,
 
@@ -50,20 +50,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Authentication Guard
+    | Authentication Guards
     |--------------------------------------------------------------------------
     |
-    | The guard to use for authenticating GraphQL requests, if needed.
+    | The guards to use for authenticating GraphQL requests, if needed.
     | Used in directives such as `@guard` or the `AttemptAuthentication` middleware.
-    | Falls back to the Laravel default if the defined guard is either `null` or not found.
+    | Falls back to the Laravel default if `null`.
     |
     */
 
-    'guard' => 'wordpress',
+    'guards' => ['wordpress'],
 
     /*
     |--------------------------------------------------------------------------
-    | Schema Location
+    | Schema Path
     |--------------------------------------------------------------------------
     |
     | Path to your .graphql schema file.
@@ -71,9 +71,7 @@ return [
     |
     */
 
-    'schema' => [
-        'register' => base_path('graphql/schema.graphql'),
-    ],
+    'schema_path' => base_path('graphql/schema.graphql'),
 
     /*
     |--------------------------------------------------------------------------
@@ -86,48 +84,27 @@ return [
     |
     */
 
-    'cache' => [
+    'schema_cache' => [
         /*
          * Setting to true enables schema caching.
          */
-        'enable' => env('LIGHTHOUSE_CACHE_ENABLE', 'local' !== env('APP_ENV')),
-
-        /*
-         * Allowed values:
-         * - 1: uses the store, key and ttl config values to store the schema as a string in the given cache store.
-         * - 2: uses the path config value to store the schema in a PHP file allowing OPcache to pick it up.
-         */
-        'version' => env('LIGHTHOUSE_CACHE_VERSION', 1),
-
-        /*
-         * Allows using a specific cache store, uses the app's default if set to null.
-         * Only relevant if version is set to 1.
-         */
-        'store' => env('LIGHTHOUSE_CACHE_STORE', null),
-
-        /*
-         * The name of the cache item for the schema cache.
-         * Only relevant if version is set to 1.
-         */
-        'key' => env('LIGHTHOUSE_CACHE_KEY', 'lighthouse-schema'),
-
-        /*
-         * Duration in seconds the schema should remain cached, null means forever.
-         * Only relevant if version is set to 1.
-         */
-        'ttl' => env('LIGHTHOUSE_CACHE_TTL', null),
+        'enable' => env('LIGHTHOUSE_SCHEMA_CACHE_ENABLE', env('APP_ENV') !== 'local'),
 
         /*
          * File path to store the lighthouse schema.
-         * Only relevant if version is set to 2.
          */
-        'path' => env('LIGHTHOUSE_CACHE_PATH', base_path('bootstrap/cache/lighthouse-schema.php')),
-
-        /*
-         * Should the `@cache` directive use a tagged cache?
-         */
-        'tags' => false,
+        'path' => env('LIGHTHOUSE_SCHEMA_CACHE_PATH', base_path('bootstrap/cache/lighthouse-schema.php')),
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Cache Directive Tags
+    |--------------------------------------------------------------------------
+    |
+    | Should the `@cache` directive use a tagged cache?
+    |
+    */
+    'cache_directive_tags' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -150,14 +127,9 @@ return [
         'store' => env('LIGHTHOUSE_QUERY_CACHE_STORE', null),
 
         /*
-         * Duration in seconds (minutes for Laravel pre-5.8) the query should remain cached, null means forever.
+         * Duration in seconds the query should remain cached, null means forever.
          */
-        'ttl' => env(
-            'LIGHTHOUSE_QUERY_CACHE_TTL',
-            \Nuwave\Lighthouse\Support\AppVersion::atLeast(5.8)
-                ? 24 * 60 * 60 // 1 day in seconds
-                : 24 * 60 // 1 day in minutes
-        ),
+        'ttl' => env('LIGHTHOUSE_QUERY_CACHE_TTL', 24 * 60 * 60),
     ],
 
     /*
@@ -176,11 +148,12 @@ return [
         'queries' => 'App\\GraphQL\\Queries',
         'mutations' => 'App\\GraphQL\\Mutations',
         'subscriptions' => 'App\\GraphQL\\Subscriptions',
+        'types' => 'App\\GraphQL\\Types',
         'interfaces' => 'App\\GraphQL\\Interfaces',
         'unions' => 'App\\GraphQL\\Unions',
         'scalars' => 'App\\GraphQL\\Scalars',
-        'directives' => ['App\\GraphQL\\Directives'],
-        'validators' => ['App\\GraphQL\\Validators'],
+        'directives' => 'App\\GraphQL\\Directives',
+        'validators' => 'App\\GraphQL\\Validators',
     ],
 
     /*
@@ -194,11 +167,11 @@ return [
     */
 
     'security' => [
-        'max_query_complexity' => \GraphQL\Validator\Rules\QueryComplexity::DISABLED,
-        'max_query_depth' => \GraphQL\Validator\Rules\QueryDepth::DISABLED,
+        'max_query_complexity' => GraphQL\Validator\Rules\QueryComplexity::DISABLED,
+        'max_query_depth' => GraphQL\Validator\Rules\QueryDepth::DISABLED,
         'disable_introspection' => (bool) env('LIGHTHOUSE_SECURITY_DISABLE_INTROSPECTION', false)
-            ? \GraphQL\Validator\Rules\DisableIntrospection::ENABLED
-            : \GraphQL\Validator\Rules\DisableIntrospection::DISABLED,
+            ? GraphQL\Validator\Rules\DisableIntrospection::ENABLED
+            : GraphQL\Validator\Rules\DisableIntrospection::DISABLED,
     ],
 
     /*
@@ -253,7 +226,7 @@ return [
     |
     */
 
-    'debug' => env('LIGHTHOUSE_DEBUG', \GraphQL\Error\DebugFlag::INCLUDE_DEBUG_MESSAGE),
+    'debug' => env('LIGHTHOUSE_DEBUG', GraphQL\Error\DebugFlag::INCLUDE_DEBUG_MESSAGE | GraphQL\Error\DebugFlag::INCLUDE_TRACE),
 
     /*
     |--------------------------------------------------------------------------
@@ -267,10 +240,10 @@ return [
     */
 
     'error_handlers' => [
-        \Nuwave\Lighthouse\Execution\AuthenticationErrorHandler::class,
-        \Nuwave\Lighthouse\Execution\AuthorizationErrorHandler::class,
-        \Nuwave\Lighthouse\Execution\ValidationErrorHandler::class,
-        \Nuwave\Lighthouse\Execution\ReportingErrorHandler::class,
+        Nuwave\Lighthouse\Execution\AuthenticationErrorHandler::class,
+        Nuwave\Lighthouse\Execution\AuthorizationErrorHandler::class,
+        Nuwave\Lighthouse\Execution\ValidationErrorHandler::class,
+        Nuwave\Lighthouse\Execution\ReportingErrorHandler::class,
     ],
 
     /*
@@ -285,15 +258,16 @@ return [
     */
 
     'field_middleware' => [
-        \Nuwave\Lighthouse\Schema\Directives\TrimDirective::class,
-        \Nuwave\Lighthouse\Schema\Directives\ConvertEmptyStringsToNullDirective::class,
-        \Nuwave\Lighthouse\Schema\Directives\SanitizeDirective::class,
-        \Nuwave\Lighthouse\Validation\ValidateDirective::class,
-        \Nuwave\Lighthouse\Schema\Directives\TransformArgsDirective::class,
-        \Nuwave\Lighthouse\Schema\Directives\SpreadDirective::class,
-        \Nuwave\Lighthouse\Schema\Directives\RenameArgsDirective::class,
-        \Nuwave\Lighthouse\Schema\Directives\DropArgsDirective::class,
+        Nuwave\Lighthouse\Schema\Directives\TrimDirective::class,
+        Nuwave\Lighthouse\Schema\Directives\ConvertEmptyStringsToNullDirective::class,
+        Nuwave\Lighthouse\Schema\Directives\SanitizeDirective::class,
+        Nuwave\Lighthouse\Validation\ValidateDirective::class,
+        Nuwave\Lighthouse\Schema\Directives\TransformArgsDirective::class,
+        Nuwave\Lighthouse\Schema\Directives\SpreadDirective::class,
+        Nuwave\Lighthouse\Schema\Directives\RenameArgsDirective::class,
+        Nuwave\Lighthouse\Schema\Directives\DropArgsDirective::class,
     ],
+
 
     /*
     |--------------------------------------------------------------------------

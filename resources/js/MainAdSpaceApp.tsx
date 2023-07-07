@@ -20,10 +20,11 @@ const BuySpace = React.lazy(() => import('./components/BuySpace'));
 const SpaceEdit = React.lazy(() => import('./components/SpaceEdit'));
 // import SpaceEdit from './components/SpaceEdit';
 // import {BuySpace} from "./components/BuySpace";
-import {contractAddress, contractOwner} from "./config";
+import {contractAddressAd, contractOwner} from "./config";
 
 import formatDate from 'date-fns/format'
 import {ArgSerializer, StringValue, Transaction, TransactionPayload} from "@multiversx/sdk-core/out";
+import {useLoginButtons} from "./components/LoginButtons";
 
 type  Props = {
     name: string,
@@ -90,7 +91,7 @@ const MainAdSpaceApp: React.FC<Props> = ({name = '', language, html, format, sid
                         {
                             value: '0',
                             data: `withdraw`,
-                            receiver: contractAddress,
+                            receiver: contractAddressAd,
                             gasLimit: '40000000'
                         },
                     ],
@@ -113,7 +114,7 @@ const MainAdSpaceApp: React.FC<Props> = ({name = '', language, html, format, sid
             return false
         }
         const transaction: Transaction = Transaction.fromPlainObject(tx[1].transactions[0])
-        if (transaction.getReceiver().bech32() === contractAddress) {
+        if (transaction.getReceiver().bech32() === contractAddressAd) {
             let data = TransactionPayload.fromEncoded(transaction.getData().encoded())
             let args = data.getEncodedArguments();
             if (args.length === 2) {
@@ -130,7 +131,7 @@ const MainAdSpaceApp: React.FC<Props> = ({name = '', language, html, format, sid
             return false
         }
         const transaction: Transaction = Transaction.fromPlainObject(tx[1].transactions[0])
-        if (transaction.getReceiver().bech32() === contractAddress) {
+        if (transaction.getReceiver().bech32() === contractAddressAd) {
             let data = TransactionPayload.fromEncoded(transaction.getData().encoded())
             let args = data.getEncodedArguments();
             if (args.length === 1) {
@@ -176,7 +177,7 @@ const MainAdSpaceApp: React.FC<Props> = ({name = '', language, html, format, sid
                         {
                             value: '0',
                             data,
-                            receiver: contractAddress,
+                            receiver: contractAddressAd,
                             gasLimit: '40000000'
                         },
                     ],
@@ -308,11 +309,14 @@ const MainAdSpaceApp: React.FC<Props> = ({name = '', language, html, format, sid
         ...ownerActions
     ].filter(Boolean)
 
-    const [showLogin, setShowLogin] = useState(false)
+    const {
+        showLogin,
+        setShowLogin,
+        loginActions
+    } = useLoginButtons({sessionId})
 
     useEffect(() => {
         if (accountInfo?.address && showLogin) {
-            setShowLogin(false)
             setActionAfterLogin(null)
         }
     }, [showLogin, accountInfo])
@@ -347,21 +351,7 @@ const MainAdSpaceApp: React.FC<Props> = ({name = '', language, html, format, sid
                     {language == 'ro' && <>Inlocuieste cu reclama ta</>}</>}
             </button>
         ),
-        showLogin && <WalletConnectLoginButton isWalletConnectV2 token={sessionId}
-                                               logoutRoute={window.location.href}
-                                               showScamPhishingAlert
-                                               className={'text-xs p-2 mx-0 bg-secondary shadow-box hover:shadow-boxhvr text-black'}
-        />,
-        showLogin && <LedgerLoginButton token={sessionId} showScamPhishingAlert
-                                        className={'text-xs p-2 mx-0 bg-secondary shadow-box hover:shadow-boxhvr text-black'}/>,
-        showLogin &&
-        <ExtensionLoginButton className={'text-xs p-2 mx-0 bg-secondary shadow-box hover:shadow-boxhvr text-black'}
-                              token={sessionId} loginButtonText={'MultiversX DeFi Wallet'}/>,
-        showLogin && <WebWalletLoginButton token={sessionId} callbackRoute={window.location.pathname}
-                                                  className={'text-xs p-2 mx-0 bg-secondary shadow-box hover:shadow-boxhvr text-black'}
-                                                  onLoginRedirect={{
-                                                      callbackRoute: window.location.pathname,
-                                                  }} nativeAuth={true}/>
+        ...loginActions
     ].filter(Boolean)
 
     // if something is not working on multiversx and we have HTML

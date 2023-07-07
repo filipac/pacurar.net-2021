@@ -41,3 +41,4 @@
 <div class="dapp-required">
 
 </div>
+@stack('scriptsEnd')

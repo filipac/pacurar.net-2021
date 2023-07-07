@@ -230,12 +230,14 @@ class AppServiceProvider extends ServiceProvider
         add_action('rest_api_init', function () {
             register_rest_route('filipac/v1', '/board-games', [
                 'methods'  => 'GET',
+                'permission_callback' => '__return_true', // 'is_user_logged_in
                 'callback' => function () {
                     $games = BoardGames::getNfts();
                     return new \WP_REST_Response($games->toArray(), 200);
                 },
             ]);
             register_rest_route('filipac/v1', '/work', [
+                'permission_callback' => '__return_true', // 'is_user_logged_in
                 'methods'  => 'GET',
                 'callback' => function () {
                     $query = [

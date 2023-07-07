@@ -30,15 +30,16 @@
         "laravel/tinker": "^2.0",
         "lcobucci/jwt": "^4.3",
         "livewire/livewire": "^2.10",
-        "mll-lab/laravel-graphiql": "^1.0",
-        "nuwave/lighthouse": "dev-master",
+        "mll-lab/laravel-graphiql": "^3.1",
+        "nuwave/lighthouse": "^6.13",
         "peerme/mx-sdk-laravel": "dev-patch-1",
         "peerme/mx-sdk-php": "dev-patch-1 as 1.0.2",
         "psr/log": "^3.0",
         "socialiteproviders/spotify": "^4.1",
         "spatie/browsershot": "^3.41",
         "spatie/ray": "^1.1",
-        "stoutlogic/acf-builder": "^1.10"
+        "stoutlogic/acf-builder": "^1.10",
+        "ext-bcmath": "*"
     },
     "require-dev": {
         "spatie/laravel-ignition": "^2.0"
