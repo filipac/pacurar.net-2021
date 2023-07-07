@@ -1,6 +1,6 @@
 {
   "resources/sass/app.scss": {
-    "file": "assets/app-0c0ae00c.css",
+    "file": "assets/app-e6ba8a75.css",
     "src": "resources/sass/app.scss",
     "isEntry": true
   },
@@ -23,6 +23,19 @@
       "_vendor-65e31ccf.js",
       "_lodash-0223fb8a.js",
       "_bignumber-63705fc6.js"
+    ]
+  },
+  "resources/js/react-app.tsx": {
+    "file": "assets/react-app-dc098558.js",
+    "src": "resources/js/react-app.tsx",
+    "isEntry": true,
+    "imports": [
+      "_vendor-65e31ccf.js",
+      "_lodash-0223fb8a.js",
+      "_bignumber-63705fc6.js"
+    ],
+    "dynamicImports": [
+      "resources/js/MainAdSpaceApp.tsx"
     ]
   },
   "resources/js/MainAdSpaceApp.tsx": {
@@ -49,19 +62,6 @@
       "_vendor-65e31ccf.js",
       "_lodash-0223fb8a.js",
       "_bignumber-63705fc6.js"
-    ]
-  },
-  "resources/js/react-app.tsx": {
-    "file": "assets/react-app-dc098558.js",
-    "src": "resources/js/react-app.tsx",
-    "isEntry": true,
-    "imports": [
-      "_vendor-65e31ccf.js",
-      "_lodash-0223fb8a.js",
-      "_bignumber-63705fc6.js"
-    ],
-    "dynamicImports": [
-      "resources/js/MainAdSpaceApp.tsx"
     ]
   },
   "_lodash-0223fb8a.js": {

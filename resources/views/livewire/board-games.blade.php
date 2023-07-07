@@ -1,6 +1,6 @@
 <div>
-    <div class="px-6 lg:px-0">
-        <div class="bg-white px-12 py-6">
+    <div class="px-1 md:px-6 lg:px-0">
+        <div class="bg-white px-2 md:px-12 py-3 md:py-6">
             <div class="sigmar text-3xl w-full text-center text-shadow my-6 lg:my-2 hidden lg:block">
                 My Board Games
             </div>
@@ -43,7 +43,7 @@
         </div>
     </div>
 
-    <div class="px-6 lg:px-0">
+    <div class="px-2 lg:px-0">
         <div data-web3-state-management></div>
     </div>
 
