@@ -43,13 +43,13 @@
         </div>
     </div>
 
-    <div>
+    <div class="px-6 lg:px-0">
         <div data-web3-state-management></div>
     </div>
 
     <div data-game-counter-app data-nfts='{{ json_encode($nfts) }}'></div>
 
-    <div class="flex flex-col md:flex-row mt-4">
+    <div class="flex flex-col md:flex-row mt-4 px-6 lg:px-0">
         <div class="flex-1 text-center {{ $type === 'owned_ever' ? 'bg-mxYellow' : 'bg-white' }} p-4 cursor-pointer" wire:click="setType('owned_ever')")>Lifetime owned</div>
         <div class="flex-1 text-center {{ $type === 'owned_now' ? 'bg-mxYellow' : 'bg-white' }} p-4 cursor-pointer" wire:click="setType('owned_now')">Currently owned</div>
     </div>

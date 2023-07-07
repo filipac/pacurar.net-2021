@@ -34,8 +34,8 @@
 {{--                </span>--}}
 {{--            </div>--}}
 
-            <div class="flex-1 flex items-center justify-between">
-                <div>
+            <div class="flex-col sm:flex-row flex-1 flex items-center justify-between">
+                <div class="mb-4 sm:mb-1">
                     <p class="text-sm leading-5">
                         <span>{!! $t__('Showing') !!}</span>
                         <span class="font-medium">{{ $paginator->firstItem() }}</span>
