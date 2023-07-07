@@ -237,9 +237,9 @@ const MainAdSpaceApp: React.FC<Props> = ({name = '', language, html, format, sid
      */
 
     const ownerActions = [
-        accountInfo?.address == contractOwner && <div style={{flexBasis: '100%', height: 0}}></div>,
+        accountInfo?.address == contractOwner && <div key={'emtpty-div'} style={{flexBasis: '100%', height: 0}}></div>,
         accountInfo?.address == contractOwner && (
-            <button className={'p-2 bg-secondary shadow-box hover:shadow-boxhvr text-xs text-black'}
+            <button key={'withdraw-btn'} className={'p-2 bg-secondary shadow-box hover:shadow-boxhvr text-xs text-black'}
                     onClick={e => {
                         e.preventDefault()
                         withdrawTransaction()
@@ -253,7 +253,7 @@ const MainAdSpaceApp: React.FC<Props> = ({name = '', language, html, format, sid
                 </>}
             </button>),
         accountInfo.address && accountInfo.address == contractOwner && !spaceInfo?.is_new && (
-            <button className={'p-2 bg-red-500 text-white shadow-box hover:shadow-boxhvr text-xs text-black'}
+            <button  key={'reset-btn'} className={'p-2 bg-red-500 text-white shadow-box hover:shadow-boxhvr text-xs text-black'}
                     onClick={e => {
                         e.preventDefault()
                         resetTransaction(spaceInfo?.name || '')
@@ -267,7 +267,7 @@ const MainAdSpaceApp: React.FC<Props> = ({name = '', language, html, format, sid
     const actionsLoggedIn = [
 
         accountInfo.address && accountInfo.address != spaceInfo?.owner && !spaceInfo?.is_new && (
-            <button className={'p-2 bg-secondary shadow-box hover:shadow-boxhvr text-xs text-black'}
+            <button key={'replace-btn'} className={'p-2 bg-secondary shadow-box hover:shadow-boxhvr text-xs text-black'}
                     onClick={e => {
                         e.preventDefault()
                         setBuyOpen(true)
@@ -277,7 +277,7 @@ const MainAdSpaceApp: React.FC<Props> = ({name = '', language, html, format, sid
             </button>
         ),
         accountInfo.address && accountInfo.address == spaceInfo?.owner && !spaceInfo?.is_new && !editOpen && (
-            <button className={'p-2 bg-secondary shadow-box hover:shadow-boxhvr text-xs text-black'}
+            <button key='edit-btn' className={'p-2 bg-secondary shadow-box hover:shadow-boxhvr text-xs text-black'}
                     onClick={e => {
                         e.preventDefault()
                         setEditOpen(true)
@@ -287,7 +287,7 @@ const MainAdSpaceApp: React.FC<Props> = ({name = '', language, html, format, sid
             </button>
         ),
         accountInfo.address && accountInfo.address == spaceInfo?.owner && !spaceInfo?.is_new && editOpen && (
-            <button className={'p-2 bg-secondary shadow-box hover:shadow-boxhvr text-xs text-black'}
+            <button key={'cancel-btn'} className={'p-2 bg-secondary shadow-box hover:shadow-boxhvr text-xs text-black'}
                     onClick={e => {
                         e.preventDefault()
                         setEditOpen(false)
@@ -296,7 +296,7 @@ const MainAdSpaceApp: React.FC<Props> = ({name = '', language, html, format, sid
                 {language == 'ro' && <>Anuleaza editarea</>}
             </button>
         ),
-        <button className={'p-2 bg-secondary shadow-box hover:shadow-boxhvr text-xs text-black'}
+        <button key={'logout-btn'} className={'p-2 bg-secondary shadow-box hover:shadow-boxhvr text-xs text-black'}
                 onClick={e => {
                     e.preventDefault()
                     // logout from wallet
@@ -333,6 +333,7 @@ const MainAdSpaceApp: React.FC<Props> = ({name = '', language, html, format, sid
     const actionsLoggedOut = [
         !spaceInfo?.is_new && (
             <button
+                key={'login-btn'}
                 className={'dapp-core-component__main__btn dapp-core-component__main__btn-primary dapp-core-component__main__m-1 text-xs p-2 mx-0 bg-yellow-500 shadow-box hover:shadow-boxhvr text-black'}
                 onClick={e => {
                     e.preventDefault()

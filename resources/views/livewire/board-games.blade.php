@@ -38,7 +38,7 @@
                     The real play count is higher mostly for every game ;).
                 </p>
 
-                <x-web3-ad spaceName="page-top" format="dark" />
+{{--                <x-web3-ad spaceName="page-top" format="dark" />--}}
             </div>
         </div>
     </div>

@@ -31,17 +31,17 @@ export const useLoginButtons: (props: LoginButtonsProps) => {
     }, [showLogin, accountInfo])
 
     const loginActions = [
-        showLogin && <WalletConnectLoginButton isWalletConnectV2 token={sessionId}
+        showLogin && <WalletConnectLoginButton key={'wallet-connect'} isWalletConnectV2 token={sessionId}
                                                logoutRoute={window.location.href}
                                                showScamPhishingAlert
                                                className={'text-xs p-2 mx-0 bg-secondary shadow-box hover:shadow-boxhvr text-black'}
         />,
-        showLogin && <LedgerLoginButton token={sessionId} showScamPhishingAlert
+        showLogin && <LedgerLoginButton key={'ledger'} token={sessionId} showScamPhishingAlert
                                         className={'text-xs p-2 mx-0 bg-secondary shadow-box hover:shadow-boxhvr text-black'}/>,
         showLogin &&
-        <ExtensionLoginButton className={'text-xs p-2 mx-0 bg-secondary shadow-box hover:shadow-boxhvr text-black'}
+        <ExtensionLoginButton key={'ext'} className={'text-xs p-2 mx-0 bg-secondary shadow-box hover:shadow-boxhvr text-black'}
                               token={sessionId} loginButtonText={'MultiversX DeFi Wallet'}/>,
-        showLogin && <WebWalletLoginButton token={sessionId} callbackRoute={window.location.pathname}
+        showLogin && <WebWalletLoginButton key='web' token={sessionId} callbackRoute={window.location.pathname}
                                                   className={'text-xs p-2 mx-0 bg-secondary shadow-box hover:shadow-boxhvr text-black'}
                                                   onLoginRedirect={{
                                                       callbackRoute: window.location.pathname,

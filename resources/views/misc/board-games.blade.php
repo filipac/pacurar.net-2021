@@ -13,7 +13,7 @@
     @livewireScripts
     <script>
         Livewire.on('gamesLoaded', function () {
-            renderGameCounter()
+            rerenderLivewireableComponents()
         });
     </script>
 @endpush

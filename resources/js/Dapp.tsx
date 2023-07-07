@@ -5,6 +5,7 @@ import {createPortal} from "react-dom";
 import {activeNetwork, WalletConnectKey} from "./config";
 import {SessionManagement} from "./components/SessionManagement";
 import {GameCounter} from "./components/GameCounter";
+import {LivewireableComponents} from "./LivewireableComponents";
 
 const MainAdSpaceApp = React.lazy(() => import('./MainAdSpaceApp'));
 
@@ -13,21 +14,12 @@ type Props = {
     allAds: Element[]
 }
 export const Dapp: React.FC<Props> = ({children, allAds}) => {
-    // forceUpdate hook
     const [, updateState] = React.useState();
     const forceUpdate = React.useCallback(() => updateState({}), []);
 
-    const [key, setKey] = React.useState(0);
-
-    let allStateManagementApps = Array.from(document.querySelectorAll('[data-web3-state-management]'));
-    let gameCounterApp = document.querySelector('[data-game-counter-app]');
-
-    window.renderGameCounter = () => {
-        setKey(old => old + 1)
-        forceUpdate()
-    }
-
-    console.log({gameCounterApp})
+    // useEffect(() => {
+    //     let listener =
+    // })
 
     return (
         <RecoilRoot>
@@ -42,8 +34,14 @@ export const Dapp: React.FC<Props> = ({children, allAds}) => {
             >
                 {children}
                 {allAds.map(div => {
+                    if (div.dataset.rendered === 'true') {
+                        return false;
+                    }
                     const html = div.innerHTML;
                     div.innerHTML = '';
+                    setTimeout(() => {
+                        div.dataset.rendered = 'true'
+                    })
                     return createPortal(<Suspense fallback={<div></div>}>
                         <MainAdSpaceApp
                             // @ts-ignore
@@ -61,16 +59,8 @@ export const Dapp: React.FC<Props> = ({children, allAds}) => {
                             html={html}
                         />
                     </Suspense>, div)
-                })}
-                {allStateManagementApps.map(div => {
-                    return createPortal(<Suspense fallback={<div></div>}>
-                        <SessionManagement />
-                    </Suspense>, div)
-                })}
-                {gameCounterApp && createPortal(<Suspense fallback={<div></div>}>
-                    {/* @ts-ignore */}
-                    <GameCounter nfts={JSON.parse(gameCounterApp.dataset.nfts)} ikey={key}/>
-                </Suspense>, gameCounterApp, `game-counter-${key}`)}
+                }).filter(el => el !== false)}
+                <LivewireableComponents />
             </DappProvider>
         </RecoilRoot>
     )
