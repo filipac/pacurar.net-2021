@@ -25,23 +25,21 @@ class DecodeSpaceInfo
         $uname         = php_uname('a');
         $isArm64       = stripos($uname, 'aarch64') !== false || stripos($uname, 'arm64') !== false;
         $decoderBinary = match (true) {
-            $isMacos => 'struct-decoder-macos-arm64',
+            $isMacos => 'decode_struct-macos-arm64',
             default => match(true) {
-                $isArm64 => 'struct-decoder-linux-arm64',
-                default => 'struct-decoder-linux-x64',
+                $isArm64 => 'decode_struct-aarch64',
+                default => 'decode_struct-x86_64',
             },
         };
-        $process       = resource_path('js/' . $decoderBinary);
+        $process       = resource_path('js/struct-decoder-rust/' . $decoderBinary);
 
-        // [{"name":"owner","type":"Address"},{"name":"paid_amount","type":"BigUint"},{"name":"paid_until","type":"BigUint"},{"name":"is_new","type":"bool"}]
-
-        $prc = new Process([$process, 'AdvertiseSpace', json_encode(static::$struc), $base64Data]);
+        $prc = new Process([$process, $base64Data]);
         $prc->run();
 
         if ($prc->isSuccessful()) {
             $base64Data = json_decode($prc->getOutput(), true);
 
-            $base64Data['owner']       = $base64Data['owner']['bech32'];
+//            $base64Data['owner']       = $base64Data['owner'];
             $base64Data['paid_amount'] = (float)bcdiv($base64Data['paid_amount'], bcpow(10, 6), 2);
             $base64Data['paid_until']  = (int)$base64Data['paid_until'];
 
