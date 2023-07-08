@@ -1,0 +1,3 @@
+[submodule "resources/js/rs-decode_struct"]
+	path = resources/js/rs-decode_struct
+	url = git@github.com:filipac/rs-decode_struct.git
