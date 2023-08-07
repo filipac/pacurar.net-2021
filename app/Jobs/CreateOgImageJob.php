@@ -36,9 +36,15 @@ class CreateOgImageJob implements ShouldQueue
     {
         try {
 //            if (get_the_post_thumbnail($this->post->wpPost()) || get_post_meta($this->post->id(), 'og_image', true)) {
-            if (get_post_meta($this->post->id(), 'og_image', true) && !$this->force) {
+            if (($imgId = get_post_meta($this->post->id(), 'og_image', true)) && !$this->force) {
                 return;
             }
+
+            // delete the existing media upload with ID $imgId
+            if ($imgId) {
+                wp_delete_attachment($imgId, true);
+            }
+
             $bshot = Browsershot::url($this->post->ogImageBaseUrl())
                 ->devicePixelRatio(2)
                 ->windowSize(1200, 630);
@@ -47,8 +53,12 @@ class CreateOgImageJob implements ShouldQueue
                 $bshot->setNpmBinary('/home/forge/.nvm/versions/node/v14.21.3/bin/npm');
                 $bshot->setChromePath("/usr/bin/chromium-browser");
             }
+
+            $bshot->waitUntilNetworkIdle();
 //
             $base64Image = $bshot->base64Screenshot();
+
+            // dd($bshot->bodyHtml());
 
             $id = $this->save_image($base64Image, 'og_'.$this->post->id());
 
