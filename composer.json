@@ -42,11 +42,11 @@
         "socialiteproviders/spotify": "^4.1",
         "spatie/browsershot": "^3.41",
         "spatie/ray": "^1.1",
-        "stoutlogic/acf-builder": "^1.10"
+        "stoutlogic/acf-builder": "^1.10",
+        "spatie/laravel-ignition": "^2.0"
     },
     "require-dev": {
-        "barryvdh/laravel-debugbar": "^3.8",
-        "spatie/laravel-ignition": "^2.0"
+        "barryvdh/laravel-debugbar": "^3.8"
     },
     "config": {
         "optimize-autoloader": true,
