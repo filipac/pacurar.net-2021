@@ -1,5 +1,5 @@
 @php
-    add_action('wpseo_opengraph_title', fn() => 'My board games - Filip Pacurar');
+    add_filter('wp_title', fn( string $title ) => 'My Board Game collection - Filip Iulian Pacurar', 20, 1 )
 @endphp
 
 @push('head')

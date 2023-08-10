@@ -23,7 +23,7 @@ class BoardGames extends Component
     public $nfts = [];
     public $count = 0;
 
-    public $perPage = 1;
+    public $perPage = 12;
 
     public $type = FilterType::owned_ever->name;
 
