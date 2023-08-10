@@ -104,7 +104,7 @@ export const TransactionWatcher = () => {
                 GqlClient.request(query).then(() => {
                     setTimeout(() => {
                         window.location.reload();
-                    }, 1500)
+                    }, 300)
                 });
                 // GqlClient.setHeader('Authorization', undefined)
                 unsetLocalStorage();
