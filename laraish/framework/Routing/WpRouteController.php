@@ -22,10 +22,14 @@ class WpRouteController extends Controller
             $wpRouter->middleware($wpMiddleware)->group($this->wpRoutes());
         }
 
+        $resp404 = null;
+
         try {
             $response = $wpRouter->dispatch($request);
             if ($response->getStatusCode() !== 404) {
                 return $response;
+            } else {
+                $resp404 = $response;
             }
         } catch (NotFoundHttpException $e) {
 //            dd($e);
@@ -42,10 +46,15 @@ class WpRouteController extends Controller
                 return $response;
             }
         } catch (NotFoundHttpException $e) {
+            if($resp404){
+                return $resp404;
+            }
 //            dd(app('wpRouter')->getRouter()->getRoutes());
-            $route = app('wpRouter')->getRouter()->getRoutes()->getByAction('App\Http\HandleNotFound@handle404Terminate');
+            $route = app('wpRouter')->getRouter()->getRoutes()->getByAction('App\Http\HandleNotFound@handle404');
             $route->bind($request);
-            $route->run();
+            $response = $route->run();
+            $response->setStatusCode(404);
+            return $response;
         }
     }
 
