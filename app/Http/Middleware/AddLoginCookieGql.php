@@ -49,7 +49,9 @@ class AddLoginCookieGql
             \Session::forget('url.intended');
             wp_logout();
             auth()->logout();
-            return $resp->cookie('blog_token', null);
+            return $resp->withCookie(
+                cookie(name: 'blog_token', value: null, httpOnly: false)
+            );
         }
 
         return $resp;
