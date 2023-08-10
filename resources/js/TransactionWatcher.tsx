@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, {useEffect} from "react";
 import {
     ArgSerializer,
     EndpointParameterDefinition,
@@ -20,12 +20,12 @@ import {
     useGetLoginInfo,
     useGetSignedTransactions,
 } from "@multiversx/sdk-dapp/hooks";
-import { useDispatch } from "@multiversx/sdk-dapp/reduxStore/DappProviderContext";
-import { GqlClient } from "./graphql_client";
-import { gql } from "graphql-request";
-import { useRecoilState } from "recoil/es/index.mjs";
-import { sessionAtom } from "./state/dapp";
-import { U64Value } from "@multiversx/sdk-core/out/smartcontracts/typesystem/numerical";
+import {useDispatch} from "@multiversx/sdk-dapp/reduxStore/DappProviderContext";
+import {GqlClient} from "./graphql_client";
+import {gql} from "graphql-request";
+import {useRecoilState} from "recoil/es/index.mjs";
+import {sessionAtom} from "./state/dapp";
+import {U64Value} from "@multiversx/sdk-core/out/smartcontracts/typesystem/numerical";
 
 export const TransactionWatcher = () => {
     const signed = useGetSignedTransactions();
@@ -114,7 +114,13 @@ export const TransactionWatcher = () => {
 
 
         (async () => {
-            if (!has) {
+            if (
+                !has
+                && accountInfo.address
+                && accountInfo.address.length > 0
+                && loginInfo.tokenLogin.signature
+                && loginInfo.tokenLogin.signature.length > 0
+            ) {
                 const query = gql`
                     mutation (
                         $address: String!
