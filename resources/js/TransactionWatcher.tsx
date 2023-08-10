@@ -90,7 +90,11 @@ export const TransactionWatcher = () => {
             }
         }
 
-        if (!loginInfo?.tokenLogin?.loginToken || !accountInfo.address) {
+        const has = _token;
+
+        console.log({has})
+
+        if ((!loginInfo?.tokenLogin?.loginToken || !accountInfo.address) && _token) {
             const query = gql`
                 mutation {
                     logout
@@ -98,7 +102,9 @@ export const TransactionWatcher = () => {
             `;
             if (_token) {
                 GqlClient.request(query).then(() => {
-                    window.location.reload();
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1500)
                 });
                 // GqlClient.setHeader('Authorization', undefined)
                 unsetLocalStorage();
@@ -106,7 +112,6 @@ export const TransactionWatcher = () => {
             return;
         }
 
-        const has = _token;
 
         (async () => {
             if (!has) {
