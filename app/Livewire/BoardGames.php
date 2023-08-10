@@ -128,6 +128,7 @@ class BoardGames extends Component
     public function setType($type)
     {
         $this->type = $type;
+        $this->setPage(1);
         $this->_set_data();
     }
 }
