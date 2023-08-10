@@ -98,7 +98,7 @@ add_action('wp_headers', function ($headers) {
 });
 
 $app['events']->listen(RequestHandled::class, function (RequestHandled $event) use ($kernel) {
-    if ($event->response->getStatusCode() === 404 || $event->request->fullUrlIs('*.js')) {
+    if ($event->request->fullUrlIs('*.js')) {
         return;
     }
 
