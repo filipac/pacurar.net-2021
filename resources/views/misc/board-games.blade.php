@@ -1,6 +1,6 @@
 @php
     $title = 'My Board Game collection - Filip Iulian Pacurar';
-    add_action('wpseo_opengraph_title', fn() => $title);
+    add_action('wpseo_opengraph_title', fn() => $title, 999);
     add_filter('wp_title', fn( string $title ) => $title, 20, 1 )
 @endphp
 
@@ -23,8 +23,7 @@
     </script>
 @endpush
 
-<x-layouts.master>
-    <x-slot name="title">{{$title}}</x-slot>
+<x-layouts.master :title="$title">
     <x-slot name="belowContent">
         <x-content-with-sidebar>
             <livewire:board-games/>

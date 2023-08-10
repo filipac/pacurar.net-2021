@@ -1,7 +1,7 @@
 @props([
     'extraClassesContent',
     'containerStyles',
-    'belowContent'
+    'belowContent',
 ])
 <!DOCTYPE html>
 <html prefix="og: http://ogp.me/ns#">
