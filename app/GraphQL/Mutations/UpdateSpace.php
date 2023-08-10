@@ -31,16 +31,18 @@ final class UpdateSpace
         ]);
 
         if ($resp->code === 'ok') {
-            $base64Data = $resp->data[0];
+            $_space = $resp->data[0];
 
             try {
-                $base64Data = DecodeSpaceInfo::fromBase64($base64Data);
+                $_space = DecodeSpaceInfo::fromBase64($_space, $args['spaceName']);
 
-                if ($base64Data['owner'] !== $currentWallet) {
+                if ($_space->owner !== $currentWallet) {
                     throw new MissingAuthorizationToken('Unauthorized');
                 }
-            } catch (\Exception $e) {
+            } catch (MissingAuthorizationToken $e) {
                 throw new MissingAuthorizationToken('Unauthorized');
+            } catch (\Exception $e) {
+                return null;
             }
 
         } else {

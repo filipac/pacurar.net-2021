@@ -3,14 +3,15 @@
 namespace App\GraphQL\Queries;
 
 use App\DecodeSpaceInfo;
+use App\ValueObjects\AdvertiseSpace;
 use Peerme\Mx\Utils\Decoder;
 use Peerme\MxLaravel\Multiversx;
 
 final class AdSpaceInfo
 {
     /**
-     * @param  null  $_
-     * @param  array{}  $args
+     * @param null $_
+     * @param array{} $args
      */
     public function __invoke($_, array $args)
     {
@@ -20,19 +21,27 @@ final class AdSpaceInfo
             $args['spaceName'],
         ]);
 
-        if(!isset($args['initial'])) {
+        if (!isset($args['initial'])) {
             cache()->forget('ad-space-info-' . $args['spaceName']);
         }
 
-        if($resp->code === 'ok') {
-            $space = DecodeSpaceInfo::fromBase64($resp->data[0]);
-            $space['name'] = $args['spaceName'];
+        if ($resp->code === 'ok') {
+            try {
+                $space = DecodeSpaceInfo::fromBase64($resp->data[0], $args['spaceName'])->toArray();
 
-            cache()->put('ad-space-info-' . $args['spaceName'], $space, now()->addMinutes(5));
+                cache()->put('ad-space-info-' . $args['spaceName'], $space, now()->addMinutes(5));
 
-            return $space;
+                return $space;
+            } catch (\Exception $e) {
+            ray($e);
+            }
         }
-
-        return null;
+        return (new AdvertiseSpace(
+            owner: '0x0000000',
+            paid_amount: 0,
+            paid_until: 0,
+            is_new: true,
+            name: ''
+        ));
     }
 }

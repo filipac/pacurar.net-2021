@@ -179,6 +179,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\HorizonServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\VoltServiceProvider::class,
+        App\Providers\FolioServiceProvider::class,
         App\Providers\ThemeOptionsProvider::class,
         App\Providers\WidgetProvider::class,
         \App\Providers\WordpressAuthServiceProvider::class,

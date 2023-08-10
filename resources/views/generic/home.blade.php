@@ -1,8 +1,5 @@
-@extends('layouts.master')
-
-@section('extraClassesContent') min-h-header-home @endsection
-
-@section('below-content')
+<x-layouts.master extra-classes-content=" min-h-header-home">
+    <x-slot name="belowContent">
    @php
        $lang = ICL_LANGUAGE_CODE;
    @endphp
@@ -20,4 +17,5 @@
            margin-bottom: 20px;
        }
    </style>
-@overwrite
+    </x-slot>
+</x-layouts.master>

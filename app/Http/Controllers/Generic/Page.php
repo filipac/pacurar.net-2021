@@ -24,9 +24,12 @@ class Page extends Controller
         if (get_post()->ID == $frontpage_id) {
             return $this->view('generic.home');
         }
+        $post = new Post();
         $data = [
-            'post' => new Post(),
+            'post' => $post,
+            'model' => \Corcel\Model\Post::find($post->ID)
         ];
+
 
         return $this->view('generic.page', $data);
     }

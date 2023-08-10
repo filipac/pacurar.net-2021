@@ -2,7 +2,12 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\AddLoginCookieGql;
+use App\Http\Middleware\LoginFromWalletRedirect;
 use App\Http\Middleware\LoginWordpressUser;
+use App\Providers\CustomFieldsServiceProvider;
+use App\Providers\CustomPostTypesProvider;
+use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Foundation\Http\Events\RequestHandled;
 use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Facades\Facade;
@@ -20,6 +25,7 @@ class Kernel extends HttpKernel
      */
     protected $middleware = [
         \Illuminate\Session\Middleware\StartSession::class,
+//        LoginFromWalletRedirect::class,
         LoginWordpressUser::class,
         \App\Http\Middleware\TrustProxies::class,
         \App\Http\Middleware\CheckForMaintenanceMode::class,
@@ -36,6 +42,7 @@ class Kernel extends HttpKernel
     protected $middlewareGroups = [
         'web' => [
             \App\Http\Middleware\EncryptCookies::class,
+            AddLoginCookieGql::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             // \Illuminate\Session\Middleware\StartSession::class,
             // \Illuminate\Session\Middleware\AuthenticateSession::class,
@@ -85,7 +92,21 @@ class Kernel extends HttpKernel
         \Illuminate\Session\Middleware\AuthenticateSession::class,
         \Illuminate\Routing\Middleware\SubstituteBindings::class,
         \Illuminate\Auth\Middleware\Authorize::class,
+        CustomPostTypesProvider::class,
+        CustomFieldsServiceProvider::class,
     ];
+
+    public function handle($request)
+    {
+        if (defined('ARTISAN_BINARY')) {
+            return parent::handle($request);
+        }
+
+        $request->enableHttpMethodParameterOverride();
+        $this->sendRequestThroughRouter($request);
+
+        return $this;
+    }
 
     /**
      * Send the given request through the middleware / router.
@@ -147,5 +168,10 @@ class Kernel extends HttpKernel
         $this->router = $this->app['wpRouter']->getRouter();
         parent::syncMiddlewareToRouter();
         $this->router = $originalRouter;
+    }
+
+    protected function renderException($request, \Throwable $e)
+    {
+        return $this->app[ExceptionHandler::class]->render($request, $e);
     }
 }

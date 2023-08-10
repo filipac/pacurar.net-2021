@@ -51,9 +51,9 @@ class Kernel extends HttpKernel
 
         // If administration panel is attempting to be displayed,
         // we don't need any response
-        if (is_admin()) {
-            return;
-        }
+//        if (is_admin()) {
+//            return;
+//        }
 
         // Get response on `template_include` filter so the conditional functions work correctly
         add_filter(

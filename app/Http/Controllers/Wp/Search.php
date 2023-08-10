@@ -15,7 +15,7 @@ class Search extends Controller
     public function index()
     {
         $data = [
-            'posts' => Post::queriedPosts(),//$this->postsWithRandomInsert()
+            'posts' => Post::queriedPosts(),
         ];
 
         // Let Laraish figure out the view file.

@@ -1,7 +1,7 @@
-@extends('layouts.master')
-
-@section('content')
-
+<x-layouts.master>
+    <x-slot name="belowContent">
+        @include('partials.copy')
+    </x-slot>
     @while(have_posts())
         @php
             the_post()
@@ -90,9 +90,4 @@
             </div>
         </x-content-with-sidebar>
     @endwhile
-    {{--    </x-content-with-sidebar>--}}
-@endsection
-
-@section('below-content')
-    @include('partials.copy')
-@overwrite
+</x-layouts.master>

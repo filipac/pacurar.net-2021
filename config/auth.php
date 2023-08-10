@@ -48,8 +48,9 @@ return [
         ],
 
         'wordpress' => [
-            'driver' => 'session',
+            'driver' => 'wordpress',
             'provider' => 'wordpress',
+            'model' => \App\Models\WordpressUser::class,
         ],
     ],
 

@@ -99,6 +99,11 @@ class Jwt
             $isHttpCookieOnly = true;
         }
 
+        if(!$val) {
+            $val = \Session::get('temp_token');
+            $isHttpCookieOnly = true;
+        }
+
         if(is_array($val)) {
             $val = $val[0];
         }

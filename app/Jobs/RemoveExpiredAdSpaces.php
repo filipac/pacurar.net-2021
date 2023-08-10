@@ -30,6 +30,8 @@ class RemoveExpiredAdSpaces implements ShouldQueue
     {
         $all = AdSpace::get();
 
+        ray($all);
+
         foreach ($all as $space) {
             $api = Multiversx::api();
 
@@ -39,9 +41,9 @@ class RemoveExpiredAdSpaces implements ShouldQueue
 
             if ($resp->code === 'ok') {
                 try {
-                    $info = DecodeSpaceInfo::fromBase64($resp->data[0]);
-                    ray($info);
-                    if ($info['is_new']) {
+                    $info = DecodeSpaceInfo::fromBase64($resp->data[0], $space->name);
+
+                    if ($info->is_new) {
                         $space->delete();
                     }
                 } catch (\Exception $e) {

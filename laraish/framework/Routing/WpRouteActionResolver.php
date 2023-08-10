@@ -2,6 +2,7 @@
 
 namespace Laraish\Routing;
 
+use Corcel\Model;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use Laraish\Support\Wp\Model\Post;
@@ -33,6 +34,8 @@ class WpRouteActionResolver
      * @var bool
      */
     public $injectDefaultData = true;
+
+    public static array $viewData = [];
 
     /**
      * WpRouteActionResolver constructor.
@@ -159,6 +162,7 @@ class WpRouteActionResolver
         $viewData = $this->injectDefaultData
             ? [
                 'post' => $post,
+                'model' => (new \Corcel\Model\Post())->newFromBuilder((array) $post->wpPost()),
             ]
             : [];
 
@@ -281,6 +285,8 @@ class WpRouteActionResolver
     {
         $hierarchy = is_array($hierarchy) ? new Collection($hierarchy) : $hierarchy;
 
+        static::$viewData = $viewData instanceof \Closure ? $viewData() : $viewData;
+
         if ($this->resolveController && ($action = $this->getControllerActionByHierarchy($hierarchy))) {
             return $action;
         }
@@ -336,6 +342,7 @@ class WpRouteActionResolver
 
         while ($hierarchy->count() > 0) {
             $view = $this->getViewPath($hierarchy->implode('.'));
+//            ray($view);
             if ($this->viewExists($view)) {
                 $data = $viewData instanceof \Closure ? $viewData() : $viewData;
 
@@ -419,15 +426,18 @@ class WpRouteActionResolver
 
         return [
             'posts' => $modelClass::queriedPosts(),
+            'models' => Model::queriedModels(),
         ];
     }
 
     protected function getDataForPostPage(): array
     {
         $modelClass = $this->getModelClassForPostType() ?? Post::class;
+        $post = new $modelClass($this->queriedObject);
 
         return [
-            'post' => new $modelClass($this->queriedObject),
+            'post' => $post,
+            'model' => (new \Corcel\Model\Post())->newFromBuilder((array) $post->wpPost()),
         ];
     }
 

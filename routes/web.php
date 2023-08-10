@@ -4,7 +4,7 @@ use App\Http\Controllers\Wp\Archive;
 use App\Models\Wp\Post\Post;
 use Illuminate\Support\Facades\Auth;
 
-Route::name('login')->get('loginSpotify', function () {
+Route::name('loginSpotify')->get('loginSpotify', function () {
     return \Socialite::with('spotify')
         ->with(["access_type" => "offline"])
         ->scopes(['user-read-playback-state'])
@@ -47,6 +47,8 @@ Route::get('egld', function () {
 });
 
 Route::get('info', function () {
+//    $ffi = \FFI::scope("BLOG");
+//    dump($ffi->decode_sft_price('AAAABEVHTEQAAAAAAAAAAAAAAAexorwuxQAA'));
     dump(App::version());
     return phpinfo();
 });
@@ -62,6 +64,8 @@ Route::get('board-games', function () {
     }
     return view('misc.board-games', []);
 });
+
+Route::view('login-web3', 'auth.login-web3')->name('loginweb3');
 
 //Route::get('me', function() {
 //   return view('misc.me');

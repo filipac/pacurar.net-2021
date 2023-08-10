@@ -1,5 +1,5 @@
 @php $price = (float) $this->price(); @endphp
-<div x-data="{ amount: @entangle('amount') }">
+<div x-data="{ amount: @entangle('amount').live }">
     <div>In order to send me</div>
     <div class="flex justify-center text-4xl">
         <div contenteditable x-on:blur="amount = $event.target.innerText" contenteditable="true">{{$amount}}</div>

@@ -770,3 +770,11 @@ pre {
     word-wrap: break-word;
     white-space: break-spaces;
 }
+
+.wp-block-latest-comments__comment-author {
+    // clip long names
+    display: inline-block;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

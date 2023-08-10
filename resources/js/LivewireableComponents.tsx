@@ -21,8 +21,13 @@ export const LivewireableComponents = () => {
 
     return <>
         {allStateManagementApps.map(div => {
+                    let login = false;
+                    if(div.dataset.login === '1') {
+                        login = true;
+                    }
+                    const intended = div.dataset.intended
                     return createPortal(<Suspense fallback={<div></div>}>
-                        <SessionManagement />
+                        <SessionManagement login={login} intended={intended} />
                     </Suspense>, div)
                 })}
                 {gameCounterApp && createPortal(<Suspense fallback={<div></div>}>

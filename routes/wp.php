@@ -13,4 +13,10 @@ WpRoute::page('my-work', [Archive::class, 'work']);
 WpRoute::page('search', [Search::class, 'indexSearch']);
 WpRoute::page([Page::class, 'index']);
 WpRoute::post('post', [Single::class, 'index']);
+
+//WpRoute::post('course', [Single::class, 'index']);
+
+WpRoute::notFound([\App\Http\HandleNotFound::class, 'handle404']);
+WpRoute::addRoute('/_404', [\App\Http\HandleNotFound::class, 'handle404Terminate'], ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS']);
+
 WpRoute::autoDiscovery();

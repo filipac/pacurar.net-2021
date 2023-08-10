@@ -1,4 +1,6 @@
 @yield('footer')
+{{ $footer ?? '' }}
+    @livewireScripts
 @php
     wp_footer()
 @endphp

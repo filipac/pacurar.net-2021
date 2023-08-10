@@ -9,9 +9,30 @@ class CustomFieldsServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
-        add_action('acf/init', function () {
+        add_action('wp_loaded', function () {
+            if (!did_action('acf/init')) {
+                return;
+            }
             acf_add_local_field_group($this->getWork()->build());
             acf_add_local_field_group($this->getMenuItems()->build());
+
+            // get all registered custom post types
+            $post_types = get_post_types(['_builtin' => false], 'names', 'and');
+            $namespace = 'App\\Acf\\';
+            foreach ($post_types as $post_type) {
+                $class_name = str($post_type)
+                    ->title()
+                    ->replace(['_', '-'], '')
+                    ->prepend($namespace)
+                    ->toString();
+                if (class_exists($class_name)) {
+                    $instance = app()->make($class_name);
+                    if (method_exists($instance, '__invoke')) {
+                        // call using the container
+                        app()->call($instance);
+                    }
+                }
+            }
 
             acf_register_block([
                 'name' => 'display_menu',
@@ -47,7 +68,7 @@ class CustomFieldsServiceProvider extends ServiceProvider
                 'category' => 'widgets',
                 'icon' => 'admin-links',
             ]);
-        });
+        }, 999);
     }
 
     /**

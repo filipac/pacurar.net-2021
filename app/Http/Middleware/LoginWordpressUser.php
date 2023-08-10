@@ -16,6 +16,10 @@ class LoginWordpressUser
      */
     public function handle(Request $request, Closure $next)
     {
+        if(!$request->hasCookie('blog_token') && get_current_user_id() !== 1) {
+            wp_logout();
+            return $next($request);
+        }
         if (is_user_logged_in() && !\Illuminate\Support\Facades\Auth::guard('wordpress')->check()) {
             $user = wp_get_current_user();
             \Illuminate\Support\Facades\Auth::guard('wordpress')->loginUsingId($user->ID, true);

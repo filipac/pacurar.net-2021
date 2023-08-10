@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Generic;
 
 use App\Http\Controllers\Controller;
 use App\Models\Wp\Post\Post;
+use Corcel\Model;
+use Laraish\Routing\WpRouteActionResolver;
 use Laraish\Support\Wp\Query\QueryResults;
 
 class Home extends Controller
@@ -19,8 +21,10 @@ class Home extends Controller
 
     public function blog()
     {
+        $data = $this->postsWithRandomInsert();
         $data = [
-            'posts' => $this->postsWithRandomInsert()
+            'posts' => $data[0],
+            'models' => $data[1],
         ];
         return \View::make('generic.blog', $data);
     }

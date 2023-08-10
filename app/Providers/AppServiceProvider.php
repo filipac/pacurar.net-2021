@@ -2,14 +2,22 @@
 
 namespace App\Providers;
 
-use App\Http\Livewire\BoardGames;
+use App\GraphQL\Mutations\VerifyLogin;
+use App\Livewire\BoardGames;
 use App\Jobs\CalculateStreak;
 use App\Jobs\CreateOgImageJob;
 use App\Models\Wp\Post\Post;
 use Automattic\Jetpack\Jetpack_Lazy_Images;
+use GuzzleHttp\Exception\ClientException;
+use Illuminate\Routing\Pipeline;
+use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Peerme\Mx\Address;
+use Peerme\MxLaravel\Multiversx;
+use Peerme\MxProviders\Entities\Account;
+use Peerme\MxProviders\Exceptions\RequestException;
 use Symfony\Component\HttpFoundation\Response;
 
 class AppServiceProvider extends ServiceProvider
@@ -37,19 +45,67 @@ class AppServiceProvider extends ServiceProvider
 
         add_filter('acf/settings/remove_wp_meta_box', '__return_false');
 
-        // dd(session()->getId(), session_id());
-
         if (defined('ICL_LANGUAGE_CODE') && ICL_LANGUAGE_CODE == 'en') {
             config()->set('app.url', 'https://pacurar.dev');
         }
 
+        add_action('init', function () {
+            if (is_admin()) {
+                return;
+            }
+
+            $pipe = app(Pipeline::class);
+
+            $req = request();
+            $pipe->send($req)
+                ->through([
+                    StartSession::class
+                ])
+                ->thenReturn();
+
+            if ($req->hasSession()) {
+                if (request()->get('address') && request()->get('signature')) {
+
+                    (new VerifyLogin())(null, [
+                        'address' => request()->get('address'),
+                        'signature' => request()->get('signature'),
+                        'token' => request()->session()->getId(),
+                    ]);
+
+                }
+            }
+        }, 1);
+
         // prepend every page content with a div
         add_filter('the_content', function ($content) {
-            if(is_admin() || !is_page() && get_post()->post_name != 'uses') {
+            if (is_admin() || !is_page() && get_post()->post_name != 'uses') {
                 return $content;
             }
             $cc = Blade::render('<x-web3-ad spaceName="page-top" format="dark" />');
-            return '<div class="web3">'.$cc.'</div>' . $content;
+
+            return '<div class="web3">' . $cc . '</div>' . $content;
+        }, 999);
+
+        add_filter('the_content', function ($content) {
+            if (is_admin() || !is_single()) {
+                return $content;
+            }
+
+            $is_behind_paywall = get_post_meta(get_the_ID(), 'is_behind_paywall', true);
+            if ($is_behind_paywall) {
+                if (!auth('wordpress')->user()) {
+                    $content = '<div data-web3-state-management data-login="1"></div>';
+                } else {
+                    $content = $content . '<div data-web3-state-management data-login="1"></div>';
+                }
+            }
+
+//            if(auth()->id()) {
+//                $content = $content . get_user_meta(auth()->id(), 'wallet', true);
+//            }
+
+
+            return $content;
         }, 999);
 
         \add_filter('oembed_response_data', function ($embedData, $post) {
@@ -101,7 +157,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         add_shortcode('alpine', function ($atts, $content = null) {
-            $a           = shortcode_atts([
+            $a = shortcode_atts([
                 'wrap' => 'div',
             ], $atts);
             $alpineAttrs = [];
@@ -160,7 +216,7 @@ class AppServiceProvider extends ServiceProvider
         add_action('manage_page_posts_custom_column', $og, 10, 2);
 
         add_action('manual_lazy_image', function ($content) {
-            $inst    = Jetpack_Lazy_Images::instance();
+            $inst = Jetpack_Lazy_Images::instance();
             $content = $inst->add_image_placeholders($content);
 
             return $content;
@@ -201,13 +257,13 @@ class AppServiceProvider extends ServiceProvider
                     if (!request()->get('id')) {
                         return;
                     }
-                    $id   = request()->get('id');
+                    $id = request()->get('id');
                     $post = get_post((int)$id);
                     if (!$post) {
                         return;
                     }
                     $post = new Post($id);
-                    $job  = new CreateOgImageJob($post);
+                    $job = new CreateOgImageJob($post);
                     $job->forced()->handle();
                     $resp = redirect()->to(request()->headers->get('referer', '/wp-admin/edit.php'));
                     return $resp->send();
@@ -229,7 +285,7 @@ class AppServiceProvider extends ServiceProvider
         // custom rest endpoint to list my board games
         add_action('rest_api_init', function () {
             register_rest_route('filipac/v1', '/board-games', [
-                'methods'  => 'GET',
+                'methods' => 'GET',
                 'permission_callback' => '__return_true', // 'is_user_logged_in
                 'callback' => function () {
                     $games = BoardGames::getNfts();
@@ -238,29 +294,98 @@ class AppServiceProvider extends ServiceProvider
             ]);
             register_rest_route('filipac/v1', '/work', [
                 'permission_callback' => '__return_true', // 'is_user_logged_in
-                'methods'  => 'GET',
+                'methods' => 'GET',
                 'callback' => function () {
                     $query = [
-            'post_type' => 'work',
-            'nopaging' => true,
-            'tax_query' => ['relation' => 'AND'],
-            'orderby' => 'menu_order',
-            'order' => 'ASC',
-        ];
-        $q = new \WP_Query($query);
-        $posts = collect($q->posts)->map(function($post) {
-            $categories = get_the_terms( $post, 'technology' ) ?: [];
-            return [
-                'title' => $post->post_title,
-                'image' => get_the_post_thumbnail_url($post->ID, 'full'),
-                'categories' => collect($categories)->map(function($category) {
-                    return $category->name;
-                })->implode(', '),
-            ];
-        });
+                        'post_type' => 'work',
+                        'nopaging' => true,
+                        'tax_query' => ['relation' => 'AND'],
+                        'orderby' => 'menu_order',
+                        'order' => 'ASC',
+                    ];
+                    $q = new \WP_Query($query);
+                    $posts = collect($q->posts)->map(function ($post) {
+                        $categories = get_the_terms($post, 'technology') ?: [];
+                        return [
+                            'title' => $post->post_title,
+                            'image' => get_the_post_thumbnail_url($post->ID, 'full'),
+                            'categories' => collect($categories)->map(function ($category) {
+                                return $category->name;
+                            })->implode(', '),
+                        ];
+                    });
                     return new \WP_REST_Response($posts, 200);
                 },
             ]);
+        });
+
+        add_action('comment_form_defaults', function ($x) {
+            $user = wp_get_current_user();
+            $user_identity = $user->exists() ? $user->display_name : '';
+
+            $required_text      = ' ' . wp_required_field_message();
+
+            $x['logged_in_as'] = sprintf(
+                '<p class="logged-in-as">%s%s</p>',
+                sprintf(
+                /* translators: 1: User name, 2: Edit user link, 3: Logout URL. */
+                    __('Logged in as %1$s. <a href="%3$s">Log out?</a>'),
+                    $user_identity,
+                    get_edit_user_link(),
+                    /** This filter is documented in wp-includes/link-template.php */
+                    wp_logout_url()
+                ),
+                $required_text
+            );
+
+            return $x;
+        });
+
+        // hook before saving a comment to process the comment author name
+        add_action('preprocess_comment', function ($commentdata) {
+            if (
+                str($commentdata['comment_author'])->startsWith('erd')
+            ) {
+
+                try {
+                    $add = Address::fromBech32($commentdata['comment_author']);
+                } catch (\Exception $e) {
+                    return $commentdata;
+                }
+
+                $fresh = function () use (&$commentdata) {
+                    $api = Multiversx::api();
+                    try {
+                        $resp = $api->accounts()->getByAddress($commentdata['comment_author']);
+                        if ($resp instanceof Account && $resp->username) {
+                            $commentdata['comment_author'] = $resp->username;
+
+                            $prev = get_option('web3_address_cache', []);
+                            $cached = [];
+                            $cached[$commentdata['comment_author']] = $resp;
+                            $cached = array_merge($prev, $cached);
+                            update_option('web3_address_cache', $cached);
+                        }
+                    } catch (RequestException|ClientException $e) {
+                        //
+                    }
+                };
+
+                $cache = get_option('web3_address_cache');
+                if (false !== $cache) {
+                    if (isset($cache[$commentdata['comment_author']])) {
+                        $cachedInfo = $cache[$commentdata['comment_author']];
+                        if ($cachedInfo instanceof Account) {
+                            $commentdata['comment_author'] = $cachedInfo->username;
+                        }
+                    } else {
+                        $fresh();
+                    }
+                } else {
+                    $fresh();
+                }
+            }
+            return $commentdata;
         });
 
 
@@ -272,9 +397,9 @@ class AppServiceProvider extends ServiceProvider
         //            return $vars;
         //        } );
         //
-        //        add_action('init', function () {
-        //            add_rewrite_rule('^api/?','index.php?page_id='.get_option( 'page_for_posts' ).'&custom_page=api','top');
-        //        }, 10, 0);
+                add_action('init', function () {
+                    add_rewrite_rule('^livewire/update?','index.php','top');
+                }, 10, 0);
     }
 
     public function shareViewData(): void

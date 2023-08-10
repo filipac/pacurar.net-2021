@@ -1,5 +1,3 @@
-@extends('layouts.search')
-
 @php
     global $orgseries, $wp_query;
     remove_filter('the_excerpt', array($orgseries, 'add_series_meta_excerpt'));
@@ -21,9 +19,10 @@
         return $content;
     });
 @endphp
-{{--  --}}
-@section('below-content')
-    @include('partials.search_bar')
+
+<x-layouts.search>
+    <x-slot name="belowContent">
+        @include('partials.search_bar')
     @unless($wp_query->found_posts == 0)
         <div class="px-6 md:px-0 py-6">
         <x-content-with-sidebar>
@@ -70,4 +69,5 @@
                 class="mt-12 text-2xl">{{ ICL_LANGUAGE_CODE == 'ro' ? 'Nu am raspunsul chiar la tot in viata.' : "I don't have the answer to everything in life."}}</div>
         </div>
     @endunless
-@overwrite
+    </x-slot>
+</x-layouts.search>

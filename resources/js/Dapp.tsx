@@ -30,6 +30,7 @@ export const Dapp: React.FC<Props> = ({children, allAds}) => {
                 }}
                 dappConfig={{
                     logoutRoute: window.location.href,
+
                 }}
             >
                 {children}

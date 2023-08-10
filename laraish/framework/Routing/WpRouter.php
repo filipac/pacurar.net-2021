@@ -205,6 +205,7 @@ class WpRouter
             return;
         }
 
+
         $action = array_slice($actionAndData, 0, 2);
         $data = $actionAndData[2] ?? null;
 

@@ -1,5 +1,5 @@
 <head>
-    <title>@yield('title', view('partials.title'))</title>
+    <title>{{$attributes->get('title', view('partials.title'))}}</title>
 
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -27,7 +27,7 @@
     <link rel="apple-touch-icon-precomposed" href="{{ public_url('images/apple-touch-icon-precomposed.png') }}">
 {{--    <link rel="stylesheet" href="https://use.typekit.net/rqd7nkn.css">--}}
 {{--    <link href="https://fonts.googleapis.com/css?family=Sigmar+One&display=swap" rel="stylesheet">--}}
-    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+{{--    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>--}}
     <link rel="preload" as="font" href="https://pacurar.net/wp-content/themes/pacurar2020/resources/fonts/bariol_regular-webfont.woff" type="font/woff" crossorigin="anonymous">
 {{--    @if(Str::startsWith(mix('css/app.css'), '/'))--}}
 {{--    <link rel="stylesheet" href="{{ public_url(mix('css/app.css')) }}"/>--}}
@@ -43,6 +43,7 @@
         $browser = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
         $isPs = strpos($browser, 'Chrome-Lighthouse') !== false;
     @endphp
+    {{ $head ?? '' }}
     @yield('head')
     @stack('head')
     <?php
@@ -66,4 +67,6 @@
             cursor: url({{get_stylesheet_directory_uri().'/resources/bagel.cur'}}), auto !important;
         }
     </style>
+
+    @livewireStyles
 </head>

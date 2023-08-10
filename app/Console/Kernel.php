@@ -4,6 +4,7 @@ namespace App\Console;
 
 use App\Jobs\CalculateStreak;
 use App\Jobs\RemoveExpiredAdSpaces;
+use App\Jobs\UpdateWeb3CommentsName;
 use Illuminate\Console\Scheduling\Schedule;
 use Laraish\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -23,6 +24,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->job(CalculateStreak::class)->everySixHours();
         $schedule->job(RemoveExpiredAdSpaces::class)->everyTwoHours();
+        $schedule->job(UpdateWeb3CommentsName::class)->everyFiveMinutes();
     }
 
     protected function commands(): void

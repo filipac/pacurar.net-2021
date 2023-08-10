@@ -38,5 +38,10 @@ return [
         'genesis' => env('MULTIVERSX_COUNTER_CONTRACT_GENESIS', 'b3a9a2e73de36c003b6cbc82c235987ec57c29851171203d38d3b4954176ddfb'),
     ],
 
+    'access_contract' => [
+        'owner' => env('MULTIVERSX_ACCESS_CONTRACT_OWNER', 'erd1kjkxdhx3xf3rmtqveclztj4zwrn4y2fd7tkeajrtezsurs36fx9qp2jas9'),
+        'address' => env('MULTIVERSX_ACCESS_CONTRACT_ADDRESS', 'erd1qqqqqqqqqqqqqpgqjxv0jymkkarde9wjkjegjeh7jndrht5dfx9qrt4yl0'),
+    ],
+
     'jwt_secret' => env('MULTIVERSX_JWT_SECRET', 'IIfFDszOvasz9Eb/AaOX1qpC2jImDxTxuDj2lwKxPyE='),
 ];

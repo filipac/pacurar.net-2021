@@ -92,7 +92,7 @@
     </div>
 
     <div class="mt-4 text-white pb-4">
-        {!! $this->getPaginator()->render() !!}
+        {!! $this->getPaginator() !!}
     </div>
 
 </div>

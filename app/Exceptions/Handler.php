@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 
 class Handler extends ExceptionHandler
 {
@@ -43,7 +44,7 @@ class Handler extends ExceptionHandler
      * @param  \Illuminate\Http\Request  $request
      * @param  \Exception  $exception
      */
-    public function render($request, \Throwable $exception): \Illuminate\Http\Response|JsonResponse
+    public function render($request, \Throwable $exception): \Illuminate\Http\Response|JsonResponse|RedirectResponse
     {
         return parent::render($request, $exception);
     }

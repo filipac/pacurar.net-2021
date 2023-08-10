@@ -33,10 +33,9 @@ export const useLoginButtons: (props: LoginButtonsProps) => {
     const loginActions = [
         showLogin && <WalletConnectLoginButton key={'wallet-connect'} isWalletConnectV2 token={sessionId}
                                                logoutRoute={window.location.href}
-                                               showScamPhishingAlert
                                                className={'text-xs p-2 mx-0 bg-secondary shadow-box hover:shadow-boxhvr text-black'}
         />,
-        showLogin && <LedgerLoginButton key={'ledger'} token={sessionId} showScamPhishingAlert
+        showLogin && <LedgerLoginButton key={'ledger'} token={sessionId}
                                         className={'text-xs p-2 mx-0 bg-secondary shadow-box hover:shadow-boxhvr text-black'}/>,
         showLogin &&
         <ExtensionLoginButton key={'ext'} className={'text-xs p-2 mx-0 bg-secondary shadow-box hover:shadow-boxhvr text-black'}

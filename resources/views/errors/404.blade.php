@@ -1,5 +1,3 @@
-@extends('layouts.master')
-
 @push('beforeContainer')
     <div class="overflow-hidden">
         <video width="100%" id="rick" class="w-full h-screen fixed skip" autoplay muted style="z-index: 0;object-fit: cover;">
@@ -11,9 +9,20 @@
     </div>
 @endpush
 
-@section('containerStyles') opacity: 0.4 @endsection
+@push('scripts')
+    <script>
+        jQuery(document).on('click', function() {
+            var element = document.querySelector('#rick')
+            if(element) {
+                element.muted = false;
+                element.volume = 0.2;
+            }
+        })
+    </script>
+@endpush
 
-@section('below-content')
+<x-layouts.master>
+    <x-slot name="belowContent">
     <div class="m-8">
     <div class="flex items-center justify-center">
         <section class="flex flex-col text-center bg-splash text-white w-auto p-12 shadow-box hover:shadow-boxhvr perspective-sm">
@@ -39,16 +48,6 @@
         </section>
     </div>
     </div>
-@endsection
+    </x-slot>
+</x-layouts.master>
 
-@push('scripts')
-    <script>
-        jQuery(document).on('click', function() {
-            var element = document.querySelector('#rick')
-            if(element) {
-                element.muted = false;
-                element.volume = 0.2;
-            }
-        })
-    </script>
-@endpush

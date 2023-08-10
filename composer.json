@@ -10,14 +10,16 @@
     "type": "project",
     "require": {
         "php": "^8.2",
+        "ext-bcmath": "*",
         "ext-dom": "*",
         "amrshawky/laravel-currency": "dev-master",
-        "ccxt/ccxt": "^1.50",
+        "ccxt/ccxt": "^4.0",
+        "corcel/acf": "dev-master",
         "guzzlehttp/guzzle": "^7.0.1",
         "hautelook/phpass": "^0.3.6",
-        "htmlburger/carbon-fields": "^3.3",
         "illuminate/contracts": "^10.0",
         "illuminate/support": "^10.0",
+        "jgrossi/corcel": "7.0.x-dev",
         "johnbillion/extended-cpts": "^4.5",
         "jwilsson/spotify-web-api-php": "^5.5",
         "laraish/contracts": "*",
@@ -25,11 +27,13 @@
         "laraish/options": "*",
         "laraish/pagination": "*",
         "laraish/support": "*",
+        "laravel/folio": "^1.0@beta",
         "laravel/horizon": "^5.10",
         "laravel/socialite": "^5.1",
         "laravel/tinker": "^2.0",
         "lcobucci/jwt": "^4.3",
-        "livewire/livewire": "^2.10",
+        "livewire/livewire": "^3.0@beta",
+        "livewire/volt": "^1.0@beta",
         "mll-lab/laravel-graphiql": "^3.1",
         "nuwave/lighthouse": "^6.13",
         "peerme/mx-sdk-laravel": "dev-patch-1",
@@ -38,10 +42,10 @@
         "socialiteproviders/spotify": "^4.1",
         "spatie/browsershot": "^3.41",
         "spatie/ray": "^1.1",
-        "stoutlogic/acf-builder": "^1.10",
-        "ext-bcmath": "*"
+        "stoutlogic/acf-builder": "^1.10"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.8",
         "spatie/laravel-ignition": "^2.0"
     },
     "config": {
@@ -81,6 +85,14 @@
         {
             "type": "vcs",
             "url": "https://github.com/filipac/mx-sdk-php/"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/filipac/acf"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/filipac/corcel"
         }
     ],
     "extra": {
