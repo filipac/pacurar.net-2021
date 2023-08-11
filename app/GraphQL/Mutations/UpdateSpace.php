@@ -2,14 +2,10 @@
 
 namespace App\GraphQL\Mutations;
 
-use App\DecodeSpaceInfo;
 use App\Exceptions\MissingAuthorizationToken;
-use App\GraphQL\Queries\AdSpaceInfo;
 use App\Jwt;
-use App\JwtParseResult;
 use App\Models\AdSpace;
-use Peerme\MxLaravel\Multiversx;
-use Symfony\Component\Process\Process;
+use App\ValueObjects\AdvertiseSpace;
 
 final class UpdateSpace
 {
@@ -24,28 +20,16 @@ final class UpdateSpace
             ->where('name', $args['spaceName'])
             ->first();
 
-        $api = Multiversx::api();
+        try {
+            $_space = AdvertiseSpace::named($args['spaceName']);
 
-        $resp = $api->vm()->query(config('multiversx.ad_contract.address'), 'getSpace', [
-            $args['spaceName'],
-        ]);
-
-        if ($resp->code === 'ok') {
-            $_space = $resp->data[0];
-
-            try {
-                $_space = DecodeSpaceInfo::fromBase64($_space, $args['spaceName']);
-
-                if ($_space->owner !== $currentWallet) {
-                    throw new MissingAuthorizationToken('Unauthorized');
-                }
-            } catch (MissingAuthorizationToken $e) {
+            if ($_space->owner !== $currentWallet) {
                 throw new MissingAuthorizationToken('Unauthorized');
-            } catch (\Exception $e) {
-                return null;
             }
 
-        } else {
+        } catch (MissingAuthorizationToken $e) {
+            throw new MissingAuthorizationToken('Unauthorized');
+        } catch (\Exception $e) {
             return null;
         }
 

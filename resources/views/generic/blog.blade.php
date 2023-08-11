@@ -4,9 +4,6 @@
             <div class="mb-4">
                 <x-web3-ad spaceName="blog-top"/>
             </div>
-            @php
-                ray($models);
-            @endphp
             @include('partials.posts')
             <div class="mt-4">
                 <x-web3-ad spaceName="blog-after"/>

@@ -1,8 +1,6 @@
 <?php
 
-use App\Http\Controllers\Wp\Archive;
 use App\Models\Wp\Post\Post;
-use Illuminate\Support\Facades\Auth;
 
 Route::name('loginSpotify')->get('loginSpotify', function () {
     return \Socialite::with('spotify')
@@ -60,12 +58,43 @@ Route::get('board-games', function () {
         $lang = 'en';
     }
     if ($lang != 'en') {
-         return redirect()->to('https://pacurar.dev/board-games');
+        return redirect()->to('https://pacurar.dev/board-games');
     }
     return view('misc.board-games', []);
 });
 
 Route::view('login-web3', 'auth.login-web3')->name('loginweb3');
+
+Route::get('token-image/{identifier}', function ($identifier) {
+    $url = sprintf(
+        "https://github.com/multiversx/mx-assets/blob/master/tokens/%s/logo.png?raw=true",
+        $identifier
+    );
+
+    $headers = [
+        'Cache-Control' => 'max-age=604800',
+        'Expires' => gmdate('D, d M Y H:i:s \G\M\T', time() + 604800),
+        'Content-Type' => 'image/png',
+    ];
+
+    // check if it has the image cached
+    $cachedValue = Cache::get('token-image-' . $identifier);
+    if ($cachedValue) {
+        return response($cachedValue)->withHeaders($headers);
+    }
+
+    $resp = \Illuminate\Support\Facades\Http::get($url);
+    if ($resp->notFound()) {
+        $resp = \Illuminate\Support\Facades\Http::get('https://github.com/multiversx/mx-assets/blob/master/tokens/USDC-c76f1f/logo.png?raw=true');
+    }
+
+    $image = $resp->body();
+
+    Cache::put('token-image-' . $identifier, $image, now()->addDays(7));
+
+    return response($image)->withHeaders($headers);
+
+});
 
 //Route::get('me', function() {
 //   return view('misc.me');

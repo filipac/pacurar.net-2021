@@ -2,8 +2,10 @@
 
 namespace App\ValueObjects;
 
+use App\UseFfi;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
+use Peerme\MxLaravel\Multiversx;
 
 readonly class AdvertiseSpace implements Jsonable, Arrayable
 {
@@ -14,6 +16,34 @@ readonly class AdvertiseSpace implements Jsonable, Arrayable
         public bool $is_new,
         public string $name,
     ) {}
+
+    public static function named(string $name)
+    {
+        $api = Multiversx::api();
+
+        $resp = $api->vm()->query(config('multiversx.ad_contract.address'), 'getSpace', [
+            $name
+        ]);
+
+        if($resp->code != 'ok') {
+            throw new \Exception('Failed to fetch ad space info');
+        }
+
+        return self::fromBase64($resp->data[0], $name);
+    }
+
+    public static function fromBase64(string $base64Data, string $name): self
+    {
+        $result = UseFfi::decode_advertise_space($base64Data);
+
+        if ($result->error) {
+            throw new \Exception($result->error_message);
+        }
+
+        $space = self::fromCData($result->item, $name);
+
+        return $space;
+    }
 
     public static function fromCData(\FFI\Cdata $cdata, string $name) {
         return new self(

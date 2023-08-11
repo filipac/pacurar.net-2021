@@ -15,7 +15,7 @@
         "amrshawky/laravel-currency": "dev-master",
         "ccxt/ccxt": "^4.0",
         "corcel/acf": "dev-master",
-        "guzzlehttp/guzzle": "^7.0.1",
+        "guzzlehttp/guzzle": "^7.7",
         "hautelook/phpass": "^0.3.6",
         "illuminate/contracts": "^10.0",
         "illuminate/support": "^10.0",
@@ -41,9 +41,9 @@
         "psr/log": "^3.0",
         "socialiteproviders/spotify": "^4.1",
         "spatie/browsershot": "^3.41",
+        "spatie/laravel-ignition": "^2.0",
         "spatie/ray": "^1.1",
-        "stoutlogic/acf-builder": "^1.10",
-        "spatie/laravel-ignition": "^2.0"
+        "stoutlogic/acf-builder": "^1.10"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.8"

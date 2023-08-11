@@ -2,14 +2,13 @@
 
 namespace App\Jobs;
 
-use App\DecodeSpaceInfo;
 use App\Models\AdSpace;
+use App\ValueObjects\AdvertiseSpace;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Peerme\MxLaravel\Multiversx;
 
 class RemoveExpiredAdSpaces implements ShouldQueue
 {
@@ -30,26 +29,15 @@ class RemoveExpiredAdSpaces implements ShouldQueue
     {
         $all = AdSpace::get();
 
-        ray($all);
-
         foreach ($all as $space) {
-            $api = Multiversx::api();
-
-            $resp = $api->vm()->query(config('multiversx.ad_contract.address'), 'getSpace', [
-                $space->name,
-            ]);
-
-            if ($resp->code === 'ok') {
-                try {
-                    $info = DecodeSpaceInfo::fromBase64($resp->data[0], $space->name);
-
-                    if ($info->is_new) {
-                        $space->delete();
-                    }
-                } catch (\Exception $e) {
-//                    $space->delete();
-                    continue;
+            try {
+                $s = AdvertiseSpace::named($space->name);
+                if($s->is_new) {
+                    $space->delete();
                 }
+            } catch (\Exception $e) {
+                $space->delete();
+                continue;
             }
         }
     }

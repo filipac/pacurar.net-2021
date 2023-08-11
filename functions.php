@@ -106,6 +106,14 @@ $app['events']->listen(RequestHandled::class, function (RequestHandled $event) u
         $event->response->header('Content-Type', 'application/javascript');
     }
 
+
+    foreach($event->response->headers->all() as $key => $value) {
+        if($key === 'set-cookie') {
+            continue;
+        }
+        header_remove($key);
+    }
+
     $event->response->send();
 
     $kernel->terminate($event->request, $event->response);
