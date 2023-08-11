@@ -59,7 +59,11 @@ class AppServiceProvider extends ServiceProvider
             $req = request();
             $pipe->send($req)
                 ->through([
-                    StartSession::class
+                    StartSession::class,
+                    function($request, $next) {
+                        $response = new Response();
+                        return $next($response);
+                    }
                 ])
                 ->thenReturn();
 
