@@ -4,6 +4,17 @@
     "src": "resources/sass/app.scss",
     "isEntry": true
   },
+  "resources/js/components/SpaceEdit.tsx": {
+    "file": "assets/SpaceEdit-4cd12e2c.js",
+    "src": "resources/js/components/SpaceEdit.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/react-app.tsx",
+      "_vendor-9741ff7b.js",
+      "_lodash-0223fb8a.js",
+      "_bignumber-63705fc6.js"
+    ]
+  },
   "resources/js/app.js": {
     "file": "assets/app-f4b63b3c.js",
     "src": "resources/js/app.js",
@@ -14,30 +25,21 @@
       "_lodash-0223fb8a.js"
     ]
   },
-  "resources/js/components/SpaceEdit.tsx": {
-    "file": "assets/SpaceEdit-81a39e9f.js",
-    "src": "resources/js/components/SpaceEdit.tsx",
-    "isDynamicEntry": true,
+  "resources/js/react-app.tsx": {
+    "file": "assets/react-app-aae81626.js",
+    "src": "resources/js/react-app.tsx",
+    "isEntry": true,
     "imports": [
-      "resources/js/react-app.tsx",
       "_vendor-9741ff7b.js",
       "_lodash-0223fb8a.js",
       "_bignumber-63705fc6.js"
-    ]
-  },
-  "resources/js/components/BuySpace.tsx": {
-    "file": "assets/BuySpace-c0116be0.js",
-    "src": "resources/js/components/BuySpace.tsx",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/react-app.tsx",
-      "_vendor-9741ff7b.js",
-      "_lodash-0223fb8a.js",
-      "_bignumber-63705fc6.js"
+    ],
+    "dynamicImports": [
+      "resources/js/MainAdSpaceApp.tsx"
     ]
   },
   "resources/js/MainAdSpaceApp.tsx": {
-    "file": "assets/MainAdSpaceApp-1fffdef1.js",
+    "file": "assets/MainAdSpaceApp-e7bbed8b.js",
     "src": "resources/js/MainAdSpaceApp.tsx",
     "isDynamicEntry": true,
     "imports": [
@@ -51,17 +53,15 @@
       "resources/js/components/SpaceEdit.tsx"
     ]
   },
-  "resources/js/react-app.tsx": {
-    "file": "assets/react-app-8d8b7d13.js",
-    "src": "resources/js/react-app.tsx",
-    "isEntry": true,
+  "resources/js/components/BuySpace.tsx": {
+    "file": "assets/BuySpace-ddc41df6.js",
+    "src": "resources/js/components/BuySpace.tsx",
+    "isDynamicEntry": true,
     "imports": [
+      "resources/js/react-app.tsx",
       "_vendor-9741ff7b.js",
       "_lodash-0223fb8a.js",
       "_bignumber-63705fc6.js"
-    ],
-    "dynamicImports": [
-      "resources/js/MainAdSpaceApp.tsx"
     ]
   },
   "_lodash-0223fb8a.js": {

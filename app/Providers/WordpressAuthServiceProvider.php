@@ -27,6 +27,27 @@ class WordpressAuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // on login, check if the user trying to login has a meta "wallet" and disallow login if so
+        add_action('wp_login', function ($user_login, $user) {
+            $wallet = get_user_meta($user->ID, 'wallet', true);
+            $allow_web3_login = apply_filters('allow_web3_login', false);
+            if ($wallet && !$allow_web3_login) {
+                wp_logout();
+                wp_redirect('/wp-login.php?loggedoutweb3=true');
+                exit;
+            }
+        }, 10, 2);
+
+        // if has loggedoutweb3 on wp-login, show a message
+        add_action('login_message', function () {
+            if (isset($_GET['loggedoutweb3'])) {
+                echo '<div class="alert alert-danger alert-dismissible"><p>Web3 login is disabled.</p></div>';
+            }
+        });
+
+//        add_action('template_redirect', function() {
+//            ray(auth()->user());
+//        });
     }
 
     /**
@@ -51,8 +72,11 @@ class WordpressAuthServiceProvider extends ServiceProvider
                             if (count($users) > 0) {
                                 $user = WordpressUser::find($users[0]->ID);
                                 if ($user) {
-                                    wp_set_auth_cookie($user->ID, 1, is_ssl());
-                                    wp_set_current_user($user->ID, $user->user_login);
+                                    if ($user->ID !== wp_get_current_user()) {
+                                        wp_set_auth_cookie($user->ID, 1, is_ssl());
+                                        wp_set_current_user($user->ID, $user->user_login);
+                                    }
+//                                    do_action( 'wp_login', $user->user_login, $user );
                                     return $user;
                                 }
                             } else {
@@ -76,6 +100,8 @@ class WordpressAuthServiceProvider extends ServiceProvider
                                 wp_set_auth_cookie($user->ID, 1, is_ssl());
 
                                 wp_set_current_user($user->ID, $user->user_login);
+
+                                do_action('wp_login', $user->user_login, $user);
 
                                 return $user;
                             }

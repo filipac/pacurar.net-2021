@@ -74,12 +74,14 @@ class WordpressUser extends Authenticatable
         'user_activation_key',
         'user_status',
         'display_name',
+        'spam',
+        'deleted',
     ];
 
     /**
      * Create a new Eloquent model instance.
      *
-     * @param  array  $attributes
+     * @param array $attributes
      * @return void
      */
     public function __construct(array $attributes = [])

@@ -20,9 +20,9 @@ class LoginWordpressUser
             wp_logout();
             return $next($request);
         }
-        if (is_user_logged_in() && !\Illuminate\Support\Facades\Auth::guard('wordpress')->check()) {
+        if (is_user_logged_in()) {
             $user = wp_get_current_user();
-            \Illuminate\Support\Facades\Auth::guard('wordpress')->loginUsingId($user->ID, true);
+            \Illuminate\Support\Facades\Auth::guard('wordpress')->loginUsingWordpressUser($user);
         } else if(!is_user_logged_in() && \Illuminate\Support\Facades\Auth::guard('wordpress')->check()) {
             \Illuminate\Support\Facades\Auth::guard('wordpress')->logout();
         }

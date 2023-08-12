@@ -66,6 +66,8 @@ class AppServiceProvider extends ServiceProvider
                     }
                 ])
                 ->thenReturn();
+            request()->setLaravelSession(session());
+//            dd($req, session());
 
             if ($req->hasSession()) {
                 if (request()->get('address') && request()->get('signature')) {

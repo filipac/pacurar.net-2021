@@ -35,7 +35,12 @@ export default defineConfig({
     define: {
         global: '({tinymce: window.tinymce})'
     },
+    // base: '/wp-content/themes/pacurar2020/dist/',
+    // preserveSymlinks: true,
+    // publicDir: 'resources',
     build: {
+
+        modulePreload: false,
         commonjsOptions: {
             transformMixedEsModules: true
         },
@@ -48,7 +53,7 @@ export default defineConfig({
                     if (id.includes('bignumber')) {
                         return 'bignumber';
                     }
-                    if(id.includes('lodash')) {
+                    if (id.includes('lodash')) {
                         return 'lodash';
                     }
                     // if(id.includes('react-dom') || id.includes('react-router-dom') || id.includes('react') || id.includes('recoil')) {
@@ -60,7 +65,6 @@ export default defineConfig({
                     if (id.includes('node_modules')) {
                         return 'vendor';
                     }
-
 
 
                 }
@@ -80,7 +84,7 @@ export default defineConfig({
                 })
             ].filter(Boolean)
         }
-    }
+    },
     // build: {
     //     sourcemap: false,
     //     rollupOptions: {
