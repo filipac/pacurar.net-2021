@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\Facades\Route;
-use Laraish\Foundation\Support\Providers\RouteServiceProvider as ProvidersRouteServiceProvider;
+use LaraWelP\Foundation\Support\Providers\RouteServiceProvider as ProvidersRouteServiceProvider;
 
 class RouteServiceProvider extends ProvidersRouteServiceProvider
 {

@@ -6,10 +6,10 @@ use App\Models\Wp\Post\Post;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
-use Laraish\Routing\Traits\ViewDebugger as TraitsViewDebugger;
-use Laraish\Routing\Traits\ViewResolver;
-use Laraish\Routing\WpRouteActionResolver;
-use Laraish\Support\Wp\Query\QueryResults;
+use LaraWelP\Foundation\Routing\Traits\ViewDebugger as TraitsViewDebugger;
+use LaraWelP\Foundation\Routing\Traits\ViewResolver;
+use LaraWelP\Foundation\Routing\WpRouteActionResolver;
+use LaraWelP\Foundation\Support\Wp\Query\QueryResults;
 
 class Controller extends BaseController
 {

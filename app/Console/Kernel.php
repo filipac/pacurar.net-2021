@@ -6,7 +6,7 @@ use App\Jobs\CalculateStreak;
 use App\Jobs\RemoveExpiredAdSpaces;
 use App\Jobs\UpdateWeb3CommentsName;
 use Illuminate\Console\Scheduling\Schedule;
-use Laraish\Foundation\Console\Kernel as ConsoleKernel;
+use LaraWelP\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {

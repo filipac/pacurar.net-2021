@@ -166,7 +166,7 @@ return [
         /*
          * Package Service Providers...
          */
-        Laraish\Support\Wp\Providers\BladeDirectivesProvider::class,
+        LaraWelP\Foundation\Support\Wp\Providers\BladeDirectivesProvider::class,
 
         \SocialiteProviders\Manager\ServiceProvider::class,
 

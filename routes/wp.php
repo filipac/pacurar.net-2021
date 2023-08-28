@@ -5,7 +5,7 @@ use App\Http\Controllers\Generic\Page;
 use App\Http\Controllers\Generic\Single;
 use App\Http\Controllers\Wp\Archive;
 use App\Http\Controllers\Wp\Search;
-use Laraish\Support\Facades\WpRoute;
+use LaraWelP\Foundation\Support\Facades\WpRoute;
 
 WpRoute::home([Home::class, 'blog']);
 WpRoute::page('cauta', [Search::class, 'indexSearch']);

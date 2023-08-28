@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use Laraish\Support\Wp\Providers\ThemeOptionsProvider as ProvidersThemeOptionsProvider;
+use LaraWelP\Foundation\Support\Wp\Providers\ThemeOptionsProvider as ProvidersThemeOptionsProvider;
 
 class ThemeOptionsProvider extends ProvidersThemeOptionsProvider
 {

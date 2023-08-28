@@ -152,3 +152,7 @@ function get_comment_author_link_blank($comment_ID = 0)
      */
     return apply_filters('get_comment_author_link', $return, $author, $comment->comment_ID);
 }
+
+add_action('init', function () {
+    register_block_type( __DIR__ . '/blocks/test' );
+});

@@ -1,10 +1,11 @@
 {
-    "name": "laraish/laraish",
+    "name": "larawelp/theme",
     "description": "The WordPress theme powered by the Laravel Framework.",
     "keywords": [
         "framework",
         "laravel",
-        "WordPress"
+        "WordPress",
+        "larawelp"
     ],
     "license": "MIT",
     "type": "project",
@@ -22,11 +23,8 @@
         "jgrossi/corcel": "7.0.x-dev",
         "johnbillion/extended-cpts": "^4.5",
         "jwilsson/spotify-web-api-php": "^5.5",
-        "laraish/contracts": "*",
-        "laraish/framework": "*",
-        "laraish/options": "*",
-        "laraish/pagination": "*",
-        "laraish/support": "*",
+        "larawelp/all": "*",
+        "larawelp/sage-theme-blocks": "*",
         "laravel/folio": "^1.0@beta",
         "laravel/horizon": "^5.10",
         "laravel/socialite": "^5.1",
@@ -56,23 +54,10 @@
     "repositories": [
         {
             "type": "path",
-            "url": "laraish/*"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/thanasisxan/laraish-contracts"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/thanasisxan/laraish-support"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/thanasisxan/laraish-pagination"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/thanasisxan/laraish-options"
+            "url": "/Users/filipac/Code/larawelp",
+            "options": {
+                "symlink": true
+            }
         },
         {
             "type": "vcs",
@@ -93,6 +78,13 @@
         {
             "type": "vcs",
             "url": "https://github.com/filipac/corcel"
+        },
+        {
+            "type": "path",
+            "url": "/Users/filipac/Code/sage-theme-blocks",
+            "options": {
+                "symlink": true
+            }
         }
     ],
     "extra": {
@@ -119,14 +111,14 @@
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
         ],
         "post-create-project-cmd": [
-            "Laraish\\Foundation\\ComposerScripts::renameHelperFunctions",
+            "LaraWelP\\Foundation\\ComposerScripts::renameHelperFunctions",
             "@php artisan key:generate --ansi"
         ],
         "post-update-cmd": [
-            "Laraish\\Foundation\\ComposerScripts::renameHelperFunctions"
+            "LaraWelP\\Foundation\\ComposerScripts::renameHelperFunctions"
         ],
         "post-autoload-dump": [
-            "Laraish\\Foundation\\ComposerScripts::renameHelperFunctions",
+            "LaraWelP\\Foundation\\ComposerScripts::renameHelperFunctions",
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
         ]

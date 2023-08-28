@@ -11,7 +11,7 @@ use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Foundation\Http\Events\RequestHandled;
 use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Facades\Facade;
-use Laraish\Foundation\Http\Kernel as HttpKernel;
+use LaraWelP\Foundation\Http\Kernel as HttpKernel;
 use Exception;
 
 class Kernel extends HttpKernel

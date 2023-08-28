@@ -12,6 +12,8 @@ return [
     */
 
     'add_theme_support' => [
+        ['feature' => 'block-templates'],
+        ['feature' => 'block-template-parts'],
         [
             'feature' => 'post-thumbnails',
             'options' => ['post', 'page', 'work']

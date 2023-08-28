@@ -7,7 +7,7 @@ use App\Models\Lesson;
 use Corcel\Model\Post;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\ServiceProvider;
-use Laraish\Support\Wp\Query\QueryResults;
+use LaraWelP\Foundation\Support\Wp\Query\QueryResults;
 
 class CustomPostTypesProvider extends ServiceProvider
 {

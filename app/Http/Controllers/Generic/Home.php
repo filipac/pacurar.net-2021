@@ -3,10 +3,6 @@
 namespace App\Http\Controllers\Generic;
 
 use App\Http\Controllers\Controller;
-use App\Models\Wp\Post\Post;
-use Corcel\Model;
-use Laraish\Routing\WpRouteActionResolver;
-use Laraish\Support\Wp\Query\QueryResults;
 
 class Home extends Controller
 {

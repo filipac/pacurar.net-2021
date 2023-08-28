@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use Laraish\Support\Wp\Providers\WidgetProvider as ProvidersWidgetProvider;
+use LaraWelP\Foundation\Support\Wp\Providers\WidgetProvider as ProvidersWidgetProvider;
 
 class WidgetProvider extends ProvidersWidgetProvider
 {

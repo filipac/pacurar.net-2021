@@ -1,8 +1,8 @@
 <?php
 namespace App\Models\Wp\Post;
 
-use Laraish\Support\Wp\Model\Taxonomy;
-use Laraish\Support\Wp\Model\Post as BaseModel;
+use LaraWelP\Foundation\Support\Wp\Model\Taxonomy;
+use LaraWelP\Foundation\Support\Wp\Model\Post as BaseModel;
 
 class Post extends BaseModel
 {

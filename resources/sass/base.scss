@@ -778,3 +778,7 @@ pre {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.a:not(.underline) {
+    text-decoration: none !important;
+}

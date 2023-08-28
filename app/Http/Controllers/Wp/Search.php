@@ -18,7 +18,7 @@ class Search extends Controller
             'posts' => Post::queriedPosts(),
         ];
 
-        // Let Laraish figure out the view file.
+        // Let LaraWelP figure out the view file.
         // 'wp.page' is the default view if no matched view found.
         return $this->resolveView('generic.search', $data);
     }

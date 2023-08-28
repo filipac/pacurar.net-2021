@@ -2,21 +2,21 @@
 
 Laravel is a web application framework with expressive, elegant syntax. It's one of the most popular PHP frameworks today.
 
-Laraish brings the Laravel Framework into WordPress, which allow us to have all the benefits of Laravel. So you can create themes with less effort, more enjoyment!
+LaraWelP brings the Laravel Framework into WordPress, which allow us to have all the benefits of Laravel. So you can create themes with less effort, more enjoyment!
 
 
 ## Requirement
 
-The 99% of Laraish is just the regular full stack PHP Framework [Laravel](https://laravel.com/). So if you have never heard of it, you're going to want to take a look at it before you can go any further.
+The 99% of LaraWelP is just the regular full stack PHP Framework [Laravel](https://laravel.com/). So if you have never heard of it, you're going to want to take a look at it before you can go any further.
 
-For those who are already familiar with Laravel, it should be a piece of cake for you to get started with Laraish.
+For those who are already familiar with Laravel, it should be a piece of cake for you to get started with LaraWelP.
 
 
-## What Laraish is and is not
+## What LaraWelP is and is not
 
-**Laraish is not a framework for general purpose WordPress theme development.**
+**LaraWelP is not a framework for general purpose WordPress theme development.**
 
-Yes, it is a framework but not for general WordPress theme development. Laraish is aimed at helping create "homemade theme" rather than general purpose theme. So if you want to create themes with a bunch of theme options for sales or just for free distribution, you probably want to take a look at the following frameworks instead.
+Yes, it is a framework but not for general WordPress theme development. LaraWelP is aimed at helping create "homemade theme" rather than general purpose theme. So if you want to create themes with a bunch of theme options for sales or just for free distribution, you probably want to take a look at the following frameworks instead.
 
 * [Piklist](https://piklist.com/product/piklist/)
 * [Gantry](http://gantry.org/)
@@ -32,15 +32,15 @@ I'd say almost no differences there, except some additional tweaking, which gets
 
 ## Installation
 
-You can install Laraish by issuing the following command via [Composer](https://getcomposer.org/).
-`composer create-project --prefer-dist laraish/laraish <theme-name>`
+You can install LaraWelP by issuing the following command via [Composer](https://getcomposer.org/).
+`composer create-project --prefer-dist larawelp/theme <theme-name>`
 
-Note that **the MySQL server and the web server must be running before you can issue the `composer create-project` command** to install Laraish. Because after Composer finishes the installation, it's going to run an artisan command, which requires MySQL server and the web server that host the WordPress be running at the time you issuing the command.
+Note that **the MySQL server and the web server must be running before you can issue the `composer create-project` command** to install LaraWelP. Because after Composer finishes the installation, it's going to run an artisan command, which requires MySQL server and the web server that host the WordPress be running at the time you issuing the command.
 
 Also, notice that if you are on Mac and use MAMP or similar application to create your local server environment you may need to change your `$PATH` environment variable to make Composer use the PHP binary that MAMP provides rather than the OS's built-in PHP binary.
 
 ## Routing
-Laraish replaced the original `UriValidator`(`Illuminate\Routing\Matching\UriValidator`) with its own one to allow you to specify WordPress specific routes, like "archive" or "page" or "custom post type" ex.
+LaraWelP replaced the original `UriValidator`(`Illuminate\Routing\Matching\UriValidator`) with its own one to allow you to specify WordPress specific routes, like "archive" or "page" or "custom post type" ex.
 
 To define a WordPress specific route, just by providing a "page type" as the first argument.
 
@@ -110,9 +110,9 @@ Route::get('/my/endpoint', function () {
 ```
 
 ## Models
-Laraish comes with some general purpose models like `Post` or `Term` model. Note that they are not an implementation of ORM like the Laravel's Eloquent Model. They are just a simple wrapper for WordPress's APIs that encapsulate some common logic to help you simplify your business logic. 
+LaraWelP comes with some general purpose models like `Post` or `Term` model. Note that they are not an implementation of ORM like the Laravel's Eloquent Model. They are just a simple wrapper for WordPress's APIs that encapsulate some common logic to help you simplify your business logic. 
 
-You can find those models in `Laraish\WpSupport\Model`. Because the `Post` model is the most frequently used model, for convenience, a `Post` Class that extends the `Laraish\WpSupport\Model\Post` has brought to your `app/Models` directory already.
+You can find those models in `LaraWelP\WpSupport\Model`. Because the `Post` model is the most frequently used model, for convenience, a `Post` Class that extends the `LaraWelP\WpSupport\Model\Post` has brought to your `app/Models` directory already.
 
 Let's take a look at an example. 
 
@@ -168,11 +168,11 @@ As you can see in the example above, you can get common properties of a post, li
 
 Actually, those `properties` are not "real properties". When you access property like `$post->permalink`, under the hood, it'll call `$post->permalink()` to get the value for you automatically, and from the second time when you access the same property, it won't call `$post->permalink()` again, instead, it'll return the cached value from previous calling result. If you don't want to use cached value, you can call the method explicitly like `$post->title()`. Also, feel free to create your own "properties" by adding public methods to your model class.
 
-Take a look at [Laraish\WpSupport\Model](https://github.com/laraish/framework/tree/master/WpSupport/Model), there are some predefined "properties" that you may want to use. 
+Take a look at [LaraWelP\WpSupport\Model](https://github.com/larawelp/framework/tree/master/WpSupport/Model), there are some predefined "properties" that you may want to use. 
 
 
 ## The `@loop` blade directive
-Laraish also added a `@loop` blade directive for simplifying "[The Loop](https://codex.wordpress.org/The_Loop)" in WordPress.
+LaraWelP also added a `@loop` blade directive for simplifying "[The Loop](https://codex.wordpress.org/The_Loop)" in WordPress.
 
 for example:
 
@@ -200,7 +200,7 @@ Usually you don't want to use the `@loop` directive. Because it'll introduce som
 ## Theme Options
 Setup the custom post type, register the navigation menus ... There always are some common tasks you have to deal with when you start to build a WordPress theme. The `app/config/theme.php` is where you define all your common tasks. 
 
-Some basic options are predefined for you. Take a look at the [config/theme.php](https://github.com/laraish/laraish/blob/master/config/theme.php).
+Some basic options are predefined for you. Take a look at the [config/theme.php](https://github.com/larawelp/theme/blob/master/config/theme.php).
 
 Also, you can create your own options by adding new static methods to the `App\Providers\ThemeOptionsProvider`. The name of the method will become to an option.
 
@@ -215,7 +215,7 @@ The following example adding a `pre_get_posts` action, and the `handle` method o
 
 namespace App\Providers;
 
-use Laraish\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use LaraWelP\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -251,16 +251,16 @@ $posts = Post::queriedPosts();
 </div>
 ```
 
-By providing additional parameters, you can specify the view file and several options. See [laraish/pagination](https://github.com/laraish/pagination) for more details.
+By providing additional parameters, you can specify the view file and several options. See [larawelp/pagination](https://github.com/larawelp/pagination) for more details.
 
 
 ## Options page
 Perhaps creating options pages is one of the most tedious tasks. 
 If you've used the WordPress's API to create options pages, you know how dirty the code is going to be… 
 
-Laraish provides a powerful and yet clean API to help you creating the options pages.
+LaraWelP provides a powerful and yet clean API to help you creating the options pages.
 
-See [laraish/options](https://github.com/laraish/options) for more details.
+See [larawelp/options](https://github.com/larawelp/options) for more details.
 
 
 ## View debugger
@@ -290,7 +290,7 @@ As I mentioned in the [Installation](#installation) section. To run an artisan c
 
 
 # Known Issue
-If you have a plugin using Composer, and that plugin has the same dependency as your theme(Laraish) has, may lead to a problem when they are using a different version of that dependency.  In such a situation, it'll `require` multiple Composer Autoloaders(`vendor/autoload.php`), and **the last loaded one will take priority over the previous ones**.
+If you have a plugin using Composer, and that plugin has the same dependency as your theme(LaraWelP) has, may lead to a problem when they are using a different version of that dependency.  In such a situation, it'll `require` multiple Composer Autoloaders(`vendor/autoload.php`), and **the last loaded one will take priority over the previous ones**.
 
 Say you have a plugin that depends on the package `Foo (v1.2.0)`, and your theme depends on the same package `Foo (v2.0.1)`; such a situation may lead to load the unintended version of `Foo`. Which version will be used depend on the time the `autoloader.php` was loaded and the time the package(class) was used.
 

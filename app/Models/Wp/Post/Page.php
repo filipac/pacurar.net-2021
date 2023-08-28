@@ -2,7 +2,7 @@
 
 namespace App\Models\Wp\Post;
 
-use Laraish\Support\Wp\Model\Post as BaseModel;
+use LaraWelP\Foundation\Support\Wp\Model\Post as BaseModel;
 
 class Page extends BaseModel
 {
