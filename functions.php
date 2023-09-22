@@ -154,5 +154,5 @@ function get_comment_author_link_blank($comment_ID = 0)
 }
 
 add_action('init', function () {
-    register_block_type( __DIR__ . '/blocks/test' );
+//    register_block_type( __DIR__ . '/blocks/test' );
 });
