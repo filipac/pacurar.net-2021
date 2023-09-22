@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "072645af15e5c49ba80074b5f199b851",
+    "content-hash": "61860137bb44d15af407cb661baa91e5",
     "packages": [
         {
             "name": "amrshawky/currency",
@@ -297,16 +297,16 @@
         },
         {
             "name": "ccxt/ccxt",
-            "version": "4.0.103",
+            "version": "4.0.77",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ccxt/ccxt.git",
-                "reference": "ce7ee6b69fb1d5bc86bc802a95add226a59a9d3d"
+                "reference": "88ba4f50d3391addba772e375a299dea59d4300c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ccxt/ccxt/zipball/ce7ee6b69fb1d5bc86bc802a95add226a59a9d3d",
-                "reference": "ce7ee6b69fb1d5bc86bc802a95add226a59a9d3d",
+                "url": "https://api.github.com/repos/ccxt/ccxt/zipball/88ba4f50d3391addba772e375a299dea59d4300c",
+                "reference": "88ba4f50d3391addba772e375a299dea59d4300c",
                 "shasum": ""
             },
             "require": {
@@ -323,8 +323,15 @@
                 "react/async": "^4.0.0",
                 "react/http": ">=1.6.0",
                 "react/promise": "^2.9.0",
-                "react/promise-timer": "^1.10",
                 "symfony/polyfill-mbstring": "^1.7"
+            },
+            "suggest": {
+                "clue/buzz-react": "Required for asynchronous API calls to exchanges with PHP",
+                "clue/http-proxy-react": "Required for using a proxy when doing asynchronous API calls to exchanges with PHP",
+                "react/event-loop": "Required for asynchronous API calls to exchanges with PHP",
+                "react/http": "Required for asynchronous API calls to exchanges with PHP",
+                "recoil/react": "Required for asynchronous API calls to exchanges with PHP",
+                "recoil/recoil": "Required for asynchronous API calls to exchanges with PHP"
             },
             "type": "library",
             "autoload": {
@@ -563,7 +570,7 @@
             ],
             "support": {
                 "issues": "https://github.com/ccxt/ccxt/issues",
-                "source": "https://github.com/ccxt/ccxt/tree/4.0.103"
+                "source": "https://github.com/ccxt/ccxt/tree/4.0.77"
             },
             "funding": [
                 {
@@ -571,7 +578,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2023-09-22T10:50:45+00:00"
+            "time": "2023-08-28T08:40:46+00:00"
         },
         {
             "name": "corcel/acf",
@@ -6007,85 +6014,6 @@
                 }
             ],
             "time": "2023-05-02T15:15:43+00:00"
-        },
-        {
-            "name": "react/promise-timer",
-            "version": "v1.10.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/reactphp/promise-timer.git",
-                "reference": "4cb85c1c2125390748e3908120bb82feb99fe766"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/reactphp/promise-timer/zipball/4cb85c1c2125390748e3908120bb82feb99fe766",
-                "reference": "4cb85c1c2125390748e3908120bb82feb99fe766",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3",
-                "react/event-loop": "^1.2",
-                "react/promise": "^3.0 || ^2.7.0 || ^1.2.1"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^9.5 || ^5.7 || ^4.8.35"
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "src/functions_include.php"
-                ],
-                "psr-4": {
-                    "React\\Promise\\Timer\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Christian Lück",
-                    "email": "christian@clue.engineering",
-                    "homepage": "https://clue.engineering/"
-                },
-                {
-                    "name": "Cees-Jan Kiewiet",
-                    "email": "reactphp@ceesjankiewiet.nl",
-                    "homepage": "https://wyrihaximus.net/"
-                },
-                {
-                    "name": "Jan Sorgalla",
-                    "email": "jsorgalla@gmail.com",
-                    "homepage": "https://sorgalla.com/"
-                },
-                {
-                    "name": "Chris Boden",
-                    "email": "cboden@gmail.com",
-                    "homepage": "https://cboden.dev/"
-                }
-            ],
-            "description": "A trivial implementation of timeouts for Promises, built on top of ReactPHP.",
-            "homepage": "https://github.com/reactphp/promise-timer",
-            "keywords": [
-                "async",
-                "event-loop",
-                "promise",
-                "reactphp",
-                "timeout",
-                "timer"
-            ],
-            "support": {
-                "issues": "https://github.com/reactphp/promise-timer/issues",
-                "source": "https://github.com/reactphp/promise-timer/tree/v1.10.0"
-            },
-            "funding": [
-                {
-                    "url": "https://opencollective.com/reactphp",
-                    "type": "open_collective"
-                }
-            ],
-            "time": "2023-07-20T15:40:28+00:00"
         },
         {
             "name": "react/socket",
