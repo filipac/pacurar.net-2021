@@ -223,6 +223,9 @@ class AppServiceProvider extends ServiceProvider
 
         add_action('manual_lazy_image', function ($content) {
             $inst = Jetpack_Lazy_Images::instance();
+            if(!$inst) {
+                return $content;
+            }
             $content = $inst->add_image_placeholders($content);
 
             return $content;
