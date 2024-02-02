@@ -19,8 +19,6 @@ class LoginFromWalletRedirect
         $resp = $next($request);
 
         if (request()->get('address') && request()->get('signature')) {
-            ray(request()->get('address'), request()->get('signature'));
-
             (new VerifyLogin())(null, [
                 'address' => request()->get('address'),
                 'signature' => request()->get('signature'),

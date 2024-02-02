@@ -31,8 +31,9 @@ export const useLoginButtons: (props: LoginButtonsProps) => {
     }, [showLogin, accountInfo])
 
     const loginActions = [
-        showLogin && <WalletConnectLoginButton key={'wallet-connect'} isWalletConnectV2 token={sessionId}
+        showLogin && <WalletConnectLoginButton key={'wallet-connect'} nativeAuth token={sessionId}
                                                logoutRoute={window.location.href}
+                                               loginButtonText={'xPortal'}
                                                className={'text-xs p-2 mx-0 bg-secondary shadow-box hover:shadow-boxhvr text-black'}
         />,
         showLogin && <LedgerLoginButton key={'ledger'} token={sessionId}

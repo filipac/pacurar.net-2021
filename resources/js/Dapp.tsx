@@ -26,11 +26,13 @@ export const Dapp: React.FC<Props> = ({children, allAds}) => {
             <DappProvider
                 environment={activeNetwork}
                 customNetworkConfig={{
+                    name: 'customConfig',
+                    apiTimeout: 6000,
                     walletConnectV2ProjectId: WalletConnectKey
                 }}
                 dappConfig={{
+                    shouldUseWebViewProvider: true,
                     logoutRoute: window.location.href,
-
                 }}
             >
                 {children}

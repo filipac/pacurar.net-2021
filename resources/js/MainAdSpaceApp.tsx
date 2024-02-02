@@ -418,10 +418,10 @@ const MainAdSpaceApp: React.FC<Props> = ({name = '', language, html, format, sid
                                 'flex flex-col md:flex-col gap-2': sidebar,
                             })
                         }>
-                            <WalletConnectLoginButton isWalletConnectV2 token={sessionId}
+                            <WalletConnectLoginButton nativeAuth token={sessionId}
                                                       logoutRoute={window.location.href}
                                                       className={'text-xs p-2 mx-0 bg-secondary shadow-box hover:shadow-boxhvr text-black border-secondary'}
-                                                      showScamPhishingAlert/>
+                                                      />
                             <LedgerLoginButton token={sessionId} showScamPhishingAlert
                                                className={'text-xs p-2 ml-4 bg-secondary shadow-box hover:shadow-boxhvr text-black  border-secondary'}/>
                             <ExtensionLoginButton
@@ -429,9 +429,10 @@ const MainAdSpaceApp: React.FC<Props> = ({name = '', language, html, format, sid
                                 token={sessionId} loginButtonText={'MultiversX DeFi Wallet'}/>
                             <WebWalletLoginButton token={sessionId} callbackRoute={window.location.pathname}
                                                   className={'text-xs p-2 mx-0 ml-4 bg-secondary shadow-box hover:shadow-boxhvr text-black border-secondary'}
-                                                  onLoginRedirect={{
-                                                      callbackRoute: window.location.pathname,
-                                                  }} nativeAuth={true}/>
+                                                  // onLoginRedirect={{
+                                                  //     callbackRoute: window.location.pathname,
+                                                  // }}
+                            />
                         </div>
                     </>}
 

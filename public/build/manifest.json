@@ -4,36 +4,47 @@
     "src": "resources/sass/app.scss",
     "isEntry": true
   },
-  "resources/js/app.js": {
-    "file": "assets/app-f4b63b3c.js",
-    "src": "resources/js/app.js",
-    "isEntry": true,
-    "imports": [
-      "_vendor-9741ff7b.js",
-      "_bignumber-63705fc6.js",
-      "_lodash-0223fb8a.js"
-    ]
-  },
   "resources/js/components/SpaceEdit.tsx": {
-    "file": "assets/SpaceEdit-4cd12e2c.js",
+    "file": "assets/SpaceEdit-c5751d6c.js",
     "src": "resources/js/components/SpaceEdit.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/react-app.tsx",
-      "_vendor-9741ff7b.js",
-      "_lodash-0223fb8a.js",
-      "_bignumber-63705fc6.js"
+      "_vendor-ec6d72e2.js",
+      "_bignumber-c60c4193.js",
+      "_lodash-42dc8045.js"
+    ]
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-57606468.js",
+    "src": "resources/js/app.js",
+    "isEntry": true,
+    "imports": [
+      "_vendor-ec6d72e2.js",
+      "_bignumber-c60c4193.js",
+      "_lodash-42dc8045.js"
+    ]
+  },
+  "resources/js/components/BuySpace.tsx": {
+    "file": "assets/BuySpace-28a92702.js",
+    "src": "resources/js/components/BuySpace.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/react-app.tsx",
+      "_vendor-ec6d72e2.js",
+      "_bignumber-c60c4193.js",
+      "_lodash-42dc8045.js"
     ]
   },
   "resources/js/MainAdSpaceApp.tsx": {
-    "file": "assets/MainAdSpaceApp-e7bbed8b.js",
+    "file": "assets/MainAdSpaceApp-e8d56de7.js",
     "src": "resources/js/MainAdSpaceApp.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/react-app.tsx",
-      "_vendor-9741ff7b.js",
-      "_lodash-0223fb8a.js",
-      "_bignumber-63705fc6.js"
+      "_vendor-ec6d72e2.js",
+      "_bignumber-c60c4193.js",
+      "_lodash-42dc8045.js"
     ],
     "dynamicImports": [
       "resources/js/components/BuySpace.tsx",
@@ -41,40 +52,32 @@
     ]
   },
   "resources/js/react-app.tsx": {
-    "file": "assets/react-app-aae81626.js",
+    "file": "assets/react-app-29673c85.js",
     "src": "resources/js/react-app.tsx",
     "isEntry": true,
     "imports": [
-      "_vendor-9741ff7b.js",
-      "_lodash-0223fb8a.js",
-      "_bignumber-63705fc6.js"
+      "_vendor-ec6d72e2.js",
+      "_bignumber-c60c4193.js",
+      "_lodash-42dc8045.js"
     ],
     "dynamicImports": [
       "resources/js/MainAdSpaceApp.tsx"
     ]
   },
-  "resources/js/components/BuySpace.tsx": {
-    "file": "assets/BuySpace-ddc41df6.js",
-    "src": "resources/js/components/BuySpace.tsx",
-    "isDynamicEntry": true,
+  "_lodash-42dc8045.js": {
+    "file": "assets/lodash-42dc8045.js",
     "imports": [
-      "resources/js/react-app.tsx",
-      "_vendor-9741ff7b.js",
-      "_lodash-0223fb8a.js",
-      "_bignumber-63705fc6.js"
+      "_bignumber-c60c4193.js"
     ]
   },
-  "_lodash-0223fb8a.js": {
-    "file": "assets/lodash-0223fb8a.js"
+  "_bignumber-c60c4193.js": {
+    "file": "assets/bignumber-c60c4193.js"
   },
-  "_bignumber-63705fc6.js": {
-    "file": "assets/bignumber-63705fc6.js"
-  },
-  "_vendor-9741ff7b.js": {
-    "file": "assets/vendor-9741ff7b.js",
+  "_vendor-ec6d72e2.js": {
+    "file": "assets/vendor-ec6d72e2.js",
     "imports": [
-      "_bignumber-63705fc6.js",
-      "_lodash-0223fb8a.js"
+      "_bignumber-c60c4193.js",
+      "_lodash-42dc8045.js"
     ]
   }
 }

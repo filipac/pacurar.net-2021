@@ -33,7 +33,7 @@ export default defineConfig({
         visualizer(),
     ],
     define: {
-        global: '({tinymce: window.tinymce})'
+        // global: '({tinymce: window.tinymce})',
     },
     // base: '/wp-content/themes/pacurar2020/dist/',
     // preserveSymlinks: true,
@@ -75,7 +75,8 @@ export default defineConfig({
         esbuildOptions: {
             // Node.js global to browser globalThis
             define: {
-                global: 'globalThis'
+                // global: 'globalThis',
+                // _global: ({}),
             },
             // Enable esbuild polyfill plugins
             plugins: [

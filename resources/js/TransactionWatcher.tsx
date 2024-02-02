@@ -92,7 +92,7 @@ export const TransactionWatcher = () => {
 
         const has = _token;
 
-        console.log({has, loginInfo, accountInfo})
+        // console.log({has, loginInfo, accountInfo})
 
         if ((!loginInfo?.tokenLogin?.loginToken || !accountInfo.address) && _token) {
             const query = gql`
