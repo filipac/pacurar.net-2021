@@ -51,7 +51,7 @@
         }
     }
 </script>
-<x-widget :title="$title" x-data="timer{{$attrs['id']}}(new Date(Date.UTC(2024, 4, 6, 16, 30, 0, 0)))" x-init="init();">
+<x-widget :title="$title" x-data="timer{{$attrs['id']}}(new Date(Date.UTC(2024, 4, 4, 18, 30, 0, 0)))" x-init="init();">
     <p class="text-xs">
     @if(defined('ICL_LANGUAGE_CODE') && ICL_LANGUAGE_CODE === 'en')
         One day, we would like to move to the United States, and the only way to do it legally is to participate in the Diversity Visa program.
