@@ -20,7 +20,9 @@
                 @endif
                 <div class="bg-white shadow-box flex-1 w-full border-2 border-black px-4 md:px-32 text-xl">
                     <div class="sigmar text-3xl w-full text-center pt-4">
-                        <p>{{ the_title() }}</p>
+                        @unless(get_post_meta(get_the_ID(), 'no-title', true) == '1')
+                            <p>{{ the_title() }}</p>
+                        @endunless
                     </div>
                     <div class="entry-content pb-20 prose prose-lg max-w-none py-4 md:py-8">
                         {!! the_content() !!}
