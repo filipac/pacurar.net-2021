@@ -75,7 +75,6 @@ class AppServiceProvider extends ServiceProvider
                     (new VerifyLogin())(null, [
                         'address' => request()->get('address'),
                         'signature' => request()->get('signature'),
-                        'token' => request()->session()->getId(),
                     ]);
 
                 }
@@ -87,6 +86,14 @@ class AppServiceProvider extends ServiceProvider
             if (is_admin() || !is_page() && get_post()->post_name != 'uses') {
                 return $content;
             }
+
+            if(is_page()) {
+                $noAds = get_post_meta(get_the_ID(), 'no-ads', true);
+                if($noAds && $noAds == '1') {
+                    return $content;
+                }
+            }
+
             $cc = Blade::render('<x-web3-ad spaceName="page-top" format="dark" />');
 
             return '<div class="web3">' . $cc . '</div>' . $content;
