@@ -229,6 +229,9 @@ class AppServiceProvider extends ServiceProvider
         add_action('manage_page_posts_custom_column', $og, 10, 2);
 
         add_action('manual_lazy_image', function ($content) {
+            if(!class_exists(Jetpack_Lazy_Images::class)) {
+                return $content;
+            }
             $inst = Jetpack_Lazy_Images::instance();
             if(!$inst) {
                 return $content;
