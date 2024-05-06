@@ -1,3 +1,61 @@
+<x-widget :title="$title"
+          x-data="timer{{$attrs['id']}}(new Date(Date.UTC(2025, 2, 31, 18, 30, 0, 0)))"
+          x-init="init();"
+>
+    <p class="text-xs">
+        @if(defined('ICL_LANGUAGE_CODE') && ICL_LANGUAGE_CODE === 'en')
+
+        @else
+            Am inceput timid, cu sperante mici dar increzatori ca daca este voia lui Dumnezeu intr-o zi vom ajunge
+            sa ne mutam in Statele Unite ale Americii. Am participat la loteria vizelor 4 ani consecutiv
+            si in 4 mai 2024 am aflat ca am fost alesi pentru o posibila viza de imigrant in 🇺🇸.
+            Lui Dumnezeu ii datoram totul, El ne va ajuta pana la capat.
+        @endif
+    </p>
+    <ul>
+        <li>
+            <strong>DV-2022</strong> -
+            🔴 {{ defined('ICL_LANGUAGE_CODE') && ICL_LANGUAGE_CODE === 'en' ? 'Did not win' : 'Nu am castigat' }}
+        </li>
+        <li>
+            <strong>DV-2023</strong> -
+            ❌ {{ defined('ICL_LANGUAGE_CODE') && ICL_LANGUAGE_CODE === 'en' ? 'No luck' : 'Fara noroc' }}
+        </li>
+        <li>
+            <strong>DV-2024</strong> -
+            🚨 {{ defined('ICL_LANGUAGE_CODE') && ICL_LANGUAGE_CODE === 'en' ? 'Nope' : 'Nup' }}
+        </li>
+        <li>
+            <strong>DV-2025</strong> -
+            ✅ {{ defined('ICL_LANGUAGE_CODE') && ICL_LANGUAGE_CODE === 'en' ? 'We were amongst the 1% selected' : 'Am fost printre cei 1% selectati' }}
+        </li>
+        <li>
+            <strong>
+                🕧 {{ defined('ICL_LANGUAGE_CODE') && ICL_LANGUAGE_CODE === 'en' ? 'Interview ETA' : 'Data interviului (approx)' }}
+            </strong> - 🕧 {{ defined('ICL_LANGUAGE_CODE') && ICL_LANGUAGE_CODE === 'en' ? 'Left: ' : 'A rams: ' }}
+            <span x-text="time().days"></span>
+            <span>{{ ICL_LANGUAGE_CODE == 'ro' ? 'zile' : 'days' }},</span>
+            <span x-text="time().hours"></span>
+            <span>{{ ICL_LANGUAGE_CODE == 'ro' ? 'ore' : 'hours' }},</span>
+            <span x-text="time().minutes"></span>
+            <span>{{ ICL_LANGUAGE_CODE == 'ro' ? 'minute' : 'minutes' }},</span>
+            <span>{{ ICL_LANGUAGE_CODE == 'ro' ? 'si' : 'and' }} </span>
+            <span x-text="time().seconds"></span>
+            <span>{{ ICL_LANGUAGE_CODE == 'ro' ? 'secunde' : 'seconds' }}</span>
+            <ul>
+                <li>
+                    🏥{{ defined('ICL_LANGUAGE_CODE') && ICL_LANGUAGE_CODE === 'en' ? 'Medical' : 'Vizita medicala' }}
+                </li>
+                <li>
+                    👮🏻‍{{ defined('ICL_LANGUAGE_CODE') && ICL_LANGUAGE_CODE === 'en' ? 'Interview' : 'Interviul' }}
+                </li>
+                <li>
+                    ✈ {{ defined('ICL_LANGUAGE_CODE') && ICL_LANGUAGE_CODE === 'en' ? 'Flight' : 'Zborul' }}
+                </li>
+            </ul>
+        </li>
+    </ul>
+</x-widget>
 <script>
     function timer{{$attrs['id']}}(expiry) {
         return {
@@ -51,37 +109,3 @@
         }
     }
 </script>
-<x-widget :title="$title" x-data="timer{{$attrs['id']}}(new Date(Date.UTC(2024, 4, 4, 18, 30, 0, 0)))" x-init="init();">
-    <p class="text-xs">
-    @if(defined('ICL_LANGUAGE_CODE') && ICL_LANGUAGE_CODE === 'en')
-        One day, we would like to move to the United States, and the only way to do it legally is to participate in the Diversity Visa program.
-        We have very low chances of winning, but we will keep trying until we do win 💪.
-    @else
-        Odata si odata ne-am dori sa ne mutam in Statele Unite si singura cale ca sa facem asta in mod legal este sa participam la Loteria Vizelor.
-        Avem sanse foarte mici de castig, dar vom continua sa incercam pana castigam 💪.
-    @endif
-        </p>
-    <ul>
-        <li>
-            <strong>DV-2022</strong> - 🔴 {{ defined('ICL_LANGUAGE_CODE') && ICL_LANGUAGE_CODE === 'en' ? 'Did not win' : 'Nu am castigat' }}
-        </li>
-        <li>
-            <strong>DV-2023</strong> - ❌ {{ defined('ICL_LANGUAGE_CODE') && ICL_LANGUAGE_CODE === 'en' ? 'No luck' : 'Fara noroc' }}
-        </li>
-        <li>
-            <strong>DV-2024</strong> - 🚨 {{ defined('ICL_LANGUAGE_CODE') && ICL_LANGUAGE_CODE === 'en' ? 'Nope' : 'Nup' }}
-        </li>
-        <li>
-            <strong>DV-2025</strong> - 🕧 {{ defined('ICL_LANGUAGE_CODE') && ICL_LANGUAGE_CODE === 'en' ? 'We find out in ' : 'Aflam in ' }}
-            <span x-text="time().days"></span>
-            <span>{{ ICL_LANGUAGE_CODE == 'ro' ? 'zile' : 'days' }},</span>
-            <span x-text="time().hours"></span>
-            <span>{{ ICL_LANGUAGE_CODE == 'ro' ? 'ore' : 'hours' }},</span>
-            <span x-text="time().minutes"></span>
-            <span>{{ ICL_LANGUAGE_CODE == 'ro' ? 'minute' : 'minutes' }},</span>
-            <span>{{ ICL_LANGUAGE_CODE == 'ro' ? 'si' : 'and' }} </span>
-            <span x-text="time().seconds"></span>
-            <span>{{ ICL_LANGUAGE_CODE == 'ro' ? 'secunde' : 'seconds' }}</span>
-        </li>
-    </ul>
-</x-widget>
