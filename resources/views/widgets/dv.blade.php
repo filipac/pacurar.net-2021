@@ -4,7 +4,10 @@
 >
     <p class="text-xs">
         @if(defined('ICL_LANGUAGE_CODE') && ICL_LANGUAGE_CODE === 'en')
-
+            We started timidly, with low hopes but confident that if it's God's will, one day we will move to the United States of America.
+            We participated in the visa lottery for 4 consecutive years and on May 4th,
+            2024 we found out that we were selected for a possible immigrant visa in 🇺🇸.
+            We owe everything to God, He will help us until the end.
         @else
             Am inceput timid, cu sperante mici dar increzatori ca daca este voia lui Dumnezeu intr-o zi vom ajunge
             sa ne mutam in Statele Unite ale Americii. Am participat la loteria vizelor 4 ani consecutiv
