@@ -1,5 +1,5 @@
 <x-widget :title="$title"
-          x-data="timer{{$attrs['id']}}(new Date(Date.UTC(2025, 2, 31, 18, 30, 0, 0)))"
+          x-data="timer{{$attrs['id']}}(new Date(Date.UTC(2025, 6, 21, 14, 30, 0, 0)))"
           x-init="init();"
 >
     <p class="text-xs">
