@@ -1,5 +1,8 @@
 // create a root react app
-window._global ||= window;
+if(process.env.NODE_ENV !== 'development') {
+    window._global ||= window;
+    window.global = window._global;
+}
 import React from 'react';
 import {TransactionsToastList} from "@multiversx/sdk-dapp/UI/TransactionsToastList";
 import {SignTransactionsModals} from '@multiversx/sdk-dapp/UI/SignTransactionsModals';

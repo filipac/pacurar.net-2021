@@ -17,6 +17,14 @@ function renderChunks(deps) {
     return chunks;
 }
 
+const define = process.env.NODE_ENV !== 'development' ? {} : {
+    global: '({tinymce: window.tinymce})',
+}
+const dfine2 = process.env.NODE_ENV !== 'development' ? {} : {
+                global: 'globalThis',
+                // _global: ({}),
+            }
+
 export default defineConfig({
     plugins: [
         laravel({
@@ -32,9 +40,7 @@ export default defineConfig({
         splitVendorChunkPlugin(),
         visualizer(),
     ],
-    define: {
-        // global: '({tinymce: window.tinymce})',
-    },
+    define,
     // base: '/wp-content/themes/pacurar2020/dist/',
     // preserveSymlinks: true,
     // publicDir: 'resources',
@@ -74,10 +80,7 @@ export default defineConfig({
     optimizeDeps: {
         esbuildOptions: {
             // Node.js global to browser globalThis
-            define: {
-                // global: 'globalThis',
-                // _global: ({}),
-            },
+            define: dfine2,
             // Enable esbuild polyfill plugins
             plugins: [
                 process.env.NODE_ENV === 'production' && NodeGlobalsPolyfillPlugin({

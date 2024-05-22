@@ -15,6 +15,7 @@ import {decodeSpaceInfo, SpaceInfo} from "./utils/decodeSpaceInfo";
 import classnames from 'classnames';
 import {logout} from "@multiversx/sdk-dapp/utils";
 import {Dialog, Transition} from '@headlessui/react'
+import {nativeAuth} from "@multiversx/sdk-dapp/services";
 
 const BuySpace = React.lazy(() => import('./components/BuySpace'));
 const SpaceEdit = React.lazy(() => import('./components/SpaceEdit'));
@@ -25,6 +26,7 @@ import {contractAddressAd, contractOwner} from "./config";
 import formatDate from 'date-fns/format'
 import {ArgSerializer, StringValue, Transaction, TransactionPayload} from "@multiversx/sdk-core/out";
 import {useLoginButtons} from "./components/LoginButtons";
+import {useLoginService} from "@multiversx/sdk-dapp/hooks/login/useLoginService";
 
 type  Props = {
     name: string,
@@ -38,7 +40,23 @@ type  Props = {
 const MainAdSpaceApp: React.FC<Props> = ({name = '', language, html, format, sidebar, info, session}) => {
     const accountInfo = useGetAccountInfo()
     const [sessionId, setSessionId] = useRecoilState(sessionAtom)
+    const service = useLoginService()
     const [spaceInfo, setSpaceInfo] = useState<SpaceInfo | null>(info)
+    const [encodedToken, setEncodedToken] = useState<string | null>(null)
+
+    useEffect(() => {
+        let config = service.configuration
+        config.extraInfo = {
+            sessionId
+        }
+
+        let nat = nativeAuth(config)
+        nat.initialize().then(res => {
+            setEncodedToken(res)
+            // set res into a "login_token" cookie
+            document.cookie = `login_token=${res};path=/;max-age=3600`
+        });
+    }, [service?.configuration?.apiAddress, sessionId])
 
     const [buyOpen, setBuyOpen] = useState(false)
     const [editOpen, setEditOpen] = useState(false)
@@ -427,7 +445,7 @@ const MainAdSpaceApp: React.FC<Props> = ({name = '', language, html, format, sid
                             <ExtensionLoginButton
                                 className={'text-xs p-2 mx-0 bg-secondary shadow-box hover:shadow-boxhvr text-black border-secondary'}
                                 token={sessionId} loginButtonText={'MultiversX DeFi Wallet'}/>
-                            <WebWalletLoginButton token={sessionId} callbackRoute={window.location.pathname}
+                            <WebWalletLoginButton token={encodedToken} callbackRoute={window.location.pathname}
                                                   className={'text-xs p-2 mx-0 ml-4 bg-secondary shadow-box hover:shadow-boxhvr text-black border-secondary'}
                                                   // onLoginRedirect={{
                                                   //     callbackRoute: window.location.pathname,

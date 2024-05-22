@@ -782,3 +782,15 @@ pre {
 a:not(.underline) {
     text-decoration: none !important;
 }
+
+.comment-form-author, .comment-form-email, .comment-form-url {
+    @apply grid items-center gap-4;
+    grid-template-columns: 1fr;
+    @media (min-width: 768px) {
+        grid-template-columns: 130px clamp(200px, 70%, 350px);
+    }
+}
+
+.comment-form-cookies-consent, .comment-form-email, .comment-form-url {
+    @apply mt-4 #{"!important"};
+}
