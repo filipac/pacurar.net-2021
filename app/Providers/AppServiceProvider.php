@@ -60,10 +60,10 @@ class AppServiceProvider extends ServiceProvider
             $pipe->send($req)
                 ->through([
                     StartSession::class,
-                    function($request, $next) {
+                    function ($request, $next) {
                         $response = new Response();
                         return $next($response);
-                    }
+                    },
                 ])
                 ->thenReturn();
             request()->setLaravelSession(session());
@@ -73,7 +73,7 @@ class AppServiceProvider extends ServiceProvider
                 if (request()->get('address') && request()->get('signature')) {
 
                     (new VerifyLogin())(null, [
-                        'address' => request()->get('address'),
+                        'address'   => request()->get('address'),
                         'signature' => request()->get('signature'),
                     ]);
 
@@ -87,9 +87,9 @@ class AppServiceProvider extends ServiceProvider
                 return $content;
             }
 
-            if(is_page()) {
+            if (is_page()) {
                 $noAds = get_post_meta(get_the_ID(), 'no-ads', true);
-                if($noAds && $noAds == '1') {
+                if ($noAds && $noAds == '1') {
                     return $content;
                 }
             }
@@ -170,7 +170,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         add_shortcode('alpine', function ($atts, $content = null) {
-            $a = shortcode_atts([
+            $a           = shortcode_atts([
                 'wrap' => 'div',
             ], $atts);
             $alpineAttrs = [];
@@ -229,11 +229,11 @@ class AppServiceProvider extends ServiceProvider
         add_action('manage_page_posts_custom_column', $og, 10, 2);
 
         add_action('manual_lazy_image', function ($content) {
-            if(!class_exists(Jetpack_Lazy_Images::class)) {
+            if (!class_exists(Jetpack_Lazy_Images::class)) {
                 return $content;
             }
             $inst = Jetpack_Lazy_Images::instance();
-            if(!$inst) {
+            if (!$inst) {
                 return $content;
             }
             $content = $inst->add_image_placeholders($content);
@@ -253,11 +253,13 @@ class AppServiceProvider extends ServiceProvider
                     wp_redirect($url, Response::HTTP_MOVED_PERMANENTLY);
                     die;
                 }
-            } else if ($wp->request == 'uses') {
-                if (defined('ICL_LANGUAGE_CODE') && ICL_LANGUAGE_CODE == 'ro') {
-                    $url = apply_filters('wpml_permalink', get_bloginfo('url') . '/uses', 'en');
-                    wp_redirect($url, Response::HTTP_MOVED_PERMANENTLY);
-                    die;
+            } else {
+                if ($wp->request == 'uses') {
+                    if (defined('ICL_LANGUAGE_CODE') && ICL_LANGUAGE_CODE == 'ro') {
+                        $url = apply_filters('wpml_permalink', get_bloginfo('url') . '/uses', 'en');
+                        wp_redirect($url, Response::HTTP_MOVED_PERMANENTLY);
+                        die;
+                    }
                 }
             }
         });
@@ -276,13 +278,13 @@ class AppServiceProvider extends ServiceProvider
                     if (!request()->get('id')) {
                         return;
                     }
-                    $id = request()->get('id');
+                    $id   = request()->get('id');
                     $post = get_post((int)$id);
                     if (!$post) {
                         return;
                     }
                     $post = new Post($id);
-                    $job = new CreateOgImageJob($post);
+                    $job  = new CreateOgImageJob($post);
                     $job->forced()->handle();
                     $resp = redirect()->to(request()->headers->get('referer', '/wp-admin/edit.php'));
                     return $resp->send();
@@ -304,30 +306,30 @@ class AppServiceProvider extends ServiceProvider
         // custom rest endpoint to list my board games
         add_action('rest_api_init', function () {
             register_rest_route('filipac/v1', '/board-games', [
-                'methods' => 'GET',
+                'methods'             => 'GET',
                 'permission_callback' => '__return_true', // 'is_user_logged_in
-                'callback' => function () {
+                'callback'            => function () {
                     $games = BoardGames::getNfts();
                     return new \WP_REST_Response($games->toArray(), 200);
                 },
             ]);
             register_rest_route('filipac/v1', '/work', [
                 'permission_callback' => '__return_true', // 'is_user_logged_in
-                'methods' => 'GET',
-                'callback' => function () {
+                'methods'             => 'GET',
+                'callback'            => function () {
                     $query = [
                         'post_type' => 'work',
-                        'nopaging' => true,
+                        'nopaging'  => true,
                         'tax_query' => ['relation' => 'AND'],
-                        'orderby' => 'menu_order',
-                        'order' => 'ASC',
+                        'orderby'   => 'menu_order',
+                        'order'     => 'ASC',
                     ];
-                    $q = new \WP_Query($query);
+                    $q     = new \WP_Query($query);
                     $posts = collect($q->posts)->map(function ($post) {
                         $categories = get_the_terms($post, 'technology') ?: [];
                         return [
-                            'title' => $post->post_title,
-                            'image' => get_the_post_thumbnail_url($post->ID, 'full'),
+                            'title'      => $post->post_title,
+                            'image'      => get_the_post_thumbnail_url($post->ID, 'full'),
                             'categories' => collect($categories)->map(function ($category) {
                                 return $category->name;
                             })->implode(', '),
@@ -339,10 +341,10 @@ class AppServiceProvider extends ServiceProvider
         });
 
         add_action('comment_form_defaults', function ($x) {
-            $user = wp_get_current_user();
+            $user          = wp_get_current_user();
             $user_identity = $user->exists() ? $user->display_name : '';
 
-            $required_text      = ' ' . wp_required_field_message();
+            $required_text = ' ' . wp_required_field_message();
 
             $x['logged_in_as'] = sprintf(
                 '<p class="logged-in-as">%s%s</p>',
@@ -379,10 +381,10 @@ class AppServiceProvider extends ServiceProvider
                         if ($resp instanceof Account && $resp->username) {
                             $commentdata['comment_author'] = $resp->username;
 
-                            $prev = get_option('web3_address_cache', []);
-                            $cached = [];
+                            $prev                                   = get_option('web3_address_cache', []);
+                            $cached                                 = [];
                             $cached[$commentdata['comment_author']] = $resp;
-                            $cached = array_merge($prev, $cached);
+                            $cached                                 = array_merge($prev, $cached);
                             update_option('web3_address_cache', $cached);
                         }
                     } catch (RequestException|ClientException $e) {
@@ -416,9 +418,9 @@ class AppServiceProvider extends ServiceProvider
         //            return $vars;
         //        } );
         //
-                add_action('init', function () {
-                    add_rewrite_rule('^livewire/update?','index.php','top');
-                }, 10, 0);
+        add_action('init', function () {
+            add_rewrite_rule('^livewire/update?', 'index.php', 'top');
+        }, 10, 0);
     }
 
     public function shareViewData(): void
@@ -471,20 +473,18 @@ class AppServiceProvider extends ServiceProvider
          * without manually changing the domain to be on the right wp-login.php domain.
          * This filter changes the domain to the right one.
          */
-        add_filter('login_url', function ($login_url, $redirect, $force_reauth) {
-            if(!str_contains($login_url, 'redirect_to')) {
+        add_filter('login_url', function ($login_url, $redirect) {
+            if (!str_contains($login_url, 'redirect_to')) {
                 return $login_url;
             }
             $redirect_to_url = urldecode(wp_unslash($redirect));
-            $domain = parse_url($redirect_to_url, PHP_URL_HOST);
-            $mainDomain = parse_url($login_url, PHP_URL_HOST);
-            $scheme = parse_url($redirect_to_url, PHP_URL_SCHEME);
-            $mainScheme = parse_url($login_url, PHP_URL_SCHEME);
-            if($mainDomain != $domain) {
-                $login_url = str_replace($mainScheme . '://' . $mainDomain, $scheme . '://' . $domain, $login_url);
+            $redirect_domain = parse_url($redirect_to_url, PHP_URL_HOST);
+            $login_domain    = parse_url($login_url, PHP_URL_HOST);
+            if ($login_domain != $redirect_domain) {
+                $login_url = str_replace($login_domain, $redirect_domain, $login_url);
             }
             return $login_url;
-        }, 10, 3);
+        }, 10, 2);
 
         add_action('template_redirect', function () {
             if (is_search()) {
