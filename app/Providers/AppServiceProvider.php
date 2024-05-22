@@ -463,6 +463,29 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->register(CustomFieldsServiceProvider::class);
         $this->app->register(CustomPostTypesProvider::class);
+
+        /**
+         * This filter is needed because when I try to log in to my english blog,
+         * the redirect url is the main domain with redirect_to query param set to the english blog,
+         * this results in a redirect loop when I can never log in into the english blog
+         * without manually changing the domain to be on the right wp-login.php domain.
+         * This filter changes the domain to the right one.
+         */
+        add_filter('login_url', function ($login_url, $redirect, $force_reauth) {
+            if(!str_contains($login_url, 'redirect_to')) {
+                return $login_url;
+            }
+            $redirect_to_url = urldecode(wp_unslash($redirect));
+            $domain = parse_url($redirect_to_url, PHP_URL_HOST);
+            $mainDomain = parse_url($login_url, PHP_URL_HOST);
+            $scheme = parse_url($redirect_to_url, PHP_URL_SCHEME);
+            $mainScheme = parse_url($login_url, PHP_URL_SCHEME);
+            if($mainDomain != $domain) {
+                $login_url = str_replace($mainScheme . '://' . $mainDomain, $scheme . '://' . $domain, $login_url);
+            }
+            return $login_url;
+        }, 10, 3);
+
         add_action('template_redirect', function () {
             if (is_search()) {
                 if (isset($_GET['submit']) && $_GET['submit'] = 'Ma+simt+baftos') {
