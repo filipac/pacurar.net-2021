@@ -218,7 +218,11 @@ class AppServiceProvider extends ServiceProvider
                 case 'og_image':
                     $imgId = get_post_meta($post_id, 'og_image', true);
                     if ($imgId && ($data = wp_get_attachment_image_src($imgId, 'full')) && is_array($data)) {
-                        echo "<div><img src='{$data[0]}' style='max-width: 100px;' /></div>";
+                        echo "<div>
+                            <a href='{$data[0]}' target='_blank'>
+                                <img src='{$data[0]}' style='max-width: 100px;' />
+                            </a>
+                        </div>";
                     }
                     echo "<div><a href='/wp-admin/options-general.php?page=fpac_regen_og&id={$post_id}' class='btn btn-primary'>Regenerate</a></div>";
                     break;
