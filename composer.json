@@ -14,7 +14,7 @@
         "ext-bcmath": "*",
         "ext-dom": "*",
         "amrshawky/laravel-currency": "dev-master",
-        "ccxt/ccxt": "^4.0",
+        "ccxt/ccxt": "^4.3",
         "corcel/acf": "dev-master",
         "guzzlehttp/guzzle": "^7.7",
         "hautelook/phpass": "^0.3.6",
