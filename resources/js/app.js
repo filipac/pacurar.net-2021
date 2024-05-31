@@ -100,7 +100,9 @@ function handler(e) {
 jQuery(document).on("click", ".prevent-if", function(e) {
     // e.preventDefault();
     e.stopPropagation();
-    let data = jQuery(this).parent(".parentapp")[0].__x.$data;
+    let parentApp = jQuery(this).parent(".parentapp")[0];
+    if(!parentApp) return;
+    let data = parentApp.__x.$data;
     // alert(data.show ? "da" : "nu");
     if (!data.show) {
         e.preventDefault();
