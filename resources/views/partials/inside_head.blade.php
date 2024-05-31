@@ -71,5 +71,3 @@ if ($isPs) {
         cursor: url({{get_stylesheet_directory_uri().'/resources/bagel.cur'}}), auto !important;
     }
 </style>
-
-@livewireStyles
