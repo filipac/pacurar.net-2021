@@ -102,7 +102,8 @@ jQuery(document).on("click", ".prevent-if", function(e) {
     e.stopPropagation();
     let parentApp = jQuery(this).parent(".parentapp")[0];
     if(!parentApp) return;
-    let data = parentApp.__x.$data;
+    let data = parentApp?.['_x_dataStack']?.[0];
+    if(!data) return;
     // alert(data.show ? "da" : "nu");
     if (!data.show) {
         e.preventDefault();
