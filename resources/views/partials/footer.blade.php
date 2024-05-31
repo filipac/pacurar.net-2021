@@ -1,5 +1,6 @@
 @yield('footer')
 {{ $footer ?? '' }}
+@livewireScripts
 @unless(isset($inBlock))
     @php
         wp_footer()
