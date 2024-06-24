@@ -36,33 +36,33 @@ export const Dapp: React.FC<Props> = ({children, allAds}) => {
                 }}
             >
                 {children}
-                {allAds.map(div => {
-                    if (div.dataset.rendered === 'true') {
-                        return false;
-                    }
-                    const html = div.innerHTML;
-                    div.innerHTML = '';
-                    setTimeout(() => {
-                        div.dataset.rendered = 'true'
-                    })
-                    return createPortal(<Suspense fallback={<div></div>}>
-                        <MainAdSpaceApp
-                            // @ts-ignore
-                            name={div.dataset.spaceName}
-                            // @ts-ignore
-                            language={div.dataset.language}
-                            // @ts-ignore
-                            format={div.dataset.format}
-                            // @ts-ignore
-                            sidebar={div.dataset.sidebar == 1 ? true : false}
-                            // @ts-ignore
-                            info={div.dataset.initialInfo ? JSON.parse(div.dataset.initialInfo) : {}}
-                            // @ts-ignore
-                            session={div.dataset.sessionId}
-                            html={html}
-                        />
-                    </Suspense>, div)
-                }).filter(el => el !== false)}
+                {/*{allAds.map(div => {*/}
+                {/*    if (div.dataset.rendered === 'true') {*/}
+                {/*        return false;*/}
+                {/*    }*/}
+                {/*    const html = div.innerHTML;*/}
+                {/*    div.innerHTML = '';*/}
+                {/*    setTimeout(() => {*/}
+                {/*        div.dataset.rendered = 'true'*/}
+                {/*    })*/}
+                {/*    return createPortal(<Suspense fallback={<div></div>}>*/}
+                {/*        <MainAdSpaceApp*/}
+                {/*            // @ts-ignore*/}
+                {/*            name={div.dataset.spaceName}*/}
+                {/*            // @ts-ignore*/}
+                {/*            language={div.dataset.language}*/}
+                {/*            // @ts-ignore*/}
+                {/*            format={div.dataset.format}*/}
+                {/*            // @ts-ignore*/}
+                {/*            sidebar={div.dataset.sidebar == 1 ? true : false}*/}
+                {/*            // @ts-ignore*/}
+                {/*            info={div.dataset.initialInfo ? JSON.parse(div.dataset.initialInfo) : {}}*/}
+                {/*            // @ts-ignore*/}
+                {/*            session={div.dataset.sessionId}*/}
+                {/*            html={html}*/}
+                {/*        />*/}
+                {/*    </Suspense>, div)*/}
+                {/*}).filter(el => el !== false)}*/}
                 <LivewireableComponents />
             </DappProvider>
         </RecoilRoot>

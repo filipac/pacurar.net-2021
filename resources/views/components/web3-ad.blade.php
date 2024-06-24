@@ -1,4 +1,5 @@
 @php
+    return;
     $spaceName = $spaceName . (! isset($withoutLanguage) ? '-'.ICL_LANGUAGE_CODE : '');
 @endphp
 <div
