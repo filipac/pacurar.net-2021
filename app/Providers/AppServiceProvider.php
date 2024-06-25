@@ -13,12 +13,14 @@ use Illuminate\Routing\Pipeline;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 use Peerme\Mx\Address;
 use Peerme\MxLaravel\Multiversx;
 use Peerme\MxProviders\Entities\Account;
 use Peerme\MxProviders\Exceptions\RequestException;
 use Symfony\Component\HttpFoundation\Response;
+use W3TC\CacheFlush_Locally;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -203,6 +205,16 @@ class AppServiceProvider extends ServiceProvider
         add_action('w3tc_flush_all', function ($flush) {
             Artisan::call('cache:clear');
         });
+
+//        when Larave cache:cleared event is dispatched, clear the wp cache too
+        app('events')->listen('cache:cleared', function () {
+            wp_cache_flush();
+            if(class_exists(CacheFlush_Locally::class)) {
+                $cls = new CacheFlush_Locally();
+                $cls->flush_all();
+            }
+        });
+
 
         add_filter('manage_posts_columns', function ($columns) {
             $columns['og_image'] = 'OG';
