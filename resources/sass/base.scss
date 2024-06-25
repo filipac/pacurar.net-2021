@@ -794,3 +794,7 @@ a:not(.underline) {
 .comment-form-cookies-consent, .comment-form-email, .comment-form-url {
     @apply mt-4 #{"!important"};
 }
+
+.wp-block-preformatted {
+    white-space: pre !important;
+}
