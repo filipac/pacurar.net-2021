@@ -24,6 +24,7 @@ use W3TC\CacheFlush_Locally;
 
 class AppServiceProvider extends ServiceProvider
 {
+    static $ignoreCache = false;
     /**
      * Bootstrap any application services.
      */
@@ -203,11 +204,14 @@ class AppServiceProvider extends ServiceProvider
         }, 10, 2);
 
         add_action('w3tc_flush_all', function ($flush) {
-            Artisan::call('cache:clear');
+            if(!self::$ignoreCache) {
+                Artisan::call('cache:clear');
+            }
         });
 
 //        when Larave cache:cleared event is dispatched, clear the wp cache too
         app('events')->listen('cache:cleared', function () {
+            self::$ignoreCache = true;
             wp_cache_flush();
             if(class_exists(CacheFlush_Locally::class)) {
                 $cls = new CacheFlush_Locally();
