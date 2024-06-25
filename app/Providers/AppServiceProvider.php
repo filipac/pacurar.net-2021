@@ -211,7 +211,7 @@ class AppServiceProvider extends ServiceProvider
             wp_cache_flush();
             if(class_exists(CacheFlush_Locally::class)) {
                 $cls = new CacheFlush_Locally();
-                $cls->flush_all();
+                $cls->flush_all(null);
             }
         });
 
