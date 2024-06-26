@@ -104,6 +104,14 @@ Route::any('/products/{product_id}', function ($product_id) {
     return response()->redirectTo('https://www.youtube.com/watch?v=dQw4w9WgXcQ', WP_Http::PERMANENT_REDIRECT);
 });
 
+Route::any('/config/{product_id}', function ($product_id) {
+    return response()->redirectTo('https://www.youtube.com/watch?v=dQw4w9WgXcQ', WP_Http::PERMANENT_REDIRECT);
+})->where('product_id', '.*');
+Route::any('/a2f6product/{product_id}', function ($product_id) {
+    return response()->redirectTo('https://www.youtube.com/watch?v=dQw4w9WgXcQ', WP_Http::PERMANENT_REDIRECT);
+})->where('product_id', '.*');
+
+
 //Route::get('me', function() {
 //   return view('misc.me');
 //});
