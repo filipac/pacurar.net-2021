@@ -96,6 +96,10 @@ Route::get('token-image/{identifier}', function ($identifier) {
 
 });
 
+Route::any('/config/entry/review/add/product_id/{product_id}', function ($product_id) {
+    return response()->redirectTo('https://www.youtube.com/watch?v=dQw4w9WgXcQ', WP_Http::PERMANENT_REDIRECT);
+});
+
 //Route::get('me', function() {
 //   return view('misc.me');
 //});
