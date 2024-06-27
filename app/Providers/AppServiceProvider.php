@@ -57,7 +57,7 @@ class AppServiceProvider extends ServiceProvider
             static $themes;
             $themes || $themes = wp_get_themes();
 
-            $upinfo               = new stdClass();
+            $upinfo               = new \stdClass();
             $upinfo->last_checked = time();
             $upinfo->checked      = [];
 
