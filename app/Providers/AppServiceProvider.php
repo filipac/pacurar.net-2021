@@ -25,6 +25,7 @@ use W3TC\CacheFlush_Locally;
 class AppServiceProvider extends ServiceProvider
 {
     static $ignoreCache = false;
+
     /**
      * Bootstrap any application services.
      */
@@ -51,6 +52,21 @@ class AppServiceProvider extends ServiceProvider
         if (defined('ICL_LANGUAGE_CODE') && ICL_LANGUAGE_CODE == 'en') {
             config()->set('app.url', 'https://pacurar.dev');
         }
+
+        add_filter('pre_site_transient_update_themes', static function ($value) {
+            static $themes;
+            $themes || $themes = wp_get_themes();
+
+            $upinfo               = new stdClass();
+            $upinfo->last_checked = time();
+            $upinfo->checked      = [];
+
+            foreach ($themes as $theme) {
+                $upinfo->checked[$theme->get_stylesheet()] = $theme->get('Version');
+            }
+
+            return $upinfo;
+        });
 
         add_action('init', function () {
             if (is_admin()) {
@@ -204,7 +220,7 @@ class AppServiceProvider extends ServiceProvider
         }, 10, 2);
 
         add_action('w3tc_flush_all', function ($flush) {
-            if(!self::$ignoreCache) {
+            if (!self::$ignoreCache) {
                 Artisan::call('cache:clear');
             }
         });
@@ -213,7 +229,7 @@ class AppServiceProvider extends ServiceProvider
         app('events')->listen('cache:cleared', function () {
             self::$ignoreCache = true;
             wp_cache_flush();
-            if(class_exists(CacheFlush_Locally::class)) {
+            if (class_exists(CacheFlush_Locally::class)) {
                 $cls = new CacheFlush_Locally();
                 $cls->flush_all(null);
             }
