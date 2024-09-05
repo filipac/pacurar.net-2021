@@ -38,18 +38,15 @@ let imanok = function() {
                 .addClass("kon")
                 .addClass(orientation);
             document.querySelector('.grid-cols-blog-list-mobile').classList.remove('xl:grid-cols-blog-list')
-            document.getElementsByClassName(
-                "maincontainer"
-            )[0].__x.$data.gem = true;
+            Alpine.$data(document.getElementsByClassName("maincontainer")[0]).gem = true;
         } else {
             jQuery(item)
                 .removeClass("kon")
                 .removeClass("left")
                 .removeClass("right");
             document.querySelector('.grid-cols-blog-list-mobile').classList.add('xl:grid-cols-blog-list')
-            document.getElementsByClassName(
-                "maincontainer"
-            )[0].__x.$data.gem = false;
+
+            Alpine.$data(document.getElementsByClassName("maincontainer")[0]).gem = false;
         }
     });
 };
