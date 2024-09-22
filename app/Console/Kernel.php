@@ -24,7 +24,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->job(CalculateStreak::class)->everySixHours();
         $schedule->job(RemoveExpiredAdSpaces::class)->everyTwoHours();
-        $schedule->job(UpdateWeb3CommentsName::class)->everyFiveMinutes();
+//        $schedule->job(UpdateWeb3CommentsName::class)->everyFiveMinutes();
     }
 
     protected function commands(): void
