@@ -24,7 +24,7 @@ use W3TC\CacheFlush_Locally;
 
 class AppServiceProvider extends ServiceProvider
 {
-    static $ignoreCache = false;
+    public static $ignoreCache = false;
 
     /**
      * Bootstrap any application services.
@@ -86,7 +86,7 @@ class AppServiceProvider extends ServiceProvider
                 ])
                 ->thenReturn();
             request()->setLaravelSession(session());
-//            dd($req, session());
+            //            dd($req, session());
 
             if ($req->hasSession()) {
                 if (request()->get('address') && request()->get('signature')) {
@@ -132,9 +132,9 @@ class AppServiceProvider extends ServiceProvider
                 }
             }
 
-//            if(auth()->id()) {
-//                $content = $content . get_user_meta(auth()->id(), 'wallet', true);
-//            }
+            //            if(auth()->id()) {
+            //                $content = $content . get_user_meta(auth()->id(), 'wallet', true);
+            //            }
 
 
             return $content;
@@ -225,7 +225,7 @@ class AppServiceProvider extends ServiceProvider
             }
         });
 
-//        when Larave cache:cleared event is dispatched, clear the wp cache too
+        //        when Larave cache:cleared event is dispatched, clear the wp cache too
         app('events')->listen('cache:cleared', function () {
             self::$ignoreCache = true;
             wp_cache_flush();
@@ -385,7 +385,7 @@ class AppServiceProvider extends ServiceProvider
             $x['logged_in_as'] = sprintf(
                 '<p class="logged-in-as">%s%s</p>',
                 sprintf(
-                /* translators: 1: User name, 2: Edit user link, 3: Logout URL. */
+                    /* translators: 1: User name, 2: Edit user link, 3: Logout URL. */
                     __('Logged in as %1$s. <a href="%3$s">Log out?</a>'),
                     $user_identity,
                     get_edit_user_link(),
@@ -498,6 +498,10 @@ class AppServiceProvider extends ServiceProvider
             return $newsizes;
         });
 
+        // Add this new filter to set default image size
+        add_filter('pre_option_image_default_size', function ($default) {
+            return 'large-not-cropped';
+        });
 
         $this->app->register(CustomFieldsServiceProvider::class);
         $this->app->register(CustomPostTypesProvider::class);

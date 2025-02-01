@@ -1,29 +1,32 @@
 {
     "$schema": "https://schemas.wp.org/trunk/theme.json",
-    "version": 2,
+    "version": 3,
 
-	"customTemplates": [
-		{
-			"name": "blank",
-			"postTypes": [
-				"page",
-				"post"
-			],
-			"title": "Blank"
-		},
-		{
-			"name": "blog-alternative",
-			"postTypes": [
-				"page"
-			],
-			"title": "Blog (Alternative)"
-		},
-		{
-			"name": "404",
-			"postTypes": [
-				"page"
-			],
-			"title": "404"
-		}
-	]
+    "settings": {
+        "blocks": {
+            "core/image": {
+                "lightbox": {
+                    "allowEditing": true
+                }
+            }
+        }
+    },
+
+    "customTemplates": [
+        {
+            "name": "blank",
+            "postTypes": ["page", "post"],
+            "title": "Blank"
+        },
+        {
+            "name": "blog-alternative",
+            "postTypes": ["page"],
+            "title": "Blog (Alternative)"
+        },
+        {
+            "name": "404",
+            "postTypes": ["page"],
+            "title": "404"
+        }
+    ]
 }
