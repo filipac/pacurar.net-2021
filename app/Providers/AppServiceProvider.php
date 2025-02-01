@@ -557,5 +557,17 @@ class AppServiceProvider extends ServiceProvider
                 add_action('wp_pagenavi_class_last', $randomNaviColor);
             }
         });
+
+        // Add filter to automatically enable lightbox for images
+        add_filter('block_type_metadata_settings', function ($settings, $metadata) {
+            if ($metadata['name'] === 'core/image') {
+                if (isset($settings['attributes'])) {
+                    $settings['attributes']['lightbox']['default'] = [
+                        'enabled' => true
+                    ];
+                }
+            }
+            return $settings;
+        }, 10, 2);
     }
 }
