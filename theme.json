@@ -3,6 +3,10 @@
     "version": 3,
 
     "settings": {
+        "lightbox": {
+            "allowEditing": true,
+            "enabled": true
+        },
         "blocks": {
             "core/image": {
                 "lightbox": {
