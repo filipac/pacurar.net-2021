@@ -70,3 +70,5 @@
   --grid-blog-list: 1fr 0.3fr;
   --grid-blog-list-mobile: 1fr;
 }
+
+@content "./safe.html"
