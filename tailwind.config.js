@@ -1,81 +1,73 @@
 const colors = require('tailwindcss/colors')
 
 module.exports = {
-    important: true,
-    content: [
-        "./resources/**/*.blade.php",
-        "./resources/**/*.js",
-        "./resources/**/*.jsx",
-        "./resources/**/*.ts",
-        "./resources/**/*.tsx",
-    ],
-    safelist: [
-        "z-50",
-        "from-red-400",
-        "to-red-700",
-        "from-blue-500",
-        "to-blue-800",
-        "from-yellow-400",
-        "to-orange-500",
-        "from-yellow",
-        "to-green-200",
-        "to-green-400",
-        "from-purple-900",
-        "to-pink-400",
-        "col-span-1",
-        "col-span-2",
-        "col-span-3",
-        "md:col-span-1",
-        "md:col-span-2",
-        "md:col-span-3",
-        "-rotate-12",
-        "rotate-12"
-    ],
+    // safelist: [
+    //     "z-50",
+    //     "from-red-400",
+    //     "to-red-700",
+    //     "from-blue-500",
+    //     "to-blue-800",
+    //     "from-yellow-400",
+    //     "to-orange-500",
+    //     "from-yellow",
+    //     "to-green-200",
+    //     "to-green-400",
+    //     "from-purple-900",
+    //     "to-pink-400",
+    //     "col-span-1",
+    //     "col-span-2",
+    //     "col-span-3",
+    //     "md:col-span-1",
+    //     "md:col-span-2",
+    //     "md:col-span-3",
+    //     "-rotate-12",
+    //     "rotate-12"
+    // ],
     theme: {
-        screens: {
-            sm: "640px",
-            // => @media (min-width: 640px) { ... }
+        // screens: {
+        //     sm: "640px",
+        //     // => @media (min-width: 640px) { ... }
 
-            md: "768px",
-            // => @media (min-width: 768px) { ... }
+        //     md: "768px",
+        //     // => @media (min-width: 768px) { ... }
 
-            lg: "1024px",
-            // => @media (min-width: 1024px) { ... }
+        //     lg: "1024px",
+        //     // => @media (min-width: 1024px) { ... }
 
-            xl: "1280px",
-            // => @media (min-width: 1280px) { ... }
+        //     xl: "1280px",
+        //     // => @media (min-width: 1280px) { ... }
 
-            '2xl': '1536px',
-            // => @media (min-width: 1536px) { ... }
-        },
+        //     '2xl': '1536px',
+        //     // => @media (min-width: 1536px) { ... }
+        // },
         extend: {
-            gridTemplateColumns: {
-                'blog-list': '1fr 0.3fr',
-                'blog-list-mobile': '1fr',
-            },
-            colors: {
-                green: colors.emerald,
-                yellow: colors.amber,
-                purple: colors.violet,
-                gray: colors.neutral,
-                // "blue-auto": "#3499cd"
-                // splash: "#002f3c",
-                splash: "#235E6F",
-                // primary: "#34A65F",
-                primary: "#fdf767",
-                // secondary: "#F5624D",
-                secondary: "#bbf7d0",
-                spotify: "#1DB954",
-                mx: 'rgba(35,247,221, 1)',
-                mxYellow: '#fbca1c',
-            },
-            boxShadow: {
-                box: "5px 5px #000",
-                "box-white": "5px 5px #fff",
-                boxy: "5px 5px #fdf767",
-                boxhvr: "10px 10px #000",
-                "boxhvr-white": "10px 10px #fff"
-            },
+            // gridTemplateColumns: {
+            //     'blog-list': '1fr 0.3fr',
+            //     'blog-list-mobile': '1fr',
+            // },
+            // colors: {
+            //     // green: colors.emerald,
+            //     // yellow: colors.amber,
+            //     // purple: colors.violet,
+            //     // gray: colors.neutral,
+            //     // "blue-auto": "#3499cd"
+            //     // splash: "#002f3c",
+            //     // splash: "#235E6F",
+            //     // primary: "#34A65F",
+            //     // primary: "#fdf767",
+            //     // secondary: "#F5624D",
+            //     // secondary: "#bbf7d0",
+            //     // spotify: "#1DB954",
+            //     // mx: 'rgba(35,247,221, 1)',
+            //     // mxYellow: '#fbca1c',
+            // },
+            // boxShadow: {
+            //     // box: "5px 5px #000",
+            //     // "box-white": "5px 5px #fff",
+            //     // boxy: "5px 5px #fdf767",
+            //     // boxhvr: "10px 10px #000",
+            //     // "boxhvr-white": "10px 10px #fff"
+            // },
             transitionProperty: {
                 height: "height"
             }
@@ -236,15 +228,7 @@ module.exports = {
         ]
     },
     plugins: [
-        require("daisyui"),
-        require("@tailwindcss/typography"),
-        // require("tailwindcss-typography")({
-        //     // all these options default to the values specified here
-        //     ellipsis: true, // whether to generate ellipsis utilities
-        //     hyphens: true, // whether to generate hyphenation utilities
-        //     kerning: true, // whether to generate kerning utilities
-        //     textUnset: true, // whether to generate utilities to unset text properties
-        //     componentPrefix: "c-" // the prefix to use for text style classes
-        // })
+        // require("daisyui"),
+        // require("@tailwindcss/typography"),
     ]
 };

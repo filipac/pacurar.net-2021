@@ -40,7 +40,7 @@
       href="https://pacurar.net/wp-content/themes/pacurar2020/resources/fonts/bariol_regular-webfont.woff"
       type="font/woff" crossorigin="anonymous">
 <!-- Styles blog -->
-@vite(['resources/sass/app.scss'])
+@vite(['resources/sass/tailwind.css', 'resources/sass/app.scss'])
 @php
     $browser = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
     $isPs = strpos($browser, 'Chrome-Lighthouse') !== false;

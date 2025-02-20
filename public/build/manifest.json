@@ -19,15 +19,15 @@
     ]
   },
   "resources/js/MainAdSpaceApp.tsx": {
-    "file": "assets/MainAdSpaceApp-D00J3m4g.js",
+    "file": "assets/MainAdSpaceApp-DGt01_wo.js",
     "name": "MainAdSpaceApp",
     "src": "resources/js/MainAdSpaceApp.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-DZp4qUgB.js",
-      "resources/js/react-app.tsx",
       "_bignumber-L0kgG1Q3.js",
-      "_lodash-C-76dkfd.js"
+      "_lodash-C-76dkfd.js",
+      "resources/js/react-app.tsx"
     ],
     "dynamicImports": [
       "resources/js/components/BuySpace.tsx",
@@ -46,31 +46,31 @@
     ]
   },
   "resources/js/components/BuySpace.tsx": {
-    "file": "assets/BuySpace-Cen6ZJGf.js",
+    "file": "assets/BuySpace-OZ-u7ISW.js",
     "name": "BuySpace",
     "src": "resources/js/components/BuySpace.tsx",
     "isDynamicEntry": true,
     "imports": [
-      "resources/js/react-app.tsx",
       "_vendor-DZp4qUgB.js",
       "_bignumber-L0kgG1Q3.js",
-      "_lodash-C-76dkfd.js"
+      "_lodash-C-76dkfd.js",
+      "resources/js/react-app.tsx"
     ]
   },
   "resources/js/components/SpaceEdit.tsx": {
-    "file": "assets/SpaceEdit-BlZtRRbf.js",
+    "file": "assets/SpaceEdit-B10wh_pe.js",
     "name": "SpaceEdit",
     "src": "resources/js/components/SpaceEdit.tsx",
     "isDynamicEntry": true,
     "imports": [
-      "resources/js/react-app.tsx",
       "_vendor-DZp4qUgB.js",
+      "resources/js/react-app.tsx",
       "_bignumber-L0kgG1Q3.js",
       "_lodash-C-76dkfd.js"
     ]
   },
   "resources/js/react-app.tsx": {
-    "file": "assets/react-app-DdKy85kH.js",
+    "file": "assets/react-app-DjWCPCj7.js",
     "name": "react-app",
     "src": "resources/js/react-app.tsx",
     "isEntry": true,
@@ -84,8 +84,13 @@
     ]
   },
   "resources/sass/app.scss": {
-    "file": "assets/app-vI0L4szU.css",
+    "file": "assets/app-DWnOqcEO.css",
     "src": "resources/sass/app.scss",
+    "isEntry": true
+  },
+  "resources/sass/tailwind.css": {
+    "file": "assets/tailwind-DAIG_N6o.css",
+    "src": "resources/sass/tailwind.css",
     "isEntry": true
   }
 }

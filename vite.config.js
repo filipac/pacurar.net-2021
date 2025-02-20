@@ -33,6 +33,7 @@ export default defineConfig({
     plugins: [
         laravel({
             input: [
+                'resources/sass/tailwind.css',
                 'resources/sass/app.scss',
                 'resources/js/app.js',
                 'resources/js/react-app.tsx',

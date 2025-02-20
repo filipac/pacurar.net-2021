@@ -1,4 +1,4 @@
-<div class="grid grid-cols-blog-list-mobile xl:grid-cols-blog-list md:gap-4">
+<div class="grid grid-cols-(--grid-blog-list-mobile) xl:grid-cols-(--grid-blog-list) md:gap-4">
     <div style="min-width: 0;">
         {{ $slot }}
     </div>
