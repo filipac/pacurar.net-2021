@@ -7,7 +7,7 @@ import {dependencies} from './package.json';
 import {NodeGlobalsPolyfillPlugin} from "@esbuild-plugins/node-globals-polyfill";
 import inject from '@rollup/plugin-inject'
 import {visualizer} from "rollup-plugin-visualizer";
-
+import fs from 'fs';
 function renderChunks(deps) {
     let chunks = {};
     Object.keys(deps).forEach((key) => {
@@ -26,6 +26,10 @@ const dfine2 = process.env.NODE_ENV !== 'development' ? {} : {
             }
 
 export default defineConfig({
+    https: {
+        key: fs.readFileSync('/Users/filipac/Library/Application Support/Herd/config/valet/Certificates/blog.test.key'),
+        cert: fs.readFileSync('/Users/filipac/Library/Application Support/Herd/config/valet/Certificates/blog.test.crt'),
+    },
     plugins: [
         laravel({
             input: [
@@ -33,7 +37,7 @@ export default defineConfig({
                 'resources/js/app.js',
                 'resources/js/react-app.tsx',
             ],
-            valetTls: 'blog.test',
+            detectTls: 'blog.test',
             refresh: true,
         }),
         react(),
