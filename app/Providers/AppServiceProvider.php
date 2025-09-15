@@ -349,7 +349,7 @@ class AppServiceProvider extends ServiceProvider
                     $cls = app(BoardGames::class);
                     $cls->perPage = 100;
                     $games = $cls->getNfts(FilterType::owned_now->name);
-                    return new \WP_REST_Response($games->toArray(), 200);
+                    return new \WP_REST_Response($games['items']->toArray(), 200);
                 },
             ]);
             register_rest_route('filipac/v1', '/work', [
