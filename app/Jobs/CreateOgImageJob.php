@@ -48,7 +48,7 @@ class CreateOgImageJob implements ShouldQueue
                 wp_delete_attachment($imgId, true);
             }
 
-            $chromePath = '/home/forge/.cache/puppeteer/chrome/linux-127.0.6533.88/chrome-linux64/chrome';
+            $chromePath = '/usr/bin/chromium';
 
             $bshot = Browsershot::url($this->post->ogImageBaseUrl())
     ->devicePixelRatio(2)
@@ -84,7 +84,7 @@ class CreateOgImageJob implements ShouldQueue
 
                 // Alege calea către Chrome/Chromium care există
                 $chromePaths = [
-                    '/home/forge/.cache/puppeteer/chrome/linux-127.0.6533.88/chrome-linux64/chrome',
+                    '/usr/bin/chromium',
                 ];
                 foreach ($chromePaths as $path) {
                     if (is_executable($path)) {
