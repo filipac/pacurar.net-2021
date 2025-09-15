@@ -59,15 +59,13 @@ class CreateOgImageJob implements ShouldQueue
                 // $bshot->setNodeBinary('/home/forge/.nvm/versions/node/v18.20.3/bin/node');
                 // $bshot->setNpmBinary('/home/forge/.nvm/versions/node/v18.20.3/bin/npm');
 
-                $bshot->setNodeBinary('/home/forge/.nvm/versions/node/v14.21.3/bin/node');
-                $bshot->setNpmBinary('/home/forge/.nvm/versions/node/v14.21.3/bin/npm');
+                $bshot->setNodeBinary('/home/forge/.nvm/versions/node/v20.18.0/bin/node');
+                $bshot->setNpmBinary('/home/forge/.nvm/versions/node/v20.18.0/bin/npm');
 
                 // Alege calea către Chrome/Chromium care există
                 $chromePaths = [
-                    '/usr/bin/chromium-browser',
-                    '/usr/bin/chromium',
-                    '/usr/bin/google-chrome',
-                    '/usr/bin/google-chrome-stable',
+                    '/home/forge/pacurar.net/wp-content/themes/pacurar2020/chromium/linux_arm-1515401/chrome-linux/chrome',
+                    '/home/forge/pacurar.net/wp-content/themes/pacurar2020/chrome/linux_arm-140.0.7339.82/chrome-linux64/chrome',
                 ];
                 foreach ($chromePaths as $path) {
                     if (is_executable($path)) {
