@@ -48,7 +48,7 @@ class CreateOgImageJob implements ShouldQueue
                 wp_delete_attachment($imgId, true);
             }
 
-            $chromePath = '/home/forge/pacurar.net/wp-content/themes/pacurar2020/node_modules/puppeteer/.local-chromium/linux-818858/chrome-linux/chrome';
+            $chromePath = '/home/forge/.cache/puppeteer/chrome/linux-127.0.6533.88/chrome-linux64/chrome';
 
             $bshot = Browsershot::url($this->post->ogImageBaseUrl())
     ->devicePixelRatio(2)
@@ -84,7 +84,7 @@ class CreateOgImageJob implements ShouldQueue
 
                 // Alege calea către Chrome/Chromium care există
                 $chromePaths = [
-                    '/home/forge/pacurar.net/wp-content/themes/pacurar2020/node_modules/puppeteer/.local-chromium/linux-818858/chrome-linux/chrome',
+                    '/home/forge/.cache/puppeteer/chrome/linux-127.0.6533.88/chrome-linux64/chrome',
                 ];
                 foreach ($chromePaths as $path) {
                     if (is_executable($path)) {
@@ -93,28 +93,6 @@ class CreateOgImageJob implements ShouldQueue
                     }
                 }
             }
-
-            // === ARGUMENTE CHROMIUM PENTRU SERVER HEADLESS ===
-            $tmpBase = sys_get_temp_dir(); // de ex. /tmp
-            // $bshot->addChromiumArguments([
-            //     '--no-sandbox',
-            //     '--disable-setuid-sandbox',
-            //     '--disable-dev-shm-usage',
-            //     '--disable-gpu',
-            //     '--no-zygote',
-            //     '--single-process',
-            //     '--disable-software-rasterizer',
-            //     '--disable-features=VizDisplayCompositor',
-            //     '--ignore-certificate-errors',
-
-            //     // profil/cache în /tmp (evită permisiuni și cotă mică pe /dev/shm)
-            //     '--user-data-dir=' . $tmpBase . '/chrome-user-data',
-            //     '--data-path='     . $tmpBase . '/chrome-data',
-            //     '--disk-cache-dir='. $tmpBase . '/chrome-cache',
-
-            //     // limitează memoria dacă e cazul (opțional)
-            //     '--js-flags=--max-old-space-size=256',
-            // ]);
 
             $bshot->waitUntilNetworkIdle();
 
