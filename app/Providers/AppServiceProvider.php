@@ -345,7 +345,9 @@ class AppServiceProvider extends ServiceProvider
                 'methods'             => 'GET',
                 'permission_callback' => '__return_true', // 'is_user_logged_in
                 'callback'            => function () {
-                    $games = BoardGames::getNfts();
+                    $cls = app(BoardGames::class);
+                    $cls->perPage = 100;
+                    $games = $cls->getNfts();
                     return new \WP_REST_Response($games->toArray(), 200);
                 },
             ]);
