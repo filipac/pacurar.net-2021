@@ -13,7 +13,10 @@ use Spatie\Browsershot\Browsershot;
 
 class CreateOgImageJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     public Post $post;
 
@@ -35,7 +38,7 @@ class CreateOgImageJob implements ShouldQueue
     public function handle()
     {
         try {
-//            if (get_the_post_thumbnail($this->post->wpPost()) || get_post_meta($this->post->id(), 'og_image', true)) {
+            //            if (get_the_post_thumbnail($this->post->wpPost()) || get_post_meta($this->post->id(), 'og_image', true)) {
             if (($imgId = get_post_meta($this->post->id(), 'og_image', true)) && !$this->force) {
                 return;
             }
@@ -54,8 +57,15 @@ class CreateOgImageJob implements ShouldQueue
                 $bshot->setChromePath("/usr/bin/chromium-browser");
             }
 
+            $bshot->addChromiumArguments([
+                '--no-sandbox',
+                '--disable-setuid-sandbox',
+                '--disable-dev-shm-usage', // util în /dev/shm mic
+                '--disable-gpu'
+            ]);
+
             $bshot->waitUntilNetworkIdle();
-//
+            //
             $base64Image = $bshot->base64Screenshot();
 
             // dd($bshot->bodyHtml());
@@ -72,7 +82,7 @@ class CreateOgImageJob implements ShouldQueue
     private function save_image($base64_img, $title)
     {
 
-    // Upload dir.
+        // Upload dir.
         $upload_dir  = wp_upload_dir();
         $upload_path = str_replace('/', DIRECTORY_SEPARATOR, $upload_dir['path']) . DIRECTORY_SEPARATOR;
 
