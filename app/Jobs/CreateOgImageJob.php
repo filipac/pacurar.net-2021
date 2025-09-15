@@ -64,8 +64,7 @@ class CreateOgImageJob implements ShouldQueue
 
                 // Alege calea către Chrome/Chromium care există
                 $chromePaths = [
-                    '/home/forge/pacurar.net/wp-content/themes/pacurar2020/chromium/linux_arm-1515401/chrome-linux/chrome',
-                    '/home/forge/pacurar.net/wp-content/themes/pacurar2020/chrome/linux_arm-140.0.7339.82/chrome-linux64/chrome',
+                    '/home/forge/pacurar.net/wp-content/themes/pacurar2020/node_modules/puppeteer/.local-chromium/linux-818858/chrome-linux/chrome',
                 ];
                 foreach ($chromePaths as $path) {
                     if (is_executable($path)) {
