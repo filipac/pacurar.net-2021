@@ -48,9 +48,29 @@ class CreateOgImageJob implements ShouldQueue
                 wp_delete_attachment($imgId, true);
             }
 
+            $chromePath = '/home/forge/pacurar.net/wp-content/themes/pacurar2020/node_modules/puppeteer/.local-chromium/linux-818858/chrome-linux/chrome';
+
             $bshot = Browsershot::url($this->post->ogImageBaseUrl())
     ->devicePixelRatio(2)
-    ->windowSize(1200, 630);
+    ->windowSize(1200, 630)
+    ->setNodeBinary('/home/forge/.nvm/versions/node/v20.18.0/bin/node')
+    ->setNpmBinary('/home/forge/.nvm/versions/node/v20.18.0/bin/npm')
+    ->setChromePath($chromePath)
+    ->addChromiumArguments([
+        '--headless=new',
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-gpu',
+        '--no-zygote',
+        '--single-process',
+        '--disable-software-rasterizer',
+        '--disable-features=VizDisplayCompositor',
+        '--user-data-dir=' . sys_get_temp_dir() . '/chrome-user-data',
+        '--data-path='     . sys_get_temp_dir() . '/chrome-data',
+        '--disk-cache-dir='. sys_get_temp_dir() . '/chrome-cache',
+        '--js-flags=--max-old-space-size=256',
+    ]);
 
             // === PROD / FORGE: setează binarele și calea Chrome ===
             if (!defined('LOCAL_WP')) {
@@ -76,25 +96,25 @@ class CreateOgImageJob implements ShouldQueue
 
             // === ARGUMENTE CHROMIUM PENTRU SERVER HEADLESS ===
             $tmpBase = sys_get_temp_dir(); // de ex. /tmp
-            $bshot->addChromiumArguments([
-                '--no-sandbox',
-                '--disable-setuid-sandbox',
-                '--disable-dev-shm-usage',
-                '--disable-gpu',
-                '--no-zygote',
-                '--single-process',
-                '--disable-software-rasterizer',
-                '--disable-features=VizDisplayCompositor',
-                '--ignore-certificate-errors',
+            // $bshot->addChromiumArguments([
+            //     '--no-sandbox',
+            //     '--disable-setuid-sandbox',
+            //     '--disable-dev-shm-usage',
+            //     '--disable-gpu',
+            //     '--no-zygote',
+            //     '--single-process',
+            //     '--disable-software-rasterizer',
+            //     '--disable-features=VizDisplayCompositor',
+            //     '--ignore-certificate-errors',
 
-                // profil/cache în /tmp (evită permisiuni și cotă mică pe /dev/shm)
-                '--user-data-dir=' . $tmpBase . '/chrome-user-data',
-                '--data-path='     . $tmpBase . '/chrome-data',
-                '--disk-cache-dir='. $tmpBase . '/chrome-cache',
+            //     // profil/cache în /tmp (evită permisiuni și cotă mică pe /dev/shm)
+            //     '--user-data-dir=' . $tmpBase . '/chrome-user-data',
+            //     '--data-path='     . $tmpBase . '/chrome-data',
+            //     '--disk-cache-dir='. $tmpBase . '/chrome-cache',
 
-                // limitează memoria dacă e cazul (opțional)
-                '--js-flags=--max-old-space-size=256',
-            ]);
+            //     // limitează memoria dacă e cazul (opțional)
+            //     '--js-flags=--max-old-space-size=256',
+            // ]);
 
             $bshot->waitUntilNetworkIdle();
 
