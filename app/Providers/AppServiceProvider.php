@@ -6,6 +6,7 @@ use App\GraphQL\Mutations\VerifyLogin;
 use App\Livewire\BoardGames;
 use App\Jobs\CalculateStreak;
 use App\Jobs\CreateOgImageJob;
+use App\Livewire\FilterType;
 use App\Models\Wp\Post\Post;
 use Automattic\Jetpack\Jetpack_Lazy_Images;
 use GuzzleHttp\Exception\ClientException;
@@ -347,7 +348,7 @@ class AppServiceProvider extends ServiceProvider
                 'callback'            => function () {
                     $cls = app(BoardGames::class);
                     $cls->perPage = 100;
-                    $games = $cls->getNfts();
+                    $games = $cls->getNfts(FilterType::owned_now->name);
                     return new \WP_REST_Response($games->toArray(), 200);
                 },
             ]);
