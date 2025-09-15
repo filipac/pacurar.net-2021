@@ -49,23 +49,59 @@ class CreateOgImageJob implements ShouldQueue
             }
 
             $bshot = Browsershot::url($this->post->ogImageBaseUrl())
-                ->devicePixelRatio(2)
-                ->windowSize(1200, 630);
+    ->devicePixelRatio(2)
+    ->windowSize(1200, 630);
+
+            // === PROD / FORGE: setează binarele și calea Chrome ===
             if (!defined('LOCAL_WP')) {
+                // Dacă ai Node 18 instalat prin nvm, de-comentează liniile de mai jos
+                // (altfel lasă-le pe cele cu v14)
+                // $bshot->setNodeBinary('/home/forge/.nvm/versions/node/v18.20.3/bin/node');
+                // $bshot->setNpmBinary('/home/forge/.nvm/versions/node/v18.20.3/bin/npm');
+
                 $bshot->setNodeBinary('/home/forge/.nvm/versions/node/v14.21.3/bin/node');
                 $bshot->setNpmBinary('/home/forge/.nvm/versions/node/v14.21.3/bin/npm');
-                $bshot->setChromePath("/usr/bin/chromium-browser");
+
+                // Alege calea către Chrome/Chromium care există
+                $chromePaths = [
+                    '/usr/bin/chromium-browser',
+                    '/usr/bin/chromium',
+                    '/usr/bin/google-chrome',
+                    '/usr/bin/google-chrome-stable',
+                ];
+                foreach ($chromePaths as $path) {
+                    if (is_executable($path)) {
+                        $bshot->setChromePath($path);
+                        break;
+                    }
+                }
             }
 
+            // === ARGUMENTE CHROMIUM PENTRU SERVER HEADLESS ===
+            $tmpBase = sys_get_temp_dir(); // de ex. /tmp
             $bshot->addChromiumArguments([
                 '--no-sandbox',
                 '--disable-setuid-sandbox',
-                '--disable-dev-shm-usage', // util în /dev/shm mic
-                '--disable-gpu'
+                '--disable-dev-shm-usage',
+                '--disable-gpu',
+                '--no-zygote',
+                '--single-process',
+                '--disable-software-rasterizer',
+                '--disable-features=VizDisplayCompositor',
+                '--ignore-certificate-errors',
+
+                // profil/cache în /tmp (evită permisiuni și cotă mică pe /dev/shm)
+                '--user-data-dir=' . $tmpBase . '/chrome-user-data',
+                '--data-path='     . $tmpBase . '/chrome-data',
+                '--disk-cache-dir='. $tmpBase . '/chrome-cache',
+
+                // limitează memoria dacă e cazul (opțional)
+                '--js-flags=--max-old-space-size=256',
             ]);
 
             $bshot->waitUntilNetworkIdle();
-            //
+
+            // Obține imaginea
             $base64Image = $bshot->base64Screenshot();
 
             // dd($bshot->bodyHtml());
