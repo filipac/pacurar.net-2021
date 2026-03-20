@@ -47,9 +47,9 @@
 
     <div data-game-counter-app data-nfts='{{ json_encode($nfts) }}'></div>
 
-    <div class="flex flex-col md:flex-row mt-4 px-6 lg:px-0 gap-2">
-        <div class="flex-1 text-center p-4 cursor-pointer font-label text-sm uppercase tracking-wider transition-colors" wire:click="setType('owned_ever')" style="{{ $type === 'owned_ever' ? 'background: var(--color-primary); color: #fff;' : 'background: var(--color-surface-container-low); border: 1px solid var(--color-outline-variant);' }} border-radius: 0.25rem;">Lifetime owned</div>
-        <div class="flex-1 text-center p-4 cursor-pointer font-label text-sm uppercase tracking-wider transition-colors" wire:click="setType('owned_now')" style="{{ $type === 'owned_now' ? 'background: var(--color-primary); color: #fff;' : 'background: var(--color-surface-container-low); border: 1px solid var(--color-outline-variant);' }} border-radius: 0.25rem;">Currently owned</div>
+    <div class="flex flex-col md:flex-row mt-4 px-6 lg:px-0 gap-2" wire:key="tabs-{{ $type }}">
+        <div class="flex-1 text-center p-4 cursor-pointer font-label text-sm uppercase tracking-wider transition-colors" wire:click="setType('owned_ever')" style="{{ $type == 'owned_ever' ? 'background: var(--color-primary); color: #fff;' : 'background: var(--color-surface-container-low); border: 1px solid var(--color-outline-variant);' }} border-radius: 0.25rem;">Lifetime owned</div>
+        <div class="flex-1 text-center p-4 cursor-pointer font-label text-sm uppercase tracking-wider transition-colors" wire:click="setType('owned_now')" style="{{ $type == 'owned_now' ? 'background: var(--color-primary); color: #fff;' : 'background: var(--color-surface-container-low); border: 1px solid var(--color-outline-variant);' }} border-radius: 0.25rem;">Currently owned</div>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6 px-6 lg:px-0">

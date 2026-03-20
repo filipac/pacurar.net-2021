@@ -25,7 +25,7 @@ class BoardGames extends Component
 
     public $perPage = 12;
 
-    public $type = FilterType::owned_now->name;
+    public $type = FilterType::owned_ever->name;
 
     public int $owned = 0;
 
@@ -56,14 +56,13 @@ class BoardGames extends Component
             $resp = Http::get(
                 config('multiversx.urls.api') . '/accounts/' . config('multiversx.counter_contract.owner') . '/nfts',
                 [
-                    'from' => $from,
-                    'size' => $this->perPage,
+                    'from'        => $from,
+                    'size'        => $this->perPage,
+                    'collections' => $col,
                 ]
             );
             return [
-                'items' => collect($resp->json())
-                    ->filter(fn ($el) => $el['collection'] === $col)
-                    ->values(),
+                'items' => collect($resp->json())->values(),
                 'total' => $owned,
             ];
         } else {
@@ -78,9 +77,10 @@ class BoardGames extends Component
             $respAll = Http::get(
                 config('multiversx.urls.api') . '/collections/' . $col . '/nfts/count',
                 [
-                    'identifiers' => $col,
+                    // 'identifiers' => $col,
                 ]
             );
+            // dd($resp->json(), $respAll->body());
             return [
                 'items' => collect($resp->json())->values(),
                 'total' => (int)$respAll->body(),
