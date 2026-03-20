@@ -3,7 +3,7 @@
     <section class="relative py-16 md:py-24 mb-4 px-4 md:px-8 overflow-hidden" style="border-radius: 0.25rem;">
         {{-- Background image --}}
         <div class="absolute inset-0 z-0">
-            <img src="{{get_stylesheet_directory_uri().'/resources/fam.jpeg'}}" alt="" class="w-full h-full object-cover" style="object-position: center top;">
+            <img src="{{get_stylesheet_directory_uri().'/resources/fam.jpeg'}}" alt="" class="w-full h-full object-cover" style="object-position: center 8%;">
             {{-- Dark overlay --}}
             <div class="absolute inset-0" style="background: rgba(0, 0, 0, 0.55);"></div>
         </div>
