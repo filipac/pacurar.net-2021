@@ -1,6 +1,6 @@
 <div class="max-w-7xl mx-auto px-4 md:px-8">
     {{-- Hero Section --}}
-    <section class="relative py-16 md:py-24 -mx-4 md:-mx-8 px-4 md:px-8 overflow-hidden" style="border-radius: 0.25rem;">
+    <section class="relative py-16 md:py-24 mb-4 px-4 md:px-8 overflow-hidden" style="border-radius: 0.25rem;">
         {{-- Background image --}}
         <div class="absolute inset-0 z-0">
             <img src="{{get_stylesheet_directory_uri().'/resources/fam.jpeg'}}" alt="" class="w-full h-full object-cover" style="object-position: center top;">
