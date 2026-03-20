@@ -2,6 +2,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+
 <link rel="apple-touch-icon" sizes="57x57"
       href="{{get_stylesheet_directory_uri().'/resources'}}/favicons/apple-icon-57x57.png">
 <link rel="apple-touch-icon" sizes="60x60"
@@ -41,10 +44,10 @@
       href="/wp-content/themes/pacurar2020/resources/fonts/bariol_regular-webfont.woff"
       type="font/woff" crossorigin="anonymous">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Inter:wght@300..700&family=JetBrains+Mono:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
-{{-- Material Symbols loaded non-blocking to avoid render-blocking --}}
+{{-- Text fonts loaded non-blocking to avoid render-blocking (display=swap handles FOUT) --}}
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Inter:wght@300..700&family=JetBrains+Mono:ital,wght@0,300..700;1,300..700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Inter:wght@300..700&family=JetBrains+Mono:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet"></noscript>
+{{-- Material Symbols loaded non-blocking --}}
 <link rel="preload" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"></noscript>
 
