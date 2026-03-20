@@ -46,7 +46,7 @@
     @if($showThumb)
         <div class="md:col-span-2 hidden md:block">
             <a href="{{ get_the_permalink($_post->wpPost) }}" class="block overflow-hidden" style="border-radius: 0.25rem;">
-                <img src="{{ get_the_post_thumbnail_url($_post->wpPost, 'medium') }}" alt="" class="w-full object-cover group-hover:scale-105 transition-transform duration-300" style="aspect-ratio: 4/3;">
+                <img src="{{ get_the_post_thumbnail_url($_post->wpPost, 'medium') }}" alt="" class="w-full object-cover group-hover:scale-105 transition-transform duration-300" style="aspect-ratio: 4/3;" loading="lazy" decoding="async">
             </a>
         </div>
     @endif

@@ -24,7 +24,7 @@
     <x-slot name="belowContent">
     <div class="flex items-center justify-center min-h-[60vh] px-8">
         <section class="flex flex-col text-center max-w-lg p-8 md:p-12 relative z-10" style="background: var(--color-surface-container-low); border: 1px solid var(--color-outline-variant); border-radius: 0.25rem; backdrop-filter: blur(8px); background: rgba(243, 250, 255, 0.85);">
-            <img src="{{ public_url('fun/bad_vibes.gif') }}" alt="" class="mx-auto mb-6" style="border-radius: 0.25rem; max-width: 200px;">
+            <img src="{{ public_url('fun/bad_vibes.gif') }}" alt="" class="mx-auto mb-6" style="border-radius: 0.25rem; max-width: 200px;" loading="lazy" decoding="async">
             <div>
                 @if(ICL_LANGUAGE_CODE == 'ro')
                 <h1 class="font-headline text-5xl font-bold text-on-surface">404</h1>

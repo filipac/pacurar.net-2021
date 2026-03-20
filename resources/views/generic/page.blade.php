@@ -13,7 +13,7 @@
             @endpush
             @if(has_post_thumbnail())
                 <div class="w-full mb-8 overflow-hidden" style="border-radius: 0.25rem;">
-                    <img src="{{ get_the_post_thumbnail_url(get_post()->ID, 'full') }}" class="w-full" alt="" style="object-fit: cover;">
+                    <img src="{{ get_the_post_thumbnail_url(get_post()->ID, 'full') }}" class="w-full" alt="" style="object-fit: cover;" fetchpriority="high" decoding="async">
                 </div>
             @endif
 

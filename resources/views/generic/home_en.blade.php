@@ -3,7 +3,7 @@
     <section class="relative py-16 md:py-24 mb-4 px-4 md:px-8 overflow-hidden" style="border-radius: 0.25rem;">
         {{-- Background image --}}
         <div class="absolute inset-0 z-0">
-            <img src="{{get_stylesheet_directory_uri().'/resources/fam.jpeg'}}" alt="" class="w-full h-full object-cover" style="object-position: center 8%;">
+            <img src="{{get_stylesheet_directory_uri().'/resources/fam.jpeg'}}" alt="" class="w-full h-full object-cover" style="object-position: center 8%;" fetchpriority="high" decoding="async">
             {{-- Dark overlay --}}
             <div class="absolute inset-0" style="background: rgba(0, 0, 0, 0.55);"></div>
         </div>
@@ -139,11 +139,11 @@
                 <button class="font-label text-xs px-3 py-1 transition-colors" @click="show = 'dog'" :class="show == 'dog' ? 'opacity-50' : ''" style="background: var(--color-surface-container);">Dog</button>
             </div>
             <template x-if="show == 'dog'">
-                <img src="{{get_stylesheet_directory_uri().'/resources/naba.jpeg'}}" alt="Naba" class="w-full" style="border-radius: 0.25rem; object-fit: cover; max-height: 200px;">
+                <img src="{{get_stylesheet_directory_uri().'/resources/naba.jpeg'}}" alt="Naba" class="w-full" style="border-radius: 0.25rem; object-fit: cover; max-height: 200px;" loading="lazy" decoding="async">
             </template>
             <template x-if="show == 'cat'">
                 <div>
-                    <img src="{{get_stylesheet_directory_uri().'/resources/tomginger.jpg'}}" alt="Tom and Ginger" class="w-full" style="border-radius: 0.25rem; object-fit: cover; max-height: 200px;">
+                    <img src="{{get_stylesheet_directory_uri().'/resources/tomginger.jpg'}}" alt="Tom and Ginger" class="w-full" style="border-radius: 0.25rem; object-fit: cover; max-height: 200px;" loading="lazy" decoding="async">
                     <p class="text-xs mt-2" style="color: var(--color-on-surface-variant);">We had 5 cats in total. Two left, one died. If the other 2 come back I will publish a photo of them too.</p>
                 </div>
             </template>

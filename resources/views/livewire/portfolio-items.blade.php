@@ -6,7 +6,7 @@
                     $_img = get_the_post_thumbnail_url( $item, 'full' );
                 @endphp
                 <div class="featured-image flex sm:max-h-sm sm:max-w-full sm:w-full overflow-hidden" style="border-radius: 0.25rem 0.25rem 0 0;">
-                    <img src="{{ $_img }}" class="featured-image sm:max-w-full sm:w-full" />
+                    <img src="{{ $_img }}" class="featured-image sm:max-w-full sm:w-full" loading="lazy" decoding="async" />
                 </div>
             @endif
             <div class="p-6">

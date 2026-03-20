@@ -1,4 +1,7 @@
 <x-layouts.master>
+    @push('head')
+        <link rel="preload" as="image" href="{{get_stylesheet_directory_uri().'/resources/fam.jpeg'}}" fetchpriority="high">
+    @endpush
     <x-slot name="belowContent">
         @php
             $lang = ICL_LANGUAGE_CODE;

@@ -79,7 +79,7 @@
                     </div>
                     <div>
                         <a href="{{config('multiversx.urls.spotlight')}}/nfts/{{$nft['identifier']}}" target="_blank">
-                            <img src="{{ $nft['url'] }}" alt="{{ $nft['name'] }}" />
+                            <img src="{{ $nft['url'] }}" alt="{{ $nft['name'] }}" loading="lazy" decoding="async" />
                         </a>
                     </div>
                     <div data-game-counter-mini-app data-nft="{{json_encode($nft)}}"
