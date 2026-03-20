@@ -20,9 +20,6 @@
 
 @include('partials.header')
 
-<main class="pt-20 flex-1 {{$extraClassesContent ?? ''}}">
-    {{ $slot }}
-</main>
 
 {{ $belowContent ?? '' }}
 
