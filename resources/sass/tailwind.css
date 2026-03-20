@@ -6,46 +6,7 @@
 
 @plugin "@tailwindcss/typography";
 
-@plugin "daisyui" {
-  prefix: 'd-';
-  logs: true;
-  themes: false;
-}
-
-@plugin "daisyui/theme" {
-  name: "light";
-  default: true;
-  prefersdark: false;
-  color-scheme: "light";
-  --color-base-100: oklch(100% 0 0);
-  --color-base-200: oklch(98% 0 0);
-  --color-base-300: oklch(95% 0 0);
-  --color-base-content: oklch(21% 0.006 285.885);
-  --color-primary: #fdf767;
-  --color-primary-content: #ffffff;
-  --color-secondary: #bbf7d0;
-  --color-secondary-content: white;
-  --color-accent: oklch(77% 0.152 181.912);
-  --color-accent-content: oklch(38% 0.063 188.416);
-  --color-neutral: oklch(14% 0.005 285.823);
-  --color-neutral-content: oklch(92% 0.004 286.32);
-  --color-info: oklch(74% 0.16 232.661);
-  --color-info-content: oklch(29% 0.066 243.157);
-  --color-success: oklch(76% 0.177 163.223);
-  --color-success-content: oklch(37% 0.077 168.94);
-  --color-warning: oklch(82% 0.189 84.429);
-  --color-warning-content: oklch(41% 0.112 45.904);
-  --color-error: oklch(71% 0.194 13.428);
-  --color-error-content: oklch(27% 0.105 12.094);
-  --radius-selector: 0.5rem;
-  --radius-field: 0.25rem;
-  --radius-box: 0.5rem;
-  --size-selector: 0.25rem;
-  --size-field: 0.25rem;
-  --border: 1px;
-  --depth: 1;
-  --noise: 0;
-}
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
   --breakpoint-sm: 640px;
@@ -53,22 +14,66 @@
   --breakpoint-lg: 1024px;
   --breakpoint-xl: 1280px;
   --breakpoint-2xl: 1536px;
-  --color-splash: #235E6F;
-  --color-primary: #fdf767;
-  --color-secondary: #bbf7d0;
+
+  /* Colors reference CSS vars so dark mode overrides work */
+  --color-surface: var(--surface);
+  --color-surface-container: var(--surface-container);
+  --color-surface-container-low: var(--surface-container-low);
+  --color-surface-container-high: var(--surface-container-high);
+  --color-primary: var(--primary);
+  --color-primary-container: var(--primary-container);
+  --color-on-surface: var(--on-surface);
+  --color-on-surface-variant: var(--on-surface-variant);
+  --color-outline: var(--outline);
+  --color-outline-variant: var(--outline-variant);
+
+  /* Integration colors (static) */
   --color-spotify: #1DB954;
   --color-mx: rgba(35,247,221, 1);
   --color-mx-yellow: #fbca1c;
-  --shadow-box: 5px 5px 0 #000;
-  --shadow-box-white: 5px 5px 0 #fff;
-  --shadow-boxhvr: 10px 10px 0 #000;
-  --shadow-boxhvr-white: 10px 10px 0 #fff;
-  --shadow-boxy: 5px 5px #fdf767;
+
+  /* Accent colors */
+  --color-accent: var(--accent);
+  --color-accent-light: var(--accent-light);
+
+  /* Font families */
+  --font-headline: "Space Grotesk", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-label: "JetBrains Mono", monospace;
 }
 
+/* Light mode defaults */
 :root {
-  --grid-blog-list: 1fr 0.3fr;
-  --grid-blog-list-mobile: 1fr;
+  --surface: #f3faff;
+  --surface-container: #d8f2ff;
+  --surface-container-low: #e6f6ff;
+  --surface-container-high: #c8e8f7;
+  --primary: #003849;
+  --primary-container: #165064;
+  --on-surface: #001f29;
+  --on-surface-variant: #3d4d54;
+  --outline: #6d7d84;
+  --outline-variant: #c0c8cc;
+  --accent: #0891b2;
+  --accent-light: #22d3ee;
+
+  --color-dark-neon: #13ff43;
+}
+
+/* Dark mode overrides */
+.dark {
+  --surface: #10141a;
+  --surface-container: #242a38;
+  --surface-container-low: #1a1f2b;
+  --surface-container-high: #2d3444;
+  --primary: #5ec4db;
+  --primary-container: #1a3a44;
+  --on-surface: #e0e4e8;
+  --on-surface-variant: #a0aab4;
+  --outline: #4a5568;
+  --outline-variant: #374151;
+  --accent: #22d3ee;
+  --accent-light: #67e8f9;
 }
 
 @content "./safe.html"

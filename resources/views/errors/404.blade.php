@@ -1,7 +1,6 @@
 @push('beforeContainer')
     <div class="overflow-hidden">
-        <video width="100%" id="rick" class="w-full h-screen fixed skip" autoplay muted style="z-index: 0;object-fit: cover;">
-            <!-- HTML 5 browsers will play one of these -->
+        <video width="100%" id="rick" class="w-full h-screen fixed" autoplay muted style="z-index: 0;object-fit: cover;">
             <source src="{{ public_url('fun/rick.webm') }}" type="video/webm" /></source>
             <source src="{{ public_url('fun/rick.mp4') }}" type="video/mp4" /></source>
             You need an HTML 5-capable browser.
@@ -11,7 +10,7 @@
 
 @push('scripts')
     <script>
-        jQuery(document).on('click', function() {
+        document.addEventListener('click', function() {
             var element = document.querySelector('#rick')
             if(element) {
                 element.muted = false;
@@ -23,31 +22,32 @@
 
 <x-layouts.master>
     <x-slot name="belowContent">
-    <div class="m-8">
-    <div class="flex items-center justify-center">
-        <section class="flex flex-col text-center bg-splash text-white w-auto p-12 shadow-box hover:shadow-boxhvr perspective-sm">
-            <img src="{{ public_url('fun/bad_vibes.gif') }}" alt="">
+    <div class="flex items-center justify-center min-h-[60vh] px-8">
+        <section class="flex flex-col text-center max-w-lg p-8 md:p-12 relative z-10" style="background: var(--color-surface-container-low); border: 1px solid var(--color-outline-variant); border-radius: 0.25rem; backdrop-filter: blur(8px); background: rgba(243, 250, 255, 0.85);">
+            <img src="{{ public_url('fun/bad_vibes.gif') }}" alt="" class="mx-auto mb-6" style="border-radius: 0.25rem; max-width: 200px;">
             <div>
                 @if(ICL_LANGUAGE_CODE == 'ro')
-                <h1 class="text-4xl">404</h1>
-                <p>Pagina pe care o cauti nu exista.<br/>
+                <h1 class="font-headline text-5xl font-bold text-on-surface">404</h1>
+                <p class="mt-4 text-sm" style="color: var(--color-on-surface-variant);">Pagina pe care o cauti nu exista.<br/>
                 Dar m-am gandit ca iti va placea acest video mirobolant.<br />
-                Click oriunde in pagina sa porneasca si audio.<br/> <br/>
-                (browserele sunt rele si nu ne lasa sa dam play la un video cu sunet)</p>
+                Click oriunde in pagina sa porneasca si audio.</p>
                 @else
-                <h1 class="text-4xl">404</h1>
-                <p>The page you are looking for does not exist.<br/>
+                <h1 class="font-headline text-5xl font-bold text-on-surface">404</h1>
+                <p class="mt-4 text-sm" style="color: var(--color-on-surface-variant);">The page you are looking for does not exist.<br/>
                 But... I thought you would like this awesome video.<br />
-                Click anywhere on the page so the audio starts too.<br/> <br/>
-                (browsers are evil and won't let us autoplay a video with sound)</p>
+                Click anywhere on the page so the audio starts too.</p>
                 @endif
             </div>
             <div class="mt-6">
-                <a href="{{home_url()}}" class="inline-block bg-primary perspective shadow-box hover:shadow-boxhvr text-black p-4">Inapoi la baza.</a>
+                <a href="{{home_url()}}" class="inline-block px-6 py-3 font-label text-xs uppercase tracking-wider text-white transition-colors" style="background: var(--color-primary);">
+                    @if(ICL_LANGUAGE_CODE == 'ro')
+                        Inapoi la baza
+                    @else
+                        Back to home
+                    @endif
+                </a>
             </div>
         </section>
     </div>
-    </div>
     </x-slot>
 </x-layouts.master>
-

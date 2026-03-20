@@ -1,33 +1,25 @@
-<div class="grid gap-9 grid-cols-1 md:grid-cols-2 mt-4">
+<div class="grid gap-6 grid-cols-1 md:grid-cols-2 mt-4">
     @foreach($items as $item)
-        <div class="post-box bg-white col-span-1 md:col-span-{{ get_field('colspan', $item) ?: 1 }} shadow-box pb-4">
+        <div class="col-span-1 md:col-span-{{ get_field('colspan', $item) ?: 1 }} pb-4" style="background: var(--color-surface-container-low); border: 1px solid var(--color-outline-variant); border-radius: 0.25rem;">
             @if(has_post_thumbnail($item))
                 @php
                     $_img = get_the_post_thumbnail_url( $item, 'full' );
                 @endphp
-                <div class="featured-image flex sm:max-h-sm sm:max-w-full sm:w-full">
-                    {{-- {!! apply_filters('manual_lazy_image', '') !!} --}}
-                    <img src="{{ $_img }}" class="featured-image  sm:max-w-full sm:w-full" />
+                <div class="featured-image flex sm:max-h-sm sm:max-w-full sm:w-full overflow-hidden" style="border-radius: 0.25rem 0.25rem 0 0;">
+                    <img src="{{ $_img }}" class="featured-image sm:max-w-full sm:w-full" />
                 </div>
             @endif
             <div class="p-6">
-            <div class="grid items-center flex-wrap grid-cols-1 md:two-cols-title-portfolio">
-                <h2 class="font-bold o-2 md:o-1 mt-4 md:mt-0 text-xl text-center md:text-left">{!! get_the_title($item) !!}</h2>
+            <div class="grid items-center flex-wrap grid-cols-1 md:grid-cols-[1fr_max-content]">
+                <h2 class="font-headline font-bold mt-4 md:mt-0 text-xl text-center md:text-left">{!! get_the_title($item) !!}</h2>
                 @if($type = get_field('type', $item))
-                <div class="md:pr-4 o-1 md:o-2">
-                    <div
-                    class="max-w-fit mx-auto md:mx-0 ultra bg-primary rounded shadow-box border border-black p-2 text-base transform {{ rand(1,2) == 2 ? '-' : '' }}rotate-12 font-bold text-white"
-                    style="background: url({{ get_stylesheet_directory_uri() }}/public/images/noise.png);
-                        font-variant: petite-caps;
-                        -webkit-text-fill-color: white;
-                        -webkit-text-stroke-width: 0.5px;
-                        -webkit-text-stroke-color: black;"
-                    >{{ $type }}</div>
+                <div class="md:pr-4">
+                    <span class="font-label text-xs uppercase tracking-wider px-3 py-1" style="background: var(--color-primary); color: #fff; border-radius: 0.125rem;">{{ $type }}</span>
                 </div>
                 @endif
             </div>
 
-            <div class="mt-4">
+            <div class="mt-4 text-sm leading-relaxed">
                 {!! get_the_content(null, false, $item) !!}
             </div>
 
@@ -36,8 +28,8 @@
             @endphp
 
             @if(count($categories) > 0)
-            <div class="mt-2">
-                Technologies used in this project:
+            <div class="mt-3 text-sm" style="color: var(--color-on-surface-variant);">
+                Technologies used:
             </div>
 
             @include('partials.techs')
@@ -45,8 +37,8 @@
 
             @if($website = get_field('url', $item))
             <div class="mt-6 w-full text-center">
-                <a href="{{ $website }}" target="_blank" class="group hover:bg-primary hover:shadow-boxhvr p-2 hover:pb-4 shadow-box border-2 border-black">
-                    <span class="relative show-border">Visit project</span>
+                <a href="{{ $website }}" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 font-label text-xs uppercase tracking-wider text-white transition-colors" style="background: var(--color-primary); border-radius: 0.125rem;">
+                    Visit project
                 </a>
             </div>
             @endif

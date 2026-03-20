@@ -4,7 +4,7 @@
   <text x="237.843" y="384.75" fill="#fff" font-family="Bariol" font-size="430" text-anchor="middle">
     <tspan x="237.843">f</tspan>
   </text>
-  <text x="908.885" y="290.25" fill="#002f3c" data-name="ilip pacurar" font-family="Bariol Regular" font-size="200" text-anchor="middle">
+  <text x="908.885" y="290.25" fill="currentColor" data-name="ilip pacurar" font-family="Bariol Regular" font-size="200" text-anchor="middle">
     <tspan x="908.885">ilip pacurar</tspan>
   </text>
 </svg>

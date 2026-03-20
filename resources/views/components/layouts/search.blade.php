@@ -4,9 +4,11 @@
     'belowContent'
 ])
 <!DOCTYPE html>
-<html prefix="og: http://ogp.me/ns#">
+<html prefix="og: http://ogp.me/ns#"
+      x-data="{ darkMode: localStorage.getItem('darkMode') !== null ? localStorage.getItem('darkMode') === 'true' : window.matchMedia('(prefers-color-scheme: dark)').matches, geekMode: localStorage.getItem('geekMode') === 'true' }"
+      :class="{ 'dark': darkMode, 'geek-mode': geekMode }">
 @include('partials.head')
-<body {!! body_class('bg-white dark:bg-black min-h-screen flex flex-col') !!}>
+<body {!! body_class('bg-surface text-on-surface font-body min-h-screen flex flex-col') !!}>
 
 @if(env('APP_ENV')==='production')
     <script>
@@ -16,28 +18,13 @@
 
 @stack('beforeContainer')
 
-@php
-$cls = Cookie::get('containerfull', 'nu') == 'da' ? 'containerfull' : 'container';
-@endphp
+@include('partials.header')
 
-<div class="{{ $cls }} maincontainer @yield('containerStyles')" x-data="{gem: false}" style="z-index: 1;"
-@creak.window="new Howl({
-  src: ['{{ public_url('fun/wood.mp3') }}'],
-  autoplay: true,
-})">
-    <div class="my-8 w-full border-2 shadow-box shadow-button border-black p-4 bg-white flex-1 flex flex-col {{$extraClassesContent??''}}"
-         style="">
-        @include('partials.header')
+<main class="pt-20 flex-1 {{$extraClassesContent ?? ''}}">
+    {{ $slot }}
+</main>
 
-        {{ $slot }}
-    </div>
-    {{ $belowContent ?? '' }}
-
-    <audio x-ref="creak">
-        <source src="{{ public_url('fun/wood.mp3') }}" type="audio/mpeg">
-    </audio>
-</div>
-
+{{ $belowContent ?? '' }}
 
 @include('partials.footer')
 

@@ -4,9 +4,11 @@
     'belowContent',
 ])
 <!DOCTYPE html>
-<html prefix="og: http://ogp.me/ns#">
+<html prefix="og: http://ogp.me/ns#"
+      x-data="{ darkMode: localStorage.getItem('darkMode') !== null ? localStorage.getItem('darkMode') === 'true' : window.matchMedia('(prefers-color-scheme: dark)').matches, geekMode: localStorage.getItem('geekMode') === 'true' }"
+      :class="{ 'dark': darkMode, 'geek-mode': geekMode }">
 @include('partials.head')
-<body {!! body_class('bg-splash min-h-screen flex flex-col') !!}>
+<body {!! body_class('bg-surface text-on-surface font-body min-h-screen flex flex-col') !!}>
 
 @if(env('APP_ENV')==='production')
     <script>
@@ -16,43 +18,13 @@
 
 @stack('beforeContainer')
 
-@php
-$cls = Cookie::get('containerfull', 'nu') == 'da' ? 'containerfull' : 'container';
+@include('partials.header')
 
-$possibleImages = collect([
-    ['https://pacurar.net/wp-content/uploads/2022/04/drone-april-2022.jpg', 50, 40],
-    ['https://pacurar.net/wp-content/uploads/2023/09/IMG_6348.jpeg', 10, 72],
-    ['https://pacurar.net/wp-content/uploads/2023/09/IMG_6267.jpeg', 10, 20],
-    ['https://pacurar.net/wp-content/uploads/2023/09/IMG_6344.jpeg', 10, 30],
-])->random(1)->first();
+<main class="pt-20 flex-1 {{$extraClassesContent ?? ''}}">
+    {{ $slot }}
+</main>
 
-@endphp
-
-<div class="{{ $cls }} maincontainer" x-data="{gem: false}" style="z-index: 1;{{$containerStyles ?? ''}}"
-@creak.window="new Howl({
-  src: ['{{ public_url('fun/wood.mp3') }}'],
-  autoplay: true,
-})">
-    <div class="my-8 w-full border-2 shadow-box shadow-button border-black p-4 bg-primary flex-1 flex flex-col
-        {{$extraClassesContent ?? ''}}"
-         style="
-            background-image: url('{{$possibleImages[0]}}');
-            background-size: 100% auto;
-            background-repeat: no-repeat;
-            background-blend-mode: normal;
-            background-clip: border-box;
-            background-position: {{$possibleImages[1]}}% {{((is_single() || is_page()) && !is_front_page()) ? '0' : $possibleImages[2]}}%;">
-        @include('partials.header')
-
-        {{ $slot }}
-    </div>
-    {{ $belowContent ?? '' }}
-
-    <audio x-ref="creak">
-        <source src="{{ public_url('fun/wood.mp3') }}" type="audio/mpeg">
-    </audio>
-</div>
-
+{{ $belowContent ?? '' }}
 
 @include('partials.footer')
 

@@ -7,14 +7,14 @@
         $byType = separate_comments($get_comments);
     @endphp
     @if(count($byType['pings']) > 0)
-    <div class="bg-secondary shadow-box flex-1 w-full border-2 border-black px-2 py-2 text-xl mb-6">
+    <div class="p-4 mb-6" style="background: var(--color-surface-container-low); border: 1px solid var(--color-outline-variant); border-radius: 0.25rem;">
         @if(ICL_LANGUAGE_CODE == 'ro')
-        <h3>Ping(pong)-uri la acest articol</h3>
+        <h3 class="font-headline font-semibold text-lg mb-3">Ping(pong)-uri la acest articol</h3>
         @else
-        <h3>Ping(pongs) to this article</h3>
+        <h3 class="font-headline font-semibold text-lg mb-3">Ping(pongs) to this article</h3>
         @endif
 
-    <div class="prose max-w-none">
+    <div class="prose dark:prose-invert max-w-none">
         <ul>
         @foreach($byType['pings'] as $comm)
         @php
@@ -38,14 +38,10 @@
         margin-bottom: 0;
         border-radius: 9999px !important;
     }</style>
-    <div class="bg-secondary shadow-box flex-1 w-full border-2 border-black px-2 py-2 text-xl mb-6">
-        @if(ICL_LANGUAGE_CODE == 'ro')
-        <h3>Webmentions</h3>
-        @else
-        <h3>Webmentions</h3>
-        @endif
+    <div class="p-4 mb-6" style="background: var(--color-surface-container-low); border: 1px solid var(--color-outline-variant); border-radius: 0.25rem;">
+        <h3 class="font-headline font-semibold text-lg mb-3">Webmentions</h3>
 
-    <div class="prose max-w-none">
+    <div class="prose dark:prose-invert max-w-none">
         <ul>
         @foreach($byType['webmention'] as $comm)
         @php

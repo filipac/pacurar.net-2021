@@ -1,10 +1,10 @@
 <div>
     <div class="px-1 md:px-6 lg:px-0">
-        <div class="bg-white px-2 md:px-12 py-3 md:py-6">
-            <div class="sigmar text-3xl w-full text-center text-shadow my-6 lg:my-2 hidden lg:block">
+        <div class="px-2 md:px-12 py-3 md:py-6" style="background: var(--color-surface-container-low); border: 1px solid var(--color-outline-variant); border-radius: 0.25rem;">
+            <h1 class="font-headline text-3xl font-bold text-on-surface mb-4 text-center lg:text-left">
                 My Board Games
-            </div>
-            <div class="entry-content pb-2 prose prose-lg max-w-none">
+            </h1>
+            <div class="entry-content pb-2 prose dark:prose-invert prose-lg max-w-none">
                 <p>Because I am a true geek, I own quite a few board games.</p>
                 <p>One day I thought to myself... what if I would upload all my current board games as NFTs on the
                     MultiversX
@@ -21,13 +21,13 @@
                         href="{{config('multiversx.urls.explorer')}}/collections/{{config('multiversx.counter_contract.nft')}}"
                         target="_blank">{{config('multiversx.counter_contract.nft')}}</a>
                 </p>
-                <p class="text-xs bg-primary p-4">
+                <p class="text-xs p-4" style="background: var(--color-surface-container);">
                     You can read the "behind the scenes" of this page and the NFTs <a
                         href="https://twitter.com/filipacro/status/1625897421069852673"
                         target="_blank">on this Twitter thread</a>.
                 </p>
 
-                <p class="text-sm bg-blue-300 p-4">
+                <p class="text-sm p-4" style="background: var(--color-surface-container);">
                     Each board game tile containing an NFT behind the scene has a "play count" that is stored in the <strong>Smart Contract</strong> with the addresss
                     <a href="{{config('multiversx.urls.explorer')}}/address/{{config('multiversx.counter_contract.address')}}"
                         target="_blank">{{config('multiversx.counter_contract.address')}}</a>. <br />
@@ -37,8 +37,6 @@
                     <a href="{{config('multiversx.urls.explorer')}}/transactions/{{config('multiversx.counter_contract.genesis')}}" target="_blank">moment I deployed the smart contract on the blockchain</a>.
                     The real play count is higher mostly for every game ;).
                 </p>
-
-{{--                <x-web3-ad spaceName="page-top" format="dark" />--}}
             </div>
         </div>
     </div>
@@ -49,16 +47,16 @@
 
     <div data-game-counter-app data-nfts='{{ json_encode($nfts) }}'></div>
 
-    <div class="flex flex-col md:flex-row mt-4 px-6 lg:px-0">
-        <div class="flex-1 text-center {{ $type === 'owned_ever' ? 'bg-mxYellow' : 'bg-white' }} p-4 cursor-pointer" wire:click="setType('owned_ever')")>Lifetime owned</div>
-        <div class="flex-1 text-center {{ $type === 'owned_now' ? 'bg-mxYellow' : 'bg-white' }} p-4 cursor-pointer" wire:click="setType('owned_now')">Currently owned</div>
+    <div class="flex flex-col md:flex-row mt-4 px-6 lg:px-0 gap-2">
+        <div class="flex-1 text-center p-4 cursor-pointer font-label text-sm uppercase tracking-wider transition-colors" wire:click="setType('owned_ever')" style="{{ $type === 'owned_ever' ? 'background: var(--color-primary); color: #fff;' : 'background: var(--color-surface-container-low); border: 1px solid var(--color-outline-variant);' }} border-radius: 0.25rem;">Lifetime owned</div>
+        <div class="flex-1 text-center p-4 cursor-pointer font-label text-sm uppercase tracking-wider transition-colors" wire:click="setType('owned_now')" style="{{ $type === 'owned_now' ? 'background: var(--color-primary); color: #fff;' : 'background: var(--color-surface-container-low); border: 1px solid var(--color-outline-variant);' }} border-radius: 0.25rem;">Currently owned</div>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6 px-6 lg:px-0">
         @foreach($this->getPaginator() as $nft)
-            <div class="bg-white flex flex-col" wire:key="{{$nft['identifier']}}">
-                <div class="sigmar text-base lg:text-xl w-full text-center text-shadow my-6 lg:my-2 block px-4">
-                    <a href="{{config('multiversx.urls.spotlight')}}/nfts/{{$nft['identifier']}}" target="_blank">
+            <div class="flex flex-col" wire:key="{{$nft['identifier']}}" style="background: var(--color-surface-container-low); border: 1px solid var(--color-outline-variant); border-radius: 0.25rem;">
+                <div class="font-headline text-base lg:text-lg font-semibold w-full text-center my-4 px-4">
+                    <a href="{{config('multiversx.urls.spotlight')}}/nfts/{{$nft['identifier']}}" target="_blank" class="hover:text-primary transition-colors">
                         @if(isset($nft['metadata']['description']))
                             {{ $nft['metadata']['description'] }}
                         @else
@@ -73,25 +71,21 @@
                 </div>
                 <div data-game-counter-mini-app data-nft="{{json_encode($nft)}}"
                      data-owner="{{config("multiversx.counter_contract.owner")}}"></div>
-                <div class="flex flex-col justify-end items-center mt-6 pb-6 flex-1 px-4">
-                    <div>
-                        <a href="{{config('multiversx.urls.spotlight')}}/nfts/{{$nft['identifier']}}" target="_blank"
-                           class="inline-block group bg-mxYellow hover:shadow-boxhvr p-2 hover:pb-4 shadow-box border-2 border-black">
-                            <span class="relative show-border">View on xSpotlight</span>
-                        </a>
-                    </div>
-                    <div class="mt-4">
-                        <a href="{{config('multiversx.urls.explorer')}}/nfts/{{$nft['identifier']}}" target="_blank"
-                           class="inline-block group bg-mx hover:shadow-boxhvr p-2 hover:pb-4 shadow-box border-2 border-black">
-                            <span class="relative show-border">View on MultiversX Explorer</span>
-                        </a>
-                    </div>
+                <div class="flex flex-col justify-end items-center mt-6 pb-6 flex-1 px-4 gap-3">
+                    <a href="{{config('multiversx.urls.spotlight')}}/nfts/{{$nft['identifier']}}" target="_blank"
+                       class="inline-flex items-center gap-2 px-4 py-2 font-label text-xs uppercase tracking-wider transition-colors" style="background: var(--color-mx-yellow); border-radius: 0.125rem;">
+                        View on xSpotlight
+                    </a>
+                    <a href="{{config('multiversx.urls.explorer')}}/nfts/{{$nft['identifier']}}" target="_blank"
+                       class="inline-flex items-center gap-2 px-4 py-2 font-label text-xs uppercase tracking-wider transition-colors" style="background: var(--color-mx); border-radius: 0.125rem;">
+                        View on MultiversX Explorer
+                    </a>
                 </div>
             </div>
         @endforeach
     </div>
 
-    <div class="mt-4 text-white pb-4">
+    <div class="mt-4 pb-4">
         {!! $this->getPaginator() !!}
     </div>
 

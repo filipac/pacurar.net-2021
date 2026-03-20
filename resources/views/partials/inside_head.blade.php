@@ -29,16 +29,23 @@
 <link rel="icon" type="image/png" sizes="16x16"
       href="{{get_stylesheet_directory_uri().'/resources'}}/favicons/favicon-16x16.png">
 <link rel="manifest" href="{{get_stylesheet_directory_uri().'/resources'}}/favicons/manifest.json">
-<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileColor" content="#003849">
 <meta name="msapplication-TileImage"
       content="<?php echo get_template_directory_uri();?>/assets/images/favicons/ms-icon-144x144.png">
-<meta name="theme-color" content="#fdf767">
+<meta name="theme-color" content="#003849">
 
 <link rel="shortcut icon" href="{{ public_url('images/favicon.ico') }}" type="image/vnd.microsoft.icon"/>
 <link rel="apple-touch-icon-precomposed" href="{{ public_url('images/apple-touch-icon-precomposed.png') }}">
+
 <link rel="preload" as="font"
-      href="https://pacurar.net/wp-content/themes/pacurar2020/resources/fonts/bariol_regular-webfont.woff"
+      href="/wp-content/themes/pacurar2020/resources/fonts/bariol_regular-webfont.woff"
       type="font/woff" crossorigin="anonymous">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Inter:wght@300..700&family=JetBrains+Mono:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+
 <!-- Styles blog -->
 @vite(['resources/sass/tailwind.css', 'resources/sass/app.scss'])
 @php
@@ -52,24 +59,6 @@
 if (!$isPs) {
     wp_head();
 }
-if ($isPs) {
-    echo <<<HTML
-                <style>
-                .post-box {
-                 opacity: 1 !important;
-                }
-                </style>
-            HTML;
-
-}
 ?>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.1/howler.min.js"
-        integrity="sha512-L6Z/YtIPQ7eU3BProP34WGU5yIRk7tNHk7vaC2dB1Vy1atz6wl9mCkTPPZ2Rn1qPr+vY2mZ9odZLdGYuaBk7dQ=="
-        crossorigin="anonymous"></script>
-<style>
-    * {
-        cursor: url({{get_stylesheet_directory_uri().'/resources/bagel.cur'}}), auto !important;
-    }
-</style>
 
 @livewireStyles

@@ -1,17 +1,9 @@
-<div class="emulated-flex-gap">
-    {{-- @php
-        $f = array_fill(1, 10, 1);
-    @endphp --}}
-    {{-- @foreach($f as $x) --}}
+<div class="flex flex-wrap gap-2">
     @foreach($techs as $idx => $tech)
-    <div class="cursor-pointer
-        {{ count($narrowTo) == 0 ? ($idx % 2 == 0 ? 'bg-red-400' : 'bg-primary') : ('') }}
-        {{ count($narrowTo) > 0 ? (in_array($tech->slug, $narrowTo) ? 'bg-red-400' : 'bg-gray-200') : ('') }}
-        p-4 shadow-box hover:shadow-boxhvr inline-block"
+    <div class="cursor-pointer px-3 py-2 font-label text-xs uppercase tracking-wider transition-colors"
+        style="{{ count($narrowTo) == 0 ? 'background: var(--color-surface-container);' : (in_array($tech->slug, $narrowTo) ? 'background: var(--color-primary); color: #fff;' : 'background: var(--color-surface-container-low); color: var(--color-on-surface-variant);') }} border-radius: 0.125rem;"
         wire:click="toggle('{{ $tech->slug }}')">
         {{ $tech->name }}
     </div>
     @endforeach
-    {{-- @endforeach --}}
 </div>
-`

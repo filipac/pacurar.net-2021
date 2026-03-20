@@ -10,11 +10,11 @@
         <div class="">
             <div class="flex flex-col lg:flex-row w-full">
                 <section
-                        class="flex flex-col text-center bg-white text-black w-full lg:w-1/3 p-12 shadow-box hover:shadow-boxhvr perspective-sm">
+                        class="flex flex-col text-center w-full lg:w-1/3 p-12" style="background: var(--color-surface-container-low); border: 1px solid var(--color-outline-variant); border-radius: 0.25rem;">
                     <livewire:exchange-egold/>
                 </section>
                 <section class="flex flex-col text-center w-full lg:w-2/3 pt-8 lg:pt-0 lg:pl-4">
-                    <div class="p-10 shadow-box hover:shadow-boxhvr perspective-sm bg-white h-full text-left">
+                    <div class="p-10 h-full text-left" style="background: var(--color-surface-container-low); border: 1px solid var(--color-outline-variant); border-radius: 0.25rem;">
                         <h1>Payment details</h1>
                         <p>You can send me the EGLD amount to the following address on Elrond Network:</p>
                         <p class="font-bold py-2" style="word-break: break-all;">

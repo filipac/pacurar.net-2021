@@ -10,8 +10,8 @@
       "_bignumber-L0kgG1Q3.js"
     ]
   },
-  "_vendor-DZp4qUgB.js": {
-    "file": "assets/vendor-DZp4qUgB.js",
+  "_vendor-DlnAqk-X.js": {
+    "file": "assets/vendor-DlnAqk-X.js",
     "name": "vendor",
     "imports": [
       "_bignumber-L0kgG1Q3.js",
@@ -19,12 +19,12 @@
     ]
   },
   "resources/js/MainAdSpaceApp.tsx": {
-    "file": "assets/MainAdSpaceApp-DGt01_wo.js",
+    "file": "assets/MainAdSpaceApp-Bs5Efio8.js",
     "name": "MainAdSpaceApp",
     "src": "resources/js/MainAdSpaceApp.tsx",
     "isDynamicEntry": true,
     "imports": [
-      "_vendor-DZp4qUgB.js",
+      "_vendor-DlnAqk-X.js",
       "_bignumber-L0kgG1Q3.js",
       "_lodash-C-76dkfd.js",
       "resources/js/react-app.tsx"
@@ -35,47 +35,47 @@
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-BjOEhl3J.js",
+    "file": "assets/app-Bz4miigb.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
     "imports": [
-      "_vendor-DZp4qUgB.js",
+      "_vendor-DlnAqk-X.js",
       "_bignumber-L0kgG1Q3.js",
       "_lodash-C-76dkfd.js"
     ]
   },
   "resources/js/components/BuySpace.tsx": {
-    "file": "assets/BuySpace-OZ-u7ISW.js",
+    "file": "assets/BuySpace-W9axbqyF.js",
     "name": "BuySpace",
     "src": "resources/js/components/BuySpace.tsx",
     "isDynamicEntry": true,
     "imports": [
-      "_vendor-DZp4qUgB.js",
+      "_vendor-DlnAqk-X.js",
       "_bignumber-L0kgG1Q3.js",
       "_lodash-C-76dkfd.js",
       "resources/js/react-app.tsx"
     ]
   },
   "resources/js/components/SpaceEdit.tsx": {
-    "file": "assets/SpaceEdit-B10wh_pe.js",
+    "file": "assets/SpaceEdit-CoEngLnW.js",
     "name": "SpaceEdit",
     "src": "resources/js/components/SpaceEdit.tsx",
     "isDynamicEntry": true,
     "imports": [
-      "_vendor-DZp4qUgB.js",
+      "_vendor-DlnAqk-X.js",
       "resources/js/react-app.tsx",
       "_bignumber-L0kgG1Q3.js",
       "_lodash-C-76dkfd.js"
     ]
   },
   "resources/js/react-app.tsx": {
-    "file": "assets/react-app-DjWCPCj7.js",
+    "file": "assets/react-app-TLyt3Dva.js",
     "name": "react-app",
     "src": "resources/js/react-app.tsx",
     "isEntry": true,
     "imports": [
-      "_vendor-DZp4qUgB.js",
+      "_vendor-DlnAqk-X.js",
       "_bignumber-L0kgG1Q3.js",
       "_lodash-C-76dkfd.js"
     ],
@@ -84,12 +84,12 @@
     ]
   },
   "resources/sass/app.scss": {
-    "file": "assets/app-DWnOqcEO.css",
+    "file": "assets/app-BNFBTsuK.css",
     "src": "resources/sass/app.scss",
     "isEntry": true
   },
   "resources/sass/tailwind.css": {
-    "file": "assets/tailwind-MiaMC4YO.css",
+    "file": "assets/tailwind-C3s4WVcd.css",
     "src": "resources/sass/tailwind.css",
     "isEntry": true
   }

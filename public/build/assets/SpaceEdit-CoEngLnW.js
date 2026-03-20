@@ -1,4 +1,4 @@
-import{r as i,b as C,j as e,U as F,X as _,c as E,N as m,O as b,f as v,d as j}from"./vendor-DZp4qUgB.js";import{t as $,G as w}from"./react-app-DjWCPCj7.js";import"./bignumber-L0kgG1Q3.js";import"./lodash-C-76dkfd.js";const z=({spaceInfo:n,sidebar:p,close:u,language:g,refreshSpace:N})=>{const l=i.useRef(null),[s,x]=i.useState("code"),[r,y]=C($),o=(r==null?void 0:r[n.name])||"",c=t=>{y({...r,[n.name]:t})},[a,h]=i.useState(null),S=async()=>{let t=await w.request(j.gql`mutation UpdateSpace($spaceName: String!, $content: String!) {
+import{r as i,b as C,j as e,T as F,U as _,c as E,M as m,N as b,f as v,d as j}from"./vendor-DlnAqk-X.js";import{t as T,G as w}from"./react-app-TLyt3Dva.js";import"./bignumber-L0kgG1Q3.js";import"./lodash-C-76dkfd.js";const M=({spaceInfo:n,sidebar:p,close:u,language:g,refreshSpace:N})=>{const l=i.useRef(null),[s,x]=i.useState("code"),[r,y]=C(T),o=(r==null?void 0:r[n.name])||"",c=t=>{y({...r,[n.name]:t})},[a,h]=i.useState(null),S=async()=>{let t=await w.request(j.gql`mutation UpdateSpace($spaceName: String!, $content: String!) {
             updateSpace(spaceName: $spaceName, content: $content) {
                 id
                 name
@@ -21,4 +21,4 @@ import{r as i,b as C,j as e,U as F,X as _,c as E,N as m,O as b,f as v,d as j}fro
                             transition-all sm:mt-32 sm:align-middle sm:w-full sm:p-6 relative
                             md:max-w-md lg:max-w-lg xl:max-w-2xl
                             self-end mb-12
-                            `,children:f})})]})})})}):f};export{z as default};
+                            `,children:f})})]})})})}):f};export{M as default};

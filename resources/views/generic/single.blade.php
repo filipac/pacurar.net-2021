@@ -1,7 +1,4 @@
 <x-layouts.master>
-    <x-slot name="belowContent">
-        @include('partials.copy')
-    </x-slot>
     @while(have_posts())
         @php
             the_post()
@@ -13,12 +10,10 @@
                     add_filter(
                 'wpseo_frontend_presenter_classes',
                 function ( $filter ) {
-
-                if (($key = array_search('Yoast\WP\SEO\Presenters\Open_Graph\Image_Presenter', $filter)) !== false) {
-                    unset($filter[$key]);
-                }
-
-                return $filter;
+                    if (($key = array_search('Yoast\WP\SEO\Presenters\Open_Graph\Image_Presenter', $filter)) !== false) {
+                        unset($filter[$key]);
+                    }
+                    return $filter;
                 }
             );
                 @endphp
@@ -29,65 +24,115 @@
                 @endif
             @endif
         @endpush
-        @unless(has_post_format('aside'))
-            <div class="sigmar text-3xl w-full text-black text-center text-shadow my-6 md:my-2 hidden lg:block">
-                <p>{{ the_title() }}</p>
-            </div>
-        @endunless
 
-        <x-content-with-sidebar>
-            @php
-                $hide_thumbnail = get_post_meta(get_the_ID(), 'hide_thumbnail', true);
-            @endphp
-            @if(has_post_thumbnail() && !$hide_thumbnail)
-                <div class='w-full shadow-box border-2 border-black'>
-                    <img src="{{ get_the_post_thumbnail_url(get_post()->ID, 'full') }}" class="w-full" alt="">
-                </div>
-            @endif
+        @php
+            // Capture content early so get_the_content() doesn't interfere with the_content()
+            $rawContent = get_post_field('post_content', get_post());
+            $wordCount = str_word_count(strip_tags($rawContent));
+            $readingTime = max(1, ceil($wordCount / 200));
+        @endphp
+
+        <div class="max-w-7xl mx-auto px-4 md:px-8 py-12">
+            {{-- Title --}}
             @unless(has_post_format('aside'))
-                @include('partials.meta_bar')
+                <h1 class="font-headline text-3xl md:text-5xl font-bold text-on-surface mb-8 max-w-4xl">
+                    {{ the_title() }}
+                </h1>
             @endunless
-            <div class="bg-white shadow-box flex-1 w-full border-2 border-black">
-                <div class="px-2 md:px-32 py-8 md:py-16 text-xl">
-                    <div class="sigmar text-3xl text-black w-full text-center text-shadow my-6 md:my-2 block lg:hidden">
-                        <p>{{ the_title() }}</p>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+                {{-- Metadata sidebar (left) --}}
+                <aside class="lg:col-span-3 order-2 lg:order-1">
+                    <div class="metadata-sidebar">
+                        @unless(has_post_format('aside'))
+                            {{-- Date --}}
+                            <div class="metadata-section">
+                                <div class="metadata-label">{{ ICL_LANGUAGE_CODE == 'ro' ? 'Publicat' : 'Published' }}</div>
+                                <div class="metadata-value" x-data="{ hover: false }" @mouseenter="hover = true" @mouseleave="hover = false">
+                                    <span x-show="!hover">{{ get_the_date('Y . m . d') }}</span>
+                                    <span x-show="hover" x-cloak>{{ get_the_date('U') }}</span>
+                                </div>
+                            </div>
+
+                            {{-- Author --}}
+                            <div class="metadata-section">
+                                <div class="metadata-label">{{ ICL_LANGUAGE_CODE == 'ro' ? 'Autor' : 'Author' }}</div>
+                                <div class="metadata-value">{!! app('the_author') !!}</div>
+                            </div>
+
+                            {{-- Reading time --}}
+                            <div class="metadata-section">
+                                <div class="metadata-label">{{ ICL_LANGUAGE_CODE == 'ro' ? 'Timp de citire' : 'Reading time' }}</div>
+                                <div class="metadata-value">
+                                    ~{{ $readingTime }} min
+                                </div>
+                            </div>
+
+                            {{-- Tags --}}
+                            <div class="metadata-section">
+                                <div class="metadata-label">{{ ICL_LANGUAGE_CODE == 'ro' ? 'Etichete' : 'Tags' }}</div>
+                                <div class="flex flex-wrap gap-1 mt-1">
+                                    @php
+                                        $categories = get_the_terms(get_post(), 'category') ?: [];
+                                        $tags = get_the_tags() ?: [];
+                                    @endphp
+                                    @foreach($categories as $cat)
+                                        <a href="{{ get_term_link($cat) }}" class="metadata-tag">{!! $cat->name !!}</a>
+                                    @endforeach
+                                    @foreach($tags as $tag)
+                                        <a href="{{ get_term_link($tag) }}" class="metadata-tag"># {!! $tag->name !!}</a>
+                                    @endforeach
+                                </div>
+                            </div>
+
+                            {{-- Share --}}
+                            <div class="metadata-section">
+                                <div class="metadata-label">{{ ICL_LANGUAGE_CODE == 'ro' ? 'Distribuie' : 'Share' }}</div>
+                                <a href="https://twitter.com/intent/tweet?url={{ urlencode(get_the_permalink()) }}&text={{ urlencode(get_the_title()) }}" target="_blank" class="share-link">
+                                    <span class="material-symbols-outlined" style="font-size: 16px;">share</span>
+                                    Twitter
+                                </a>
+                            </div>
+                        @endunless
                     </div>
-                    @unless(has_post_format('aside'))
-                        <div class="pb-6">
-                            @include('partials.tags')
+                </aside>
+
+                {{-- Article content (center) --}}
+                <article class="lg:col-span-9 order-1 lg:order-2" style="min-width: 0;">
+                    @php
+                        $hide_thumbnail = get_post_meta(get_the_ID(), 'hide_thumbnail', true);
+                    @endphp
+                    @if(has_post_thumbnail() && !$hide_thumbnail)
+                        <div class="w-full mb-8 overflow-hidden" style="border-radius: 0.25rem;">
+                            <img src="{{ get_the_post_thumbnail_url(get_post()->ID, 'full') }}" class="w-full" alt="" style="object-fit: cover;">
                         </div>
-                    @endunless
+                    @endif
+
                     @php
                         $xdata = get_post_meta(get_post()->ID, 'x-data', true);
                     @endphp
-                    <div
-                        class="entry-content pb-20 prose {{has_post_format('aside') ? 'prose-2xl' : 'prose-lg'}} max-w-none"
-                        @if($xdata) x-data='{{ $xdata }}' @endif>
+                    <div class="entry-content pb-12 prose dark:prose-invert {{has_post_format('aside') ? 'prose-xl' : 'prose-lg'}} max-w-none"
+                         @if($xdata) x-data='{{ $xdata }}' @endif>
                         {!! the_content() !!}
                     </div>
+
                     @if(has_post_format('aside'))
-                        <div class="mt-2 text-xs">
+                        <div class="mt-2 font-label text-xs" style="color: var(--color-on-surface-variant);">
                             <a href="{{ get_permalink() }}">
                                 @include('partials.time')
                             </a>
                         </div>
-                    @endif
-                    @if(has_post_format('aside'))
-                        <div class="pb-6">
+                        <div class="mt-4">
                             @include('partials.tags')
                         </div>
                     @endif
-                </div>
 
-
-                <div class="mt-4">
-                    <x-web3-ad spaceName="single-bottom-1" format="dark" />
-                </div>
+                    {{-- Comments --}}
+                    <div class="mt-12 pt-8" style="border-top: 1px solid var(--color-outline-variant);">
+                        {!! comments_template('/comments.php') !!}
+                    </div>
+                </article>
             </div>
-
-            <div class="mt-12">
-                {!! comments_template('/comments.php') !!}
-            </div>
-        </x-content-with-sidebar>
+        </div>
     @endwhile
 </x-layouts.master>

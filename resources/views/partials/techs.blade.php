@@ -1,9 +1,8 @@
-<div class="inline-flex flex-wrap flex-gap text-xs mt-4 parentapp">
-
+<div class="inline-flex flex-wrap gap-2 text-xs mt-3">
     @foreach($categories as $cat)
-    <button class="bg-secondary @if(isset($nolink)) dark:bg-gray-800 dark:text-white dark:shadow-box-white dark:hover:shadow-boxhvr-white @endif text-black p-2 shadow-box hover:shadow-boxhvr focus-none block prevent-if"
-    wire:click.prevent="$dispatch('toggle', {id: '{{ $cat->slug }}')"
+    <button class="font-label uppercase tracking-wider px-2 py-1 transition-colors cursor-pointer"
+        style="background: var(--color-surface-container); color: var(--color-on-surface); border-radius: 0.125rem; font-size: 0.625rem;"
+        wire:click.prevent="$dispatch('toggle', {id: '{{ $cat->slug }}')"
     >{{ $cat->name }}</button>
     @endforeach
-
 </div>
