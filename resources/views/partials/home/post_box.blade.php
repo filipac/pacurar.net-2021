@@ -22,7 +22,9 @@
 
         <div class="mt-2 text-sm leading-relaxed" style="color: var(--color-on-surface-variant);">
             @unless(has_post_format('aside'))
-                {!! has_category('story', $_post->wpPost) ? apply_filters( 'the_content', get_the_content(null, false, $_post->wpPost) ) : get_the_excerpt($_post->wpPost) !!}
+                <a href="{{ get_the_permalink($_post->wpPost) }}" class="block" style="color: inherit;">
+                    {!! has_category('story', $_post->wpPost) ? apply_filters( 'the_content', get_the_content(null, false, $_post->wpPost) ) : get_the_excerpt($_post->wpPost) !!}
+                </a>
             @else
                 <div class="prose dark:prose-invert prose-sm max-w-none">
                     {!! the_content() !!}
