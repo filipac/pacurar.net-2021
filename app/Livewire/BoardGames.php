@@ -25,7 +25,7 @@ class BoardGames extends Component
 
     public $perPage = 12;
 
-    public $type = FilterType::owned_ever->name;
+    public $type = FilterType::owned_now->name;
 
     public int $owned = 0;
 
@@ -62,7 +62,7 @@ class BoardGames extends Component
             );
             return [
                 'items' => collect($resp->json())
-                    ->filter(fn($el) => $el['collection'] === $col)
+                    ->filter(fn ($el) => $el['collection'] === $col)
                     ->values(),
                 'total' => $owned,
             ];
