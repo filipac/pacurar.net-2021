@@ -156,3 +156,12 @@ function get_comment_author_link_blank($comment_ID = 0)
 add_action('init', function () {
 //    register_block_type( __DIR__ . '/blocks/test' );
 });
+
+// add a hook so any requests with query string like "https://pacurar.dev/?ef48e812756802.html" will be redirected to "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+add_action('template_redirect', function () {
+    $queryString = $_SERVER['QUERY_STRING'];
+    if (str_contains($queryString, '.html')) {
+        wp_redirect('https://www.youtube.com/watch?v=dQw4w9WgXcQ', 301);
+        exit;
+    }
+});
