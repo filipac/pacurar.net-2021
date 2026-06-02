@@ -57,20 +57,20 @@ class CreateOgImageJob implements ShouldQueue
     ->setNpmBinary('/home/forge/.nvm/versions/node/v20.18.0/bin/npm')
     ->setChromePath($chromePath)
     ->addChromiumArguments([
-        '--host-resolver-rules=MAP pacurar.net 91.107.195.63,MAP pacurar.dev 91.107.195.63',
-        '--headless=new',
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-gpu',
-        '--no-zygote',
-        '--single-process',
-        '--disable-software-rasterizer',
-        '--disable-features=VizDisplayCompositor',
-        '--user-data-dir=' . sys_get_temp_dir() . '/chrome-user-data',
-        '--data-path='     . sys_get_temp_dir() . '/chrome-data',
-        '--disk-cache-dir='. sys_get_temp_dir() . '/chrome-cache',
-        '--js-flags=--max-old-space-size=256',
+        'host-resolver-rules' => 'MAP pacurar.net 91.107.195.63,MAP pacurar.dev 91.107.195.63',
+        'headless' => 'new',
+        'no-sandbox',
+        'disable-setuid-sandbox',
+        'disable-dev-shm-usage',
+        'disable-gpu',
+        'no-zygote',
+        'single-process',
+        'disable-software-rasterizer',
+        'disable-features' => 'VizDisplayCompositor',
+        'user-data-dir' => sys_get_temp_dir() . '/chrome-user-data',
+        'data-path' => sys_get_temp_dir() . '/chrome-data',
+        'disk-cache-dir' => sys_get_temp_dir() . '/chrome-cache',
+        'js-flags' => '--max-old-space-size=256',
     ]);
 
             // === PROD / FORGE: setează binarele și calea Chrome ===
