@@ -76,4 +76,21 @@ class Post extends BaseModel
         }
         return 'https://pacurar.net/ogImage/'.$this->id();
     }
+
+    public function ogImageHost(): string
+    {
+        $info = wpml_get_language_information(null, $this->id());
+        if (is_array($info) && isset($info['language_code']) && $info['language_code'] == 'en') {
+            return 'pacurar.dev';
+        }
+
+        return 'pacurar.net';
+    }
+
+    public function ogImageScreenshotUrl(): string
+    {
+        $baseUrl = rtrim(env('OG_IMAGE_SCREENSHOT_BASE_URL', 'https://'.$this->ogImageHost()), '/');
+
+        return $baseUrl.'/ogImage/'.$this->id();
+    }
 }

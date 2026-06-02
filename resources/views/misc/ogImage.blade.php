@@ -196,7 +196,7 @@
                 </svg>
             </div>
             <div class="version">
-                {{ ICL_LANGUAGE_CODE == 'ro' ? 'pacurar.net' : 'pacurar.dev' }}
+                {{ $post->ogImageHost() }}
             </div>
         </div>
 

@@ -50,7 +50,7 @@ class CreateOgImageJob implements ShouldQueue
 
             $chromePath = '/usr/bin/chromium';
 
-            $bshot = Browsershot::url($this->post->ogImageBaseUrl())
+            $bshot = Browsershot::url($this->post->ogImageScreenshotUrl())
     ->devicePixelRatio(2)
     ->windowSize(1200, 630)
     ->setNodeBinary('/home/forge/.nvm/versions/node/v20.18.0/bin/node')
@@ -58,7 +58,7 @@ class CreateOgImageJob implements ShouldQueue
     ->setChromePath($chromePath)
     ->ignoreHttpsErrors()
     ->addChromiumArguments([
-        'host-resolver-rules' => 'MAP pacurar.net 91.107.195.63,MAP pacurar.dev 91.107.195.63',
+        'host-resolver-rules' => 'MAP pacurar.net 127.0.0.1:8443,MAP pacurar.dev 127.0.0.1:8443',
         'headless' => 'new',
         'no-sandbox',
         'ignore-certificate-errors',
