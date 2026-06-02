@@ -56,6 +56,7 @@ class CreateOgImageJob implements ShouldQueue
     ->setNodeBinary('/home/forge/.nvm/versions/node/v20.18.0/bin/node')
     ->setNpmBinary('/home/forge/.nvm/versions/node/v20.18.0/bin/npm')
     ->setChromePath($chromePath)
+    ->ignoreHttpsErrors()
     ->addChromiumArguments([
         'host-resolver-rules' => 'MAP pacurar.net 91.107.195.63,MAP pacurar.dev 91.107.195.63',
         'headless' => 'new',
