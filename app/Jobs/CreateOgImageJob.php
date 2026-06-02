@@ -61,6 +61,7 @@ class CreateOgImageJob implements ShouldQueue
         'host-resolver-rules' => 'MAP pacurar.net 91.107.195.63,MAP pacurar.dev 91.107.195.63',
         'headless' => 'new',
         'no-sandbox',
+        'ignore-certificate-errors',
         'disable-setuid-sandbox',
         'disable-dev-shm-usage',
         'disable-gpu',
