@@ -10,8 +10,8 @@
       "_bignumber-L0kgG1Q3.js"
     ]
   },
-  "_vendor-DlnAqk-X.js": {
-    "file": "assets/vendor-DlnAqk-X.js",
+  "_vendor-CvQTP_WW.js": {
+    "file": "assets/vendor-CvQTP_WW.js",
     "name": "vendor",
     "imports": [
       "_bignumber-L0kgG1Q3.js",
@@ -19,12 +19,12 @@
     ]
   },
   "resources/js/MainAdSpaceApp.tsx": {
-    "file": "assets/MainAdSpaceApp-Bs5Efio8.js",
+    "file": "assets/MainAdSpaceApp-BHSP0qPc.js",
     "name": "MainAdSpaceApp",
     "src": "resources/js/MainAdSpaceApp.tsx",
     "isDynamicEntry": true,
     "imports": [
-      "_vendor-DlnAqk-X.js",
+      "_vendor-CvQTP_WW.js",
       "_bignumber-L0kgG1Q3.js",
       "_lodash-C-76dkfd.js",
       "resources/js/react-app.tsx"
@@ -35,47 +35,47 @@
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-Bz4miigb.js",
+    "file": "assets/app-1i16qkzl.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
     "imports": [
-      "_vendor-DlnAqk-X.js",
+      "_vendor-CvQTP_WW.js",
       "_bignumber-L0kgG1Q3.js",
       "_lodash-C-76dkfd.js"
     ]
   },
   "resources/js/components/BuySpace.tsx": {
-    "file": "assets/BuySpace-W9axbqyF.js",
+    "file": "assets/BuySpace-DXW1rnra.js",
     "name": "BuySpace",
     "src": "resources/js/components/BuySpace.tsx",
     "isDynamicEntry": true,
     "imports": [
-      "_vendor-DlnAqk-X.js",
+      "_vendor-CvQTP_WW.js",
       "_bignumber-L0kgG1Q3.js",
       "_lodash-C-76dkfd.js",
       "resources/js/react-app.tsx"
     ]
   },
   "resources/js/components/SpaceEdit.tsx": {
-    "file": "assets/SpaceEdit-CoEngLnW.js",
+    "file": "assets/SpaceEdit-Cebxh455.js",
     "name": "SpaceEdit",
     "src": "resources/js/components/SpaceEdit.tsx",
     "isDynamicEntry": true,
     "imports": [
-      "_vendor-DlnAqk-X.js",
+      "_vendor-CvQTP_WW.js",
       "resources/js/react-app.tsx",
       "_bignumber-L0kgG1Q3.js",
       "_lodash-C-76dkfd.js"
     ]
   },
   "resources/js/react-app.tsx": {
-    "file": "assets/react-app-TLyt3Dva.js",
+    "file": "assets/react-app-DRelUaF8.js",
     "name": "react-app",
     "src": "resources/js/react-app.tsx",
     "isEntry": true,
     "imports": [
-      "_vendor-DlnAqk-X.js",
+      "_vendor-CvQTP_WW.js",
       "_bignumber-L0kgG1Q3.js",
       "_lodash-C-76dkfd.js"
     ],
@@ -89,7 +89,7 @@
     "isEntry": true
   },
   "resources/sass/tailwind.css": {
-    "file": "assets/tailwind-BDiW3O-l.css",
+    "file": "assets/tailwind-DTgzxYEI.css",
     "src": "resources/sass/tailwind.css",
     "isEntry": true
   }
