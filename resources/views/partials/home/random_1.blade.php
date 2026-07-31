@@ -14,16 +14,13 @@
             $now = $api->getMyCurrentTrack([
                 'additional_types' => 'track,episode',
             ]);
-
-            dump($now);
-
             update_option('spotify_token', $session->getAccessToken());
             update_option('spotify_refresh_token', $session->getRefreshToken());
             update_option('spotify_expires', $session->getTokenExpiration());
 
             return $now;
         } catch (\SpotifyWebAPI\SpotifyWebAPIException $e) {
-            dump($e);
+            // dump($e);
         }
 
         return (object) ['is_playing' => false];
