@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Wp\Post\Post;
+use Illuminate\Support\Facades\Cache;
 
 Route::name('loginSpotify')->get('loginSpotify', function () {
     return \Socialite::with('spotify')
@@ -21,6 +22,8 @@ Route::get('/callbackspotify', function () {
     update_option('spotify_token', $token);
     update_option('spotify_refresh_token', $refreshToken);
     update_option('spotify_expires', $expiresIn);
+    // clear spotify_play state cache
+    Cache::forget('spotify_play');
 
     return redirect()->to('/');
 });
@@ -45,8 +48,8 @@ Route::get('egld', function () {
 });
 
 Route::get('info', function () {
-//    $ffi = \FFI::scope("BLOG");
-//    dump($ffi->decode_sft_price('AAAABEVHTEQAAAAAAAAAAAAAAAexorwuxQAA'));
+    //    $ffi = \FFI::scope("BLOG");
+    //    dump($ffi->decode_sft_price('AAAABEVHTEQAAAAAAAAAAAAAAAexorwuxQAA'));
     dump(App::version());
     return phpinfo();
 });
