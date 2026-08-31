@@ -2,6 +2,8 @@
     $hasThumbnail = has_post_thumbnail($_post->wpPost);
     $hideThumbnail = get_post_meta($_post->wpPost->ID ?? $_post->wpPost, 'hide_thumbnail', true);
     $showThumb = $hasThumbnail && !$hideThumbnail;
+    $postTitle = wp_strip_all_tags(get_the_title($_post->wpPost));
+    $readLabel = sprintf(ICL_LANGUAGE_CODE == 'ro' ? 'Citește %s' : 'Read %s', $postTitle);
 @endphp
 <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start group">
     {{-- Date column --}}
@@ -45,8 +47,20 @@
     {{-- Thumbnail --}}
     @if($showThumb)
         <div class="md:col-span-2 hidden md:block">
-            <a href="{{ get_the_permalink($_post->wpPost) }}" class="block overflow-hidden" style="border-radius: 0.25rem;">
-                <img src="{{ get_the_post_thumbnail_url($_post->wpPost, 'medium') }}" alt="" class="w-full object-cover group-hover:scale-105 transition-transform duration-300" style="aspect-ratio: 4/3;" loading="lazy" decoding="async">
+            <a href="{{ get_the_permalink($_post->wpPost) }}" class="block overflow-hidden" style="border-radius: 0.25rem;" aria-label="{{ $readLabel }}">
+                {!! wp_get_attachment_image(
+                    get_post_thumbnail_id($_post->wpPost),
+                    'medium',
+                    false,
+                    [
+                        'alt' => $postTitle,
+                        'class' => 'w-full object-cover group-hover:scale-105 transition-transform duration-300',
+                        'style' => 'aspect-ratio: 4/3;',
+                        'loading' => 'lazy',
+                        'decoding' => 'async',
+                        'sizes' => '(min-width: 1280px) 190px, (min-width: 768px) 16vw, 0px',
+                    ]
+                ) !!}
             </a>
         </div>
     @endif
@@ -54,8 +68,8 @@
     {{-- Arrow link --}}
     <div class="md:col-span-1 hidden md:flex items-center justify-end pt-1">
         @unless(has_post_format('aside'))
-        <a href="{{ get_the_permalink($_post->wpPost) }}" class="text-on-surface-variant group-hover:text-primary transition-colors">
-            <span class="material-symbols-outlined" style="font-size: 20px;">arrow_forward</span>
+        <a href="{{ get_the_permalink($_post->wpPost) }}" class="text-on-surface-variant group-hover:text-primary transition-colors" aria-label="{{ $readLabel }}">
+            <span class="material-symbols-outlined" style="font-size: 20px;" aria-hidden="true">arrow_forward</span>
         </a>
         @endunless
     </div>

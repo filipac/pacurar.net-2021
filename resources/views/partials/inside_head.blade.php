@@ -66,4 +66,6 @@ if (!$isPs) {
 }
 ?>
 
-@livewireStyles
+@if($usesLivewire ?? false)
+    @livewireStyles
+@endif

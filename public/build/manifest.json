@@ -1,4 +1,8 @@
 {
+  "_alpine-CXqvySvQ.js": {
+    "file": "assets/alpine-CXqvySvQ.js",
+    "name": "alpine"
+  },
   "_bignumber-L0kgG1Q3.js": {
     "file": "assets/bignumber-L0kgG1Q3.js",
     "name": "bignumber"
@@ -32,6 +36,15 @@
     "dynamicImports": [
       "resources/js/components/BuySpace.tsx",
       "resources/js/components/SpaceEdit.tsx"
+    ]
+  },
+  "resources/js/alpine.js": {
+    "file": "assets/alpine-CoK9wZP9.js",
+    "name": "alpine",
+    "src": "resources/js/alpine.js",
+    "isEntry": true,
+    "imports": [
+      "_alpine-CXqvySvQ.js"
     ]
   },
   "resources/js/app.js": {
@@ -79,7 +92,7 @@
     ]
   },
   "resources/sass/app.scss": {
-    "file": "assets/app-HWcnUAJL.css",
+    "file": "assets/app-BddupBly.css",
     "src": "resources/sass/app.scss",
     "isEntry": true
   },

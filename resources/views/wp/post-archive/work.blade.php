@@ -13,7 +13,7 @@
 @endpush
 
 
-<x-layouts.master>
+<x-layouts.master :uses-livewire="true">
     <x-slot name="belowContent">
         <div class="max-w-7xl mx-auto px-4 md:px-8 py-12">
             <div x-data='{text: true}'>

@@ -1,7 +1,8 @@
 @props([
     'extraClassesContent',
     'containerStyles',
-    'belowContent'
+    'belowContent',
+    'usesLivewire' => false,
 ])
 <!DOCTYPE html>
 <html {!! get_language_attributes() !!} prefix="og: http://ogp.me/ns#"

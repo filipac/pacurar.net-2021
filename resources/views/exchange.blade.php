@@ -4,7 +4,7 @@
 @push('scripts')
 @endpush
 
-<x-layouts.master>
+<x-layouts.master :uses-livewire="true">
     <x-slot name="title">Pay me in EGLD</x-slot>
     <x-slot name="belowContent">
         <div class="">

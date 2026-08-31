@@ -36,6 +36,7 @@ export default defineConfig({
                 'resources/sass/tailwind.css',
                 'resources/sass/app.scss',
                 'resources/js/app.js',
+                'resources/js/alpine.js',
                 'resources/js/react-app.tsx',
             ],
             detectTls: 'blog.test',
@@ -61,6 +62,9 @@ export default defineConfig({
             ],
             output: {
                 manualChunks: function (id) {
+                    if (id.includes('node_modules/alpinejs')) {
+                        return 'alpine';
+                    }
                     if (id.includes('bignumber')) {
                         return 'bignumber';
                     }

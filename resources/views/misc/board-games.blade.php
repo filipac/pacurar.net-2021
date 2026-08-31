@@ -23,7 +23,7 @@
     </script>
 @endpush
 
-<x-layouts.master :title="$title">
+<x-layouts.master :title="$title" :uses-livewire="true">
     <x-slot name="belowContent">
         <x-content-with-sidebar>
             <livewire:board-games/>

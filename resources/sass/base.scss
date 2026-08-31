@@ -16,6 +16,10 @@
     flex-shrink: 0;
 }
 
+[x-cloak] {
+    display: none !important;
+}
+
 h1 {
     @apply text-2xl;
 }

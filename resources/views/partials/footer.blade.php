@@ -40,7 +40,11 @@
 
 @yield('footer')
 {{ $footer ?? '' }}
-@livewireScripts
+@if($usesLivewire ?? false)
+    @livewireScripts
+@else
+    @vite(['resources/js/alpine.js'])
+@endif
 @unless(isset($inBlock))
     @php
         wp_footer()
