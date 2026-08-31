@@ -47,9 +47,9 @@
 {{-- Text fonts loaded non-blocking to avoid render-blocking (display=swap handles FOUT) --}}
 <link rel="preload" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Inter:wght@300..700&family=JetBrains+Mono:ital,wght@0,300..700;1,300..700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Inter:wght@300..700&family=JetBrains+Mono:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet"></noscript>
-{{-- Material Symbols loaded non-blocking --}}
-<link rel="preload" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"></noscript>
+{{-- Keep the icon font non-blocking and limited to the glyphs used by the theme. --}}
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0&amp;icon_names=arrow_forward,article,close,code,dark_mode,light_mode,mail,menu,open_in_new,photo_camera,play_circle,search,share,terminal&amp;display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0&amp;icon_names=arrow_forward,article,close,code,dark_mode,light_mode,mail,menu,open_in_new,photo_camera,play_circle,search,share,terminal&amp;display=swap" rel="stylesheet"></noscript>
 
 <!-- Styles blog -->
 @vite(['resources/sass/tailwind.css', 'resources/sass/app.scss'])

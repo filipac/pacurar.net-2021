@@ -385,6 +385,9 @@ class AppServiceProvider extends ServiceProvider
 
             $required_text = ' ' . wp_required_field_message();
 
+            $x['title_reply_before'] = '<h2 id="reply-title" class="comment-reply-title">';
+            $x['title_reply_after']  = '</h2>';
+
             $x['logged_in_as'] = sprintf(
                 '<p class="logged-in-as">%s%s</p>',
                 sprintf(

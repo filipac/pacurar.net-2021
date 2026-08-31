@@ -4,7 +4,7 @@
     'belowContent',
 ])
 <!DOCTYPE html>
-<html prefix="og: http://ogp.me/ns#"
+<html {!! get_language_attributes() !!} prefix="og: http://ogp.me/ns#"
       x-data="{ darkMode: localStorage.getItem('darkMode') !== null ? localStorage.getItem('darkMode') === 'true' : window.matchMedia('(prefers-color-scheme: dark)').matches, geekMode: localStorage.getItem('geekMode') === 'true' }"
       :class="{ 'dark': darkMode, 'geek-mode': geekMode }">
 @include('partials.head')

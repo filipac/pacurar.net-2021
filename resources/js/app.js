@@ -1,5 +1,3 @@
-import './bootstrap'
-
 // Konami code -> Geek mode
 let pattern = [
     "ArrowUp",

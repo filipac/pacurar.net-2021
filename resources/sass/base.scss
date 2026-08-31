@@ -8,6 +8,14 @@
         url("/wp-content/themes/pacurar2020/resources/fonts/bariol_regular-webfont.woff") format("woff");
 }
 
+/* Reserve icon space while the small Material Symbols subset is loading. */
+.material-symbols-outlined {
+    width: 1em;
+    height: 1em;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
 h1 {
     @apply text-2xl;
 }

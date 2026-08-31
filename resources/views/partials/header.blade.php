@@ -6,8 +6,8 @@
     <nav class="flex justify-between items-center px-4 md:px-8 h-20 max-w-7xl mx-auto">
         {{-- Left: Brand --}}
         <div class="flex items-center gap-3">
-            <a href="{{ get_bloginfo('url') }}" class="flex items-center gap-2 no-neon">
-                <span style="max-width: 180px;">@include('partials.logo')</span>
+            <a href="{{ get_bloginfo('url') }}" class="flex items-center gap-2 no-neon" aria-label="{{ get_bloginfo('name') }}">
+                <span style="max-width: 180px;" aria-hidden="true">@include('partials.logo')</span>
             </a>
         </div>
 
@@ -41,7 +41,10 @@
 
             {{-- Mobile menu button --}}
             <button @click="mobileOpen = !mobileOpen"
-                    class="md:hidden p-2 rounded-lg hover:bg-surface-container transition-colors">
+                    class="md:hidden p-2 rounded-lg hover:bg-surface-container transition-colors"
+                    aria-controls="mobile-navigation"
+                    :aria-expanded="mobileOpen.toString()"
+                    :aria-label="mobileOpen ? 'Close navigation menu' : 'Open navigation menu'">
                 <span class="material-symbols-outlined text-on-surface text-xl" x-show="!mobileOpen">menu</span>
                 <span class="material-symbols-outlined text-on-surface text-xl" x-show="mobileOpen" x-cloak>close</span>
             </button>
@@ -49,7 +52,7 @@
     </nav>
 
     {{-- Mobile nav dropdown --}}
-    <div x-show="mobileOpen" x-cloak
+    <div id="mobile-navigation" x-show="mobileOpen" x-cloak
          x-transition:enter="transition ease-out duration-200"
          x-transition:enter-start="opacity-0 -translate-y-2"
          x-transition:enter-end="opacity-100 translate-y-0"

@@ -9,9 +9,9 @@
     @if(count($byType['pings']) > 0)
     <div class="p-4 mb-6" style="background: var(--color-surface-container-low); border: 1px solid var(--color-outline-variant); border-radius: 0.25rem;">
         @if(ICL_LANGUAGE_CODE == 'ro')
-        <h3 class="font-headline font-semibold text-lg mb-3">Ping(pong)-uri la acest articol</h3>
+        <h2 class="font-headline font-semibold text-lg mb-3">Ping(pong)-uri la acest articol</h2>
         @else
-        <h3 class="font-headline font-semibold text-lg mb-3">Ping(pongs) to this article</h3>
+        <h2 class="font-headline font-semibold text-lg mb-3">Ping(pongs) to this article</h2>
         @endif
 
     <div class="prose dark:prose-invert max-w-none">
@@ -39,7 +39,7 @@
         border-radius: 9999px !important;
     }</style>
     <div class="p-4 mb-6" style="background: var(--color-surface-container-low); border: 1px solid var(--color-outline-variant); border-radius: 0.25rem;">
-        <h3 class="font-headline font-semibold text-lg mb-3">Webmentions</h3>
+        <h2 class="font-headline font-semibold text-lg mb-3">Webmentions</h2>
 
     <div class="prose dark:prose-invert max-w-none">
         <ul>
@@ -68,7 +68,7 @@
 
     @endif
     @if(count($byType['comment']) > 0)
-<h3 id="comments">
+<h2 id="comments">
     @if(1 == $byType['comment'])
     @if(ICL_LANGUAGE_CODE == 'ro')
         Acest articol are doar un comentariu.
@@ -78,7 +78,7 @@
     @else
         {{ ($byType['comment'] == 1 ? (ICL_LANGUAGE_CODE == 'ro' ? '1 comentariu la acest articol' : '1 comment to this article'): count($byType['comment']).(ICL_LANGUAGE_CODE == 'ro' ? ' comentarii la acest articol' : ' comments to this article')) }}
     @endif
-</h3>
+</h2>
 
     <div class="navigation">
         <div class="alignleft">{!! previous_comments_link() !!}

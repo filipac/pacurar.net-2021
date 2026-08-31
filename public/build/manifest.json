@@ -10,8 +10,8 @@
       "_bignumber-L0kgG1Q3.js"
     ]
   },
-  "_vendor-CvQTP_WW.js": {
-    "file": "assets/vendor-CvQTP_WW.js",
+  "_vendor-BfiiPd9J.js": {
+    "file": "assets/vendor-BfiiPd9J.js",
     "name": "vendor",
     "imports": [
       "_bignumber-L0kgG1Q3.js",
@@ -19,12 +19,12 @@
     ]
   },
   "resources/js/MainAdSpaceApp.tsx": {
-    "file": "assets/MainAdSpaceApp-BHSP0qPc.js",
+    "file": "assets/MainAdSpaceApp-Blw52xjg.js",
     "name": "MainAdSpaceApp",
     "src": "resources/js/MainAdSpaceApp.tsx",
     "isDynamicEntry": true,
     "imports": [
-      "_vendor-CvQTP_WW.js",
+      "_vendor-BfiiPd9J.js",
       "_bignumber-L0kgG1Q3.js",
       "_lodash-C-76dkfd.js",
       "resources/js/react-app.tsx"
@@ -35,47 +35,42 @@
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-1i16qkzl.js",
+    "file": "assets/app-D6CPculc.js",
     "name": "app",
     "src": "resources/js/app.js",
-    "isEntry": true,
-    "imports": [
-      "_vendor-CvQTP_WW.js",
-      "_bignumber-L0kgG1Q3.js",
-      "_lodash-C-76dkfd.js"
-    ]
+    "isEntry": true
   },
   "resources/js/components/BuySpace.tsx": {
-    "file": "assets/BuySpace-DXW1rnra.js",
+    "file": "assets/BuySpace-BrNWr7vq.js",
     "name": "BuySpace",
     "src": "resources/js/components/BuySpace.tsx",
     "isDynamicEntry": true,
     "imports": [
-      "_vendor-CvQTP_WW.js",
+      "_vendor-BfiiPd9J.js",
       "_bignumber-L0kgG1Q3.js",
       "_lodash-C-76dkfd.js",
       "resources/js/react-app.tsx"
     ]
   },
   "resources/js/components/SpaceEdit.tsx": {
-    "file": "assets/SpaceEdit-Cebxh455.js",
+    "file": "assets/SpaceEdit-Due_RWgO.js",
     "name": "SpaceEdit",
     "src": "resources/js/components/SpaceEdit.tsx",
     "isDynamicEntry": true,
     "imports": [
-      "_vendor-CvQTP_WW.js",
+      "_vendor-BfiiPd9J.js",
       "resources/js/react-app.tsx",
       "_bignumber-L0kgG1Q3.js",
       "_lodash-C-76dkfd.js"
     ]
   },
   "resources/js/react-app.tsx": {
-    "file": "assets/react-app-DRelUaF8.js",
+    "file": "assets/react-app-BIFlCaMC.js",
     "name": "react-app",
     "src": "resources/js/react-app.tsx",
     "isEntry": true,
     "imports": [
-      "_vendor-CvQTP_WW.js",
+      "_vendor-BfiiPd9J.js",
       "_bignumber-L0kgG1Q3.js",
       "_lodash-C-76dkfd.js"
     ],
@@ -84,7 +79,7 @@
     ]
   },
   "resources/sass/app.scss": {
-    "file": "assets/app-xdZ3ywty.css",
+    "file": "assets/app-HWcnUAJL.css",
     "src": "resources/sass/app.scss",
     "isEntry": true
   },

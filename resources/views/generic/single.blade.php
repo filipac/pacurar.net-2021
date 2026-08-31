@@ -104,7 +104,19 @@
                     @endphp
                     @if(has_post_thumbnail() && !$hide_thumbnail)
                         <div class="w-full mb-8 overflow-hidden" style="border-radius: 0.25rem;">
-                            <img src="{{ get_the_post_thumbnail_url(get_post()->ID, 'full') }}" class="w-full" alt="" style="object-fit: cover;" fetchpriority="high" decoding="async">
+                            {!! wp_get_attachment_image(
+                                get_post_thumbnail_id(),
+                                'full',
+                                false,
+                                [
+                                    'class' => 'w-full',
+                                    'style' => 'object-fit: cover;',
+                                    'fetchpriority' => 'high',
+                                    'loading' => 'eager',
+                                    'decoding' => 'async',
+                                    'sizes' => '(min-width: 1280px) 912px, (min-width: 1024px) 75vw, calc(100vw - 2rem)',
+                                ]
+                            ) !!}
                         </div>
                     @endif
 
