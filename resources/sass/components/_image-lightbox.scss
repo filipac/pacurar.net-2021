@@ -1,0 +1,55 @@
+html.image-lightbox-open {
+    overflow: hidden;
+}
+
+.image-lightbox {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    margin: 0;
+    padding: 4.5rem 1rem 1rem;
+    border: 0;
+    background: transparent;
+
+    &[open] {
+        display: grid;
+        place-items: center;
+    }
+
+    &::backdrop {
+        background: rgba(10, 15, 13, 0.94);
+    }
+}
+
+.image-lightbox-image {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: calc(100dvh - 5.5rem);
+    object-fit: contain;
+    border-radius: 0.5rem;
+}
+
+.image-lightbox-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 1px solid var(--outline-variant);
+    border-radius: 50%;
+    background: var(--surface-container-low);
+    color: var(--on-surface);
+    font-size: 2rem;
+    line-height: 1;
+
+    &:hover {
+        background: var(--surface-container);
+    }
+}

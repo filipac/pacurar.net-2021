@@ -39,7 +39,7 @@
     ]
   },
   "resources/js/alpine.js": {
-    "file": "assets/alpine-CoK9wZP9.js",
+    "file": "assets/alpine-D2tVdd7T.js",
     "name": "alpine",
     "src": "resources/js/alpine.js",
     "isEntry": true,
@@ -92,7 +92,7 @@
     ]
   },
   "resources/sass/app.scss": {
-    "file": "assets/app-B9ixRYTL.css",
+    "file": "assets/app-Cgo-0edj.css",
     "src": "resources/sass/app.scss",
     "isEntry": true
   },

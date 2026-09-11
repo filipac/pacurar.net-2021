@@ -17,6 +17,7 @@ overrides. Keep that order when adding modules.
 | `components/_widgets.scss` | Sidebar widgets and metadata |
 | `components/_buttons.scss` | Shared buttons and journal call to action |
 | `components/_post-card.scss` | Post cards, notes, stories, and wide card variants |
+| `components/_image-lightbox.scss` | Full-size featured-image dialog and close control |
 | `layout/_navigation.scss` | Desktop/mobile navigation, logo sizing, and admin-bar offsets |
 | `layout/_footer.scss` | Footer decoration, widgets, and social links |
 | `pages/_home.scss` | Homepage intro, photo, panels, and pet controls |

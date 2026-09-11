@@ -65,7 +65,7 @@
     margin: 0 auto;
 }
 
-.reading-cover img {
+.reading-cover-image {
     display: block;
     width: auto;
     max-width: 100%;
@@ -90,7 +90,7 @@
         margin: 0;
     }
 
-    .reading-cover img {
+    .reading-cover-image {
         max-height: min(18rem, 40svh);
         max-width: min(100%, 15rem);
     }
@@ -126,7 +126,7 @@
         align-items: center;
         gap: 3rem;
 
-        .reading-cover img {
+        .reading-cover-image {
             max-height: min(24rem, 50svh);
             max-width: 100%;
         }
@@ -290,7 +290,7 @@
     .reading-meta > * + * {
         gap: 1rem;
     }
-    .reading-cover img, .reading-paper {
+    .reading-cover-image, .reading-paper {
         border-radius: 0.75rem;
     }
     .reading-paper-with-cover {

@@ -1,6 +1,6 @@
-<div class="reading-cover">
+<div class="reading-cover" @if($isPortraitThumbnail) x-data="imageLightbox" @endif>
     @if($isPortraitThumbnail)
-        <a class="reading-cover-link" href="{{ $thumbnailDimensions[0] }}"
+        <button type="button" class="reading-cover-link" @click="open()" aria-haspopup="dialog"
            aria-label="{{ $isRomanian ? 'Vezi imaginea la dimensiune completă' : 'View the full-size image' }}">
     @endif
 
@@ -21,6 +21,22 @@
 
     @if($isPortraitThumbnail)
             <span class="reading-cover-expand" aria-hidden="true">↗</span>
-        </a>
+        </button>
+
+        <dialog class="image-lightbox" x-ref="dialog"
+                aria-label="{{ $isRomanian ? 'Imaginea articolului' : 'Article image' }}"
+                @click="if ($event.target === $refs.dialog) close()"
+                @keydown.escape.stop @close="onClose()">
+            <button type="button" class="image-lightbox-close" @click="close()" autofocus
+                    aria-label="{{ $isRomanian ? 'Închide imaginea' : 'Close image' }}">
+                <span aria-hidden="true">×</span>
+            </button>
+            <template x-if="loaded">
+                <img class="image-lightbox-image" src="{{ $thumbnailDimensions[0] }}"
+                     width="{{ $thumbnailDimensions[1] }}" height="{{ $thumbnailDimensions[2] }}"
+                     alt="{{ get_post_meta($thumbnailId, '_wp_attachment_image_alt', true) }}"
+                     decoding="async">
+            </template>
+        </dialog>
     @endif
 </div>
