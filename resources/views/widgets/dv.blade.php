@@ -37,7 +37,7 @@
             ❌ {{ defined('ICL_LANGUAGE_CODE') && ICL_LANGUAGE_CODE === 'en' ? 'Again not selected...' : 'Din nou nu am fost selectati...' }}
         </li>
 
-        <li>
+        {{-- <li>
             <strong>DV-2027</strong> - 🕧 {{ defined('ICL_LANGUAGE_CODE') && ICL_LANGUAGE_CODE === 'en' ? 'We find out in ' : 'Aflam in ' }}
             <span x-text="time().days"></span>
             <span>{{ ICL_LANGUAGE_CODE == 'ro' ? 'zile' : 'days' }},</span>
@@ -49,6 +49,11 @@
             <span x-text="time().seconds"></span>
             <span>{{ ICL_LANGUAGE_CODE == 'ro' ? 'secunde' : 'seconds' }}</span>
             <strong>({{ defined('ICL_LANGUAGE_CODE') && ICL_LANGUAGE_CODE === 'en' ? 'application in October 2025, results in May 2nd 2026' : 'aplicam in octombrie 2025, rezultatele sunt in 2 mai 2026' }})</strong>
+        </li> --}}
+
+        <li>
+            <strong>DV-2027</strong> -
+            ⏰ {{ defined('ICL_LANGUAGE_CODE') && ICL_LANGUAGE_CODE === 'en' ? 'Was not officially started yet, not sure if it will be held this year.' : 'Inca nu a inceput oficial, nu suntem siguri daca va avea loc anul acesta.' }}
         </li>
 </x-widget>
 <script>
