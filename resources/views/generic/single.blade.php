@@ -35,65 +35,62 @@
             $categories = is_wp_error($categories) ? [] : ($categories ?: []);
             $tags = get_the_tags() ?: [];
             $showThumbnail = has_post_thumbnail() && !get_post_meta(get_the_ID(), 'hide_thumbnail', true);
+            $thumbnailId = $showThumbnail ? get_post_thumbnail_id() : 0;
+            $thumbnailDimensions = $thumbnailId ? wp_get_attachment_image_src($thumbnailId, 'full') : false;
+            $isPortraitThumbnail = $thumbnailDimensions && $thumbnailDimensions[1] > 0
+                && $thumbnailDimensions[2] > $thumbnailDimensions[1];
             $xdata = get_post_meta(get_the_ID(), 'x-data', true);
         @endphp
 
         <div class="journal-single {{ $isAside ? 'journal-single-note' : '' }} max-w-7xl mx-auto px-4 md:px-8 py-10 md:py-14">
-            <div class="reading-header">
-                <a href="{{ home_url('/blog') }}" class="reading-back">
-                    <span aria-hidden="true">←</span>
-                    {{ $isRomanian ? 'Înapoi la blog' : 'Back to the blog' }}
-                </a>
+            <div class="reading-intro {{ $isPortraitThumbnail ? 'reading-intro-portrait' : '' }}">
+                <div class="reading-header">
+                    <a href="{{ home_url('/blog') }}" class="reading-back">
+                        <span aria-hidden="true">←</span>
+                        {{ $isRomanian ? 'Înapoi la blog' : 'Back to the blog' }}
+                    </a>
 
-                <div class="reading-categories flex flex-wrap items-center gap-2">
+                    <div class="reading-categories flex flex-wrap items-center gap-2">
+                        @if($isAside)
+                            <span class="post-category">{{ $isRomanian ? 'Pe scurt' : 'A quick note' }}</span>
+                        @else
+                            @foreach($categories as $category)
+                                <a href="{{ get_term_link($category) }}" class="post-category">{!! $category->name !!}</a>
+                            @endforeach
+                        @endif
+                    </div>
+
                     @if($isAside)
-                        <span class="post-category">{{ $isRomanian ? 'Pe scurt' : 'A quick note' }}</span>
+                        <h1 id="reading-title" class="sr-only">{{ ($isRomanian ? 'Însemnare din ' : 'A note from ') . get_the_date() }}</h1>
                     @else
-                        @foreach($categories as $category)
-                            <a href="{{ get_term_link($category) }}" class="post-category">{!! $category->name !!}</a>
-                        @endforeach
+                        <h1 id="reading-title" class="reading-title font-headline text-4xl md:text-6xl font-bold text-on-surface">
+                            {!! get_the_title() !!}
+                        </h1>
                     @endif
+
+                    <div class="reading-meta flex flex-wrap items-center gap-x-5 gap-y-3">
+                        <span class="reading-author">{!! app('the_author') !!}</span>
+                        <time datetime="{{ get_the_date('c') }}" x-data="{ hover: false }" @mouseenter="hover = true" @mouseleave="hover = false">
+                            <span x-show="!hover">{{ get_the_date($isAside ? 'j M Y · H:i' : 'j M Y') }}</span>
+                            <span x-show="hover" x-cloak>{{ get_the_date('U') }}</span>
+                        </time>
+                        @unless($isAside)
+                            <span>{{ $readingTime }} {{ $isRomanian ? 'min de citit' : 'min read' }}</span>
+                        @endunless
+                    </div>
                 </div>
 
-                @if($isAside)
-                    <h1 id="reading-title" class="sr-only">{{ ($isRomanian ? 'Însemnare din ' : 'A note from ') . get_the_date() }}</h1>
-                @else
-                    <h1 id="reading-title" class="reading-title font-headline text-4xl md:text-6xl font-bold text-on-surface">
-                        {!! get_the_title() !!}
-                    </h1>
+                @if($isPortraitThumbnail)
+                    @include('partials.posts.featured-image')
                 @endif
-
-                <div class="reading-meta flex flex-wrap items-center gap-x-5 gap-y-3">
-                    <span class="reading-author">{!! app('the_author') !!}</span>
-                    <time datetime="{{ get_the_date('c') }}" x-data="{ hover: false }" @mouseenter="hover = true" @mouseleave="hover = false">
-                        <span x-show="!hover">{{ get_the_date($isAside ? 'j M Y · H:i' : 'j M Y') }}</span>
-                        <span x-show="hover" x-cloak>{{ get_the_date('U') }}</span>
-                    </time>
-                    @unless($isAside)
-                        <span>{{ $readingTime }} {{ $isRomanian ? 'min de citit' : 'min read' }}</span>
-                    @endunless
-                </div>
             </div>
 
             <article class="reading-article" aria-labelledby="reading-title">
-                @if($showThumbnail)
-                    <div class="reading-cover">
-                        {!! wp_get_attachment_image(
-                            get_post_thumbnail_id(),
-                            'full',
-                            false,
-                            [
-                                'class' => 'reading-cover-image',
-                                'fetchpriority' => 'high',
-                                'loading' => 'eager',
-                                'decoding' => 'async',
-                                'sizes' => '(min-width: 1280px) 1120px, (min-width: 768px) calc(100vw - 4rem), calc(100vw - 2rem)',
-                            ]
-                        ) !!}
-                    </div>
+                @if($showThumbnail && !$isPortraitThumbnail)
+                    @include('partials.posts.featured-image')
                 @endif
 
-                <div class="reading-paper {{ $showThumbnail ? 'reading-paper-with-cover' : '' }}">
+                <div class="reading-paper {{ $showThumbnail && !$isPortraitThumbnail ? 'reading-paper-with-cover' : '' }}">
                     <div class="entry-content prose dark:prose-invert prose-lg max-w-none"
                          @if($xdata) x-data='{{ $xdata }}' @endif>
                         {!! the_content() !!}

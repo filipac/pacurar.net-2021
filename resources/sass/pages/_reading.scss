@@ -76,6 +76,63 @@
     border-radius: 1.2rem;
 }
 
+// Portrait covers sit alongside the introduction and retain their full framing.
+.reading-intro-portrait {
+    display: grid;
+    gap: 2rem;
+    max-width: 70rem;
+    margin: 0 auto 2.75rem;
+
+    .reading-header {
+        min-width: 0;
+        width: 100%;
+        max-width: none;
+        margin: 0;
+    }
+
+    .reading-cover img {
+        max-height: min(18rem, 40svh);
+        max-width: min(100%, 15rem);
+    }
+}
+
+.reading-cover-link {
+    position: relative;
+    display: block;
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 auto;
+    border-radius: 1.2rem;
+    cursor: zoom-in;
+}
+
+.reading-cover-expand {
+    position: absolute;
+    right: 0.65rem;
+    bottom: 0.65rem;
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: var(--surface-container-low);
+    color: var(--on-surface);
+    border: 1px solid var(--outline-variant);
+}
+
+@media (min-width: 1024px) {
+    .reading-intro-portrait {
+        grid-template-columns: minmax(0, 1fr) minmax(12rem, 18rem);
+        align-items: center;
+        gap: 3rem;
+
+        .reading-cover img {
+            max-height: min(24rem, 50svh);
+            max-width: 100%;
+        }
+    }
+}
+
 .reading-paper {
     position: relative;
     max-width: 56rem;
@@ -213,6 +270,11 @@
 }
 
 @media (max-width: 767px) {
+    .reading-intro-portrait {
+        gap: 1.5rem;
+        margin-bottom: 1.75rem;
+    }
+
     .reading-header {
         margin-bottom: 1.75rem;
     }
