@@ -1,0 +1,58 @@
+/* Bariol - used by the SVG logo */
+
+@font-face {
+    font-family: "Bariol Regular";
+    font-style: normal;
+    font-weight: normal;
+    font-display: swap;
+    src: local("Bariol Regular"),
+        url("/wp-content/themes/pacurar2020/resources/fonts/bariol_regular-webfont.woff") format("woff");
+}
+
+h1 {
+    @apply text-2xl;
+}
+
+h2 {
+    @apply text-xl;
+}
+
+h3 {
+    @apply text-lg;
+}
+
+html {
+    @apply text-on-surface;
+}
+
+html,
+body {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 16px;
+}
+
+.text-xxs {
+    font-size: 0.5rem;
+}
+
+/* Monospace tech style */
+
+.font-mono-tech {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--on-surface-variant);
+}

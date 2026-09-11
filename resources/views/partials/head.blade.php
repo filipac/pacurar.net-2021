@@ -1,6 +1,6 @@
 <head>
     <title>{{$attributes->get('title', view('partials.title'))}}</title>
-    <meta name="theme-color" content="#003849">
+    <meta name="theme-color" content="#fcf8f1">
     <script>
         (function() {
             var stored = localStorage.getItem('darkMode');

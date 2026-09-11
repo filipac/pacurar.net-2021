@@ -19,37 +19,30 @@
             transparent 3px
         );
     }
-
     /* Neon text glow */
     .neon-glow,
     h1, h2, h3 {
-        text-shadow:
-            0 0 5px rgba(19, 255, 67, 0.3),
+        text-shadow: 0 0 5px rgba(19, 255, 67, 0.3),
             0 0 10px rgba(19, 255, 67, 0.15);
     }
-
     /* Zero border-radius override */
     *,
     *::before,
     *::after {
         border-radius: 0 !important;
     }
-
     /* Blinking cursor */
     .blink-cursor::after {
         content: '_';
         animation: blink 1s step-end infinite;
     }
-
     /* Glitch hover effect */
     .glitch-hover {
         position: relative;
-
         &:hover {
             animation: glitch 0.3s ease-in-out;
         }
     }
-
     /* Terminal-style code blocks */
     pre, code {
         background: #0a0e14 !important;
@@ -59,29 +52,59 @@
 }
 
 @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
 }
 
 @keyframes glitch {
-    0% { transform: translate(0); }
-    20% { transform: translate(-2px, 2px); }
-    40% { transform: translate(-2px, -2px); }
-    60% { transform: translate(2px, 2px); }
-    80% { transform: translate(2px, -2px); }
-    100% { transform: translate(0); }
+    0% {
+        transform: translate(0);
+    }
+    20% {
+        transform: translate(-2px, 2px);
+    }
+    40% {
+        transform: translate(-2px, -2px);
+    }
+    60% {
+        transform: translate(2px, 2px);
+    }
+    80% {
+        transform: translate(2px, -2px);
+    }
+    100% {
+        transform: translate(0);
+    }
 }
 
 /* Dark mode neon accents for geek mode */
+
 .geek-mode.dark {
     a:not(.no-neon) {
         color: var(--color-dark-neon);
         transition: text-shadow 0.2s ease;
-
         &:hover {
-            text-shadow:
-                0 0 5px rgba(19, 255, 67, 0.5),
+            text-shadow: 0 0 5px rgba(19, 255, 67, 0.5),
                 0 0 15px rgba(19, 255, 67, 0.3);
         }
     }
+}
+
+.geek-mode {
+    --sunshine: #13ff43;
+    --sunshine-soft: #25342b;
+    .home-photo {
+        transform: none;
+    }
+    .home-photo:before, .sunburst {
+        display: none;
+    }
+}
+
+.geek-mode.dark .journal-button:not(.journal-button-secondary) {
+    color: var(--on-primary);
 }

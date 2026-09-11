@@ -1,0 +1,44 @@
+.journal-heading {
+    position: relative;
+    padding: 1.5rem 0 2rem;
+    border-bottom: 2px solid var(--on-surface);
+    h1 {
+        letter-spacing: -0.045em;
+        max-width: 90%;
+    }
+    &:after {
+        content: '✳';
+        position: absolute;
+        right: 0;
+        bottom: 1.5rem;
+        font-size: 4rem;
+        line-height: 1;
+        color: var(--primary);
+    }
+}
+
+.journal-browse {
+    color: var(--on-surface-variant);
+}
+
+.journal-random {
+    padding: 0.65rem 1rem;
+    background: var(--sunshine-soft);
+    border: 1px solid var(--outline-variant);
+    border-radius: 999px;
+    color: var(--on-surface);
+}
+
+.journal-random:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+@media (max-width: 767px) {
+    .journal-heading:after {
+        font-size: 2.5rem;
+    }
+    .journal-heading h1 {
+        max-width: 85%;
+    }
+}

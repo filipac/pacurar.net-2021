@@ -8,7 +8,7 @@
         @endphp
 
         {{-- Language Switcher --}}
-        <div class="flex items-center justify-center py-4">
+        <div class="home-language flex items-center justify-end max-w-7xl mx-auto px-4 md:px-8 pt-6">
             @php
                 do_action( 'wpml_add_language_selector' )
             @endphp

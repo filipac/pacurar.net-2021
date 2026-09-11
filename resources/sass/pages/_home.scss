@@ -1,0 +1,238 @@
+.home-language {
+    font-size: 0.75rem;
+}
+
+.home-language .wpml-ls a {
+    background: transparent;
+    color: var(--on-surface-variant);
+}
+
+.home-language .wpml-ls-current-language a {
+    color: var(--on-surface);
+}
+
+.hello-dot {
+    width: 0.55rem;
+    height: 0.55rem;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--primary);
+    box-shadow: 0 0 0 5px var(--surface-container);
+}
+
+.home-intro {
+    padding: 3.5rem 0 5rem;
+}
+
+.home-title {
+    font-size: clamp(3.75rem, 7vw, 6.7rem) !important;
+    line-height: 1.06;
+}
+
+.hello-period {
+    color: var(--primary);
+}
+
+.home-intro-text {
+    max-width: 31rem;
+    color: var(--on-surface-variant);
+}
+
+.home-intro-text strong {
+    color: var(--on-surface);
+    text-decoration: underline;
+    text-decoration-color: var(--sunshine);
+    text-decoration-thickness: 5px;
+    text-underline-offset: 4px;
+    text-decoration-skip-ink: none;
+}
+
+.home-footnote {
+    color: var(--on-surface-variant);
+}
+
+.home-photo-wrap {
+    position: relative;
+    min-width: 0;
+    padding: 1rem 1rem 1rem 0;
+}
+
+.home-photo-wrap:before {
+    content: '';
+    position: absolute;
+    inset: 7% -1% 0 8%;
+    border-radius: 50%;
+    background: var(--sunshine-soft);
+}
+
+.home-photo {
+    position: relative;
+    padding: 0.75rem 0.75rem 0;
+    background: var(--surface-container-low);
+    border: 1px solid var(--outline-variant);
+    border-radius: 0.4rem;
+    box-shadow: 0 12px 28px var(--paper-shadow);
+    transform: rotate(2deg);
+    &:before {
+        content: '';
+        position: absolute;
+        width: 6rem;
+        height: 1.65rem;
+        top: -0.9rem;
+        left: 38%;
+        z-index: 1;
+        background: var(--sunshine);
+        opacity: 0.8;
+        transform: rotate(-6deg);
+    }
+    img {
+        display: block;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 4 / 3;
+        object-fit: cover;
+        border-radius: 0.15rem;
+    }
+    figcaption {
+        padding: 0.75rem 0.5rem;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.7rem;
+        color: var(--on-surface-variant);
+    }
+}
+
+.photo-heart {
+    color: var(--primary);
+    font-size: 1.65rem;
+    line-height: 1;
+}
+
+.sunburst {
+    position: absolute;
+    right: -0.25rem;
+    top: -2rem;
+    z-index: 2;
+    color: var(--primary);
+    font-size: 6rem;
+    line-height: 1;
+    transform: rotate(12deg);
+}
+
+.home-panel {
+    min-width: 0;
+    background: var(--surface-container-low);
+    border: 1px solid var(--outline-variant);
+    border-radius: 1rem;
+}
+
+.home-section-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: -0.035em;
+}
+
+.home-about {
+    border-top: 4px solid var(--primary);
+}
+
+.home-work {
+    background: var(--sunshine-soft);
+    border-top: 4px solid var(--sunshine);
+}
+
+.home-journal .home-panel p {
+    font-size: 0.95rem;
+    line-height: 1.8;
+}
+
+.tech-stamp {
+    background: var(--surface-container-low);
+    color: var(--on-surface);
+    border: 1px solid var(--outline-variant);
+    border-radius: 0.4rem;
+}
+
+.home-streak {
+    border-style: dashed;
+}
+
+.pet-toggle {
+    min-height: 2.75rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--outline-variant);
+    background: var(--surface);
+    color: var(--on-surface);
+}
+
+.pet-toggle[aria-pressed="true"] {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: var(--on-primary);
+}
+
+@media (min-width: 1024px) {
+    .home-intro-copy {
+        padding-right: 1rem;
+    }
+    .home-work {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 1023px) {
+    .home-photo-wrap {
+        width: min(100%, 36rem);
+        margin: 1rem auto 0;
+        padding-left: 0.5rem;
+    }
+    .home-intro {
+        gap: 2rem;
+    }
+}
+
+@media (max-width: 767px) {
+    .home-intro {
+        padding: 2.5rem 0 3rem;
+    }
+    .home-photo-wrap {
+        padding-right: 0.75rem;
+    }
+    .sunburst {
+        font-size: 4rem;
+        top: -1.5rem;
+        right: 0;
+    }
+    .home-title {
+        font-size: clamp(3.5rem, 14vw, 5rem) !important;
+    }
+    .home-intro-text {
+        font-size: 1.05rem;
+    }
+    .home-photo figcaption {
+        font-size: 0.65rem;
+    }
+    .home-language {
+        padding-top: 1rem;
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .home-intro-copy {
+        animation: journal-arrive 500ms ease-out both;
+    }
+    .home-photo-wrap {
+        animation: journal-arrive 650ms ease-out both;
+    }
+}
+
+@keyframes journal-arrive {
+    from {
+        translate: 0 10px;
+    }
+    to {
+        translate: 0 0;
+    }
+}

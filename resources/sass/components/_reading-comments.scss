@@ -1,0 +1,59 @@
+.reading-comments {
+    max-width: 56rem;
+    margin: 3.5rem auto 0;
+}
+
+.reading-comments-intro {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding-bottom: 1.5rem;
+}
+
+.reading-discussion-mark {
+    color: var(--primary);
+    font-size: 2rem;
+    line-height: 1;
+}
+
+.reading-comments {
+    h2#comments, h2#reply-title {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        letter-spacing: -0.025em;
+        margin-bottom: 1rem;
+    }
+    .comment-respond, .comment-body {
+        border-radius: 0.85rem;
+    }
+    .comment-respond {
+        padding: clamp(1.25rem, 4vw, 2rem) !important;
+        border-top: 3px solid var(--sunshine);
+    }
+    .comment-form textarea, .comment-form input:not([type='checkbox']):not([type='submit']) {
+        border-radius: 0.5rem;
+        padding: 0.75rem;
+    }
+    .comment-form textarea {
+        min-height: 10rem;
+    }
+    .comment-form input.submit, .reply a {
+        border-radius: 0.5rem;
+    }
+    .commentlist .comment-body {
+        font-size: 1rem !important;
+        line-height: 1.75;
+    }
+    #webmention-form {
+        margin-top: 1.5rem;
+        font-size: 0.8rem;
+        color: var(--on-surface-variant);
+    }
+}
+
+@media (max-width: 767px) {
+    .reading-comments {
+        margin-top: 2rem;
+    }
+}

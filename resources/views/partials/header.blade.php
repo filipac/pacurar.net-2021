@@ -1,4 +1,4 @@
-<header class="fixed w-full z-50 glass-nav" style="top: 0;" x-data="{ mobileOpen: false }"
+<header class="fixed w-full z-50 glass-nav" style="top: 0;" x-data="{ mobileOpen: false }" @keydown.escape.window="mobileOpen = false"
     @if(function_exists('is_admin_bar_showing') && is_admin_bar_showing())
         x-init="$el.style.top = window.innerWidth > 782 ? '32px' : '46px'"
     @endif
@@ -6,7 +6,7 @@
     <nav class="flex justify-between items-center px-4 md:px-8 h-20 max-w-7xl mx-auto">
         {{-- Left: Brand --}}
         <div class="flex items-center gap-3">
-            <a href="{{ get_bloginfo('url') }}" class="flex items-center gap-2 no-neon" aria-label="{{ get_bloginfo('name') }}">
+            <a href="{{ get_bloginfo('url') }}" class="site-brand flex items-center gap-2 no-neon" aria-label="{{ get_bloginfo('name') }}">
                 <span style="max-width: 180px;" aria-hidden="true">@include('partials.logo')</span>
             </a>
         </div>

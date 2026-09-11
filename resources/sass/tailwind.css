@@ -44,36 +44,68 @@
 
 /* Light mode defaults */
 :root {
-  --surface: #f3faff;
-  --surface-container: #d8f2ff;
-  --surface-container-low: #e6f6ff;
-  --surface-container-high: #c8e8f7;
-  --primary: #003849;
-  --primary-container: #165064;
-  --on-surface: #001f29;
-  --on-surface-variant: #3d4d54;
-  --outline: #6d7d84;
-  --outline-variant: #c0c8cc;
-  --accent: #0891b2;
-  --accent-light: #22d3ee;
+  --surface: #fcf8f1;
+  --surface-container: #f6e8d8;
+  --surface-container-low: #fffdf9;
+  --surface-container-high: #eedcc7;
+  --primary: #b9432e;
+  --primary-container: #963723;
+  --on-surface: #292e2b;
+  --on-surface-variant: #65645b;
+  --outline: #787568;
+  --outline-variant: #ded8cb;
+  --accent: #b9432e;
+  --accent-light: #f29b82;
+
+  --sunshine: #f3cc65;
+  --sunshine-soft: #faf0cb;
+  --on-primary: #ffffff;
+  --paper-shadow: rgba(62, 47, 22, 0.09);
 
   --color-dark-neon: #13ff43;
 }
 
 /* Dark mode overrides */
 .dark {
-  --surface: #10141a;
-  --surface-container: #242a38;
-  --surface-container-low: #1a1f2b;
-  --surface-container-high: #2d3444;
-  --primary: #5ec4db;
-  --primary-container: #1a3a44;
-  --on-surface: #e0e4e8;
-  --on-surface-variant: #a0aab4;
-  --outline: #4a5568;
-  --outline-variant: #374151;
-  --accent: #22d3ee;
-  --accent-light: #67e8f9;
+  --surface: #1c2423;
+  --surface-container: #303b37;
+  --surface-container-low: #252e2b;
+  --surface-container-high: #3c4841;
+  --primary: #ffad91;
+  --primary-container: #6c352a;
+  --on-surface: #f5eee2;
+  --on-surface-variant: #bcbdb0;
+  --outline: #949b8b;
+  --outline-variant: #465047;
+  --accent: #f29b82;
+  --accent-light: #ffc6a4;
+  --sunshine: #e9c568;
+  --sunshine-soft: #3b3c2b;
+  --on-primary: #2c211c;
+  --paper-shadow: rgba(0, 0, 0, 0.2);
+}
+
+/* Stored post content also uses Tailwind's primary background utility.
+   Pair its text with that surface, ahead of the important prose utilities. */
+@layer components {
+  .prose .bg-primary,
+  .entry-content .bg-primary {
+    color: var(--on-primary) !important;
+
+    :where(a, p, strong, em, b, i, span, li, h1, h2, h3, h4, h5, h6, blockquote, cite) {
+      color: var(--on-primary) !important;
+    }
+
+    a {
+      text-decoration: underline !important;
+      text-decoration-color: currentColor !important;
+      text-underline-offset: 3px;
+    }
+
+    a:focus-visible {
+      outline-color: var(--on-primary);
+    }
+  }
 }
 
 @content "./safe.html"

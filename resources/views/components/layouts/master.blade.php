@@ -21,11 +21,12 @@
 
 @include('partials.header')
 
-<main class="pt-20 flex-1 {{$extraClassesContent ?? ''}}">
-    {{ $slot }}
-</main>
+<a href="#main-content" class="skip-link">{{ ICL_LANGUAGE_CODE == 'ro' ? 'Sari la conținut' : 'Skip to content' }}</a>
 
-{{ $belowContent ?? '' }}
+<main id="main-content" tabindex="-1" class="pt-20 flex-1 {{$extraClassesContent ?? ''}}">
+    {{ $slot }}
+    {{ $belowContent ?? '' }}
+</main>
 
 @include('partials.footer')
 

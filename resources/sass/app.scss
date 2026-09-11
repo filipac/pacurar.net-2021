@@ -1,2 +1,19 @@
+// Global foundations, shared components, page layouts, then theme overrides.
+@use 'base/typography';
+@use 'base/document';
+@use 'components/content';
+@use 'components/pagination';
+@use 'components/comments';
+@use 'components/widgets';
+@use 'layout/navigation';
+@use 'layout/footer';
+@use 'components/buttons';
+@use 'components/post-card';
+@use 'pages/home';
+@use 'pages/journal';
+@use 'pages/reading';
+@use 'components/reading-comments';
+@use 'themes/geek-mode';
+
+// Tailwind resolves @apply and @variant after Sass combines the modules.
 @reference "./tailwind.css";
-@import 'base';

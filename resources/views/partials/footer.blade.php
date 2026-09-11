@@ -1,5 +1,5 @@
 {{-- Footer section --}}
-<footer class="mt-auto border-t border-outline-variant" style="background: var(--color-surface-container-low);">
+<footer class="site-footer mt-auto border-t border-outline-variant" style="background: var(--color-surface-container-low);">
     <div class="max-w-7xl mx-auto px-4 md:px-8 py-12">
         {{-- Widget grid --}}
         @if(is_active_sidebar('nice_sidebar'))

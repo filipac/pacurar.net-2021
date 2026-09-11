@@ -26,125 +26,117 @@
         @endpush
 
         @php
-            // Capture content early so get_the_content() doesn't interfere with the_content()
+            $isAside = has_post_format('aside');
+            $isRomanian = ICL_LANGUAGE_CODE == 'ro';
             $rawContent = get_post_field('post_content', get_post());
-            $wordCount = str_word_count(strip_tags($rawContent));
-            $readingTime = max(1, ceil($wordCount / 200));
+            $wordCount = preg_match_all('/[\p{L}\p{N}]+/u', wp_strip_all_tags(strip_shortcodes($rawContent)));
+            $readingTime = max(1, (int) ceil($wordCount / 200));
+            $categories = get_the_terms(get_post(), 'category');
+            $categories = is_wp_error($categories) ? [] : ($categories ?: []);
+            $tags = get_the_tags() ?: [];
+            $showThumbnail = has_post_thumbnail() && !get_post_meta(get_the_ID(), 'hide_thumbnail', true);
+            $xdata = get_post_meta(get_the_ID(), 'x-data', true);
         @endphp
 
-        <div class="max-w-7xl mx-auto px-4 md:px-8 py-12">
-            {{-- Title --}}
-            @unless(has_post_format('aside'))
-                <h1 class="font-headline text-3xl md:text-5xl font-bold text-on-surface mb-8 max-w-4xl">
-                    {{ the_title() }}
-                </h1>
-            @endunless
+        <div class="journal-single {{ $isAside ? 'journal-single-note' : '' }} max-w-7xl mx-auto px-4 md:px-8 py-10 md:py-14">
+            <div class="reading-header">
+                <a href="{{ home_url('/blog') }}" class="reading-back">
+                    <span aria-hidden="true">←</span>
+                    {{ $isRomanian ? 'Înapoi la blog' : 'Back to the blog' }}
+                </a>
 
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-                {{-- Metadata sidebar (left) --}}
-                <aside class="lg:col-span-3 order-2 lg:order-1">
-                    <div class="metadata-sidebar">
-                        @unless(has_post_format('aside'))
-                            {{-- Date --}}
-                            <div class="metadata-section">
-                                <div class="metadata-label">{{ ICL_LANGUAGE_CODE == 'ro' ? 'Publicat' : 'Published' }}</div>
-                                <div class="metadata-value" x-data="{ hover: false }" @mouseenter="hover = true" @mouseleave="hover = false">
-                                    <span x-show="!hover">{{ get_the_date('Y . m . d') }}</span>
-                                    <span x-show="hover" x-cloak>{{ get_the_date('U') }}</span>
-                                </div>
-                            </div>
-
-                            {{-- Author --}}
-                            <div class="metadata-section">
-                                <div class="metadata-label">{{ ICL_LANGUAGE_CODE == 'ro' ? 'Autor' : 'Author' }}</div>
-                                <div class="metadata-value">{!! app('the_author') !!}</div>
-                            </div>
-
-                            {{-- Reading time --}}
-                            <div class="metadata-section">
-                                <div class="metadata-label">{{ ICL_LANGUAGE_CODE == 'ro' ? 'Timp de citire' : 'Reading time' }}</div>
-                                <div class="metadata-value">
-                                    ~{{ $readingTime }} min
-                                </div>
-                            </div>
-
-                            {{-- Tags --}}
-                            <div class="metadata-section">
-                                <div class="metadata-label">{{ ICL_LANGUAGE_CODE == 'ro' ? 'Etichete' : 'Tags' }}</div>
-                                <div class="flex flex-wrap gap-1 mt-1">
-                                    @php
-                                        $categories = get_the_terms(get_post(), 'category') ?: [];
-                                        $tags = get_the_tags() ?: [];
-                                    @endphp
-                                    @foreach($categories as $cat)
-                                        <a href="{{ get_term_link($cat) }}" class="metadata-tag">{!! $cat->name !!}</a>
-                                    @endforeach
-                                    @foreach($tags as $tag)
-                                        <a href="{{ get_term_link($tag) }}" class="metadata-tag"># {!! $tag->name !!}</a>
-                                    @endforeach
-                                </div>
-                            </div>
-
-                            {{-- Share --}}
-                            <div class="metadata-section">
-                                <div class="metadata-label">{{ ICL_LANGUAGE_CODE == 'ro' ? 'Distribuie' : 'Share' }}</div>
-                                <a href="https://twitter.com/intent/tweet?url={{ urlencode(get_the_permalink()) }}&text={{ urlencode(get_the_title()) }}" target="_blank" class="share-link">
-                                    <span class="material-symbols-outlined" style="font-size: 16px;">share</span>
-                                    Twitter
-                                </a>
-                            </div>
-                        @endunless
-                    </div>
-                </aside>
-
-                {{-- Article content (center) --}}
-                <article class="lg:col-span-9 order-1 lg:order-2" style="min-width: 0;">
-                    @php
-                        $hide_thumbnail = get_post_meta(get_the_ID(), 'hide_thumbnail', true);
-                    @endphp
-                    @if(has_post_thumbnail() && !$hide_thumbnail)
-                        <div class="w-full mb-8 overflow-hidden" style="border-radius: 0.25rem;">
-                            {!! wp_get_attachment_image(
-                                get_post_thumbnail_id(),
-                                'full',
-                                false,
-                                [
-                                    'class' => 'w-full',
-                                    'style' => 'object-fit: cover;',
-                                    'fetchpriority' => 'high',
-                                    'loading' => 'eager',
-                                    'decoding' => 'async',
-                                    'sizes' => '(min-width: 1280px) 912px, (min-width: 1024px) 75vw, calc(100vw - 2rem)',
-                                ]
-                            ) !!}
-                        </div>
+                <div class="reading-categories flex flex-wrap items-center gap-2">
+                    @if($isAside)
+                        <span class="post-category">{{ $isRomanian ? 'Pe scurt' : 'A quick note' }}</span>
+                    @else
+                        @foreach($categories as $category)
+                            <a href="{{ get_term_link($category) }}" class="post-category">{!! $category->name !!}</a>
+                        @endforeach
                     @endif
+                </div>
 
-                    @php
-                        $xdata = get_post_meta(get_post()->ID, 'x-data', true);
-                    @endphp
-                    <div class="entry-content pb-12 prose dark:prose-invert {{has_post_format('aside') ? 'prose-xl' : 'prose-lg'}} max-w-none"
+                @if($isAside)
+                    <h1 id="reading-title" class="sr-only">{{ ($isRomanian ? 'Însemnare din ' : 'A note from ') . get_the_date() }}</h1>
+                @else
+                    <h1 id="reading-title" class="reading-title font-headline text-4xl md:text-6xl font-bold text-on-surface">
+                        {!! get_the_title() !!}
+                    </h1>
+                @endif
+
+                <div class="reading-meta flex flex-wrap items-center gap-x-5 gap-y-3">
+                    <span class="reading-author">{!! app('the_author') !!}</span>
+                    <time datetime="{{ get_the_date('c') }}" x-data="{ hover: false }" @mouseenter="hover = true" @mouseleave="hover = false">
+                        <span x-show="!hover">{{ get_the_date($isAside ? 'j M Y · H:i' : 'j M Y') }}</span>
+                        <span x-show="hover" x-cloak>{{ get_the_date('U') }}</span>
+                    </time>
+                    @unless($isAside)
+                        <span>{{ $readingTime }} {{ $isRomanian ? 'min de citit' : 'min read' }}</span>
+                    @endunless
+                </div>
+            </div>
+
+            <article class="reading-article" aria-labelledby="reading-title">
+                @if($showThumbnail)
+                    <div class="reading-cover">
+                        {!! wp_get_attachment_image(
+                            get_post_thumbnail_id(),
+                            'full',
+                            false,
+                            [
+                                'class' => 'reading-cover-image',
+                                'fetchpriority' => 'high',
+                                'loading' => 'eager',
+                                'decoding' => 'async',
+                                'sizes' => '(min-width: 1280px) 1120px, (min-width: 768px) calc(100vw - 4rem), calc(100vw - 2rem)',
+                            ]
+                        ) !!}
+                    </div>
+                @endif
+
+                <div class="reading-paper {{ $showThumbnail ? 'reading-paper-with-cover' : '' }}">
+                    <div class="entry-content prose dark:prose-invert prose-lg max-w-none"
                          @if($xdata) x-data='{{ $xdata }}' @endif>
                         {!! the_content() !!}
                     </div>
 
-                    @if(has_post_format('aside'))
-                        <div class="mt-2 font-label text-xs" style="color: var(--color-on-surface-variant);">
-                            <a href="{{ get_permalink() }}">
-                                @include('partials.time')
+                    {!! wp_link_pages(['before' => '<nav class="reading-pages" aria-label="'.esc_attr($isRomanian ? 'Paginile articolului' : 'Article pages').'">', 'after' => '</nav>', 'echo' => false]) !!}
+
+                    <div class="reading-end">
+                        @if($isAside && $categories)
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                @foreach($categories as $category)
+                                    <a href="{{ get_term_link($category) }}" class="post-category">{!! $category->name !!}</a>
+                                @endforeach
+                            </div>
+                        @endif
+                        @if($tags)
+                            <div class="reading-tags flex flex-wrap gap-2 mb-6">
+                                @foreach($tags as $tag)
+                                    <a href="{{ get_term_link($tag) }}">#{{ $tag->name }}</a>
+                                @endforeach
+                            </div>
+                        @endif
+                        <div class="flex flex-wrap items-center justify-between gap-4">
+                            <a href="{{ home_url('/blog') }}" class="reading-back">
+                                <span aria-hidden="true">←</span>
+                                {{ $isRomanian ? 'Mai multe din jurnal' : 'More from the journal' }}
+                            </a>
+                            <a href="https://twitter.com/intent/tweet?url={{ urlencode(get_the_permalink()) }}&text={{ urlencode(wp_strip_all_tags(get_the_title())) }}" target="_blank" rel="noopener noreferrer" class="reading-share">
+                                <span class="material-symbols-outlined" aria-hidden="true">share</span>
+                                {{ $isRomanian ? 'Distribuie pe Twitter' : 'Share on Twitter' }}
                             </a>
                         </div>
-                        <div class="mt-4">
-                            @include('partials.tags')
-                        </div>
-                    @endif
-
-                    {{-- Comments --}}
-                    <div class="mt-12 pt-8" style="border-top: 1px solid var(--color-outline-variant);">
-                        {!! comments_template('/comments.php') !!}
                     </div>
-                </article>
-            </div>
+                </div>
+            </article>
+
+            <section class="reading-comments" aria-label="{{ $isRomanian ? 'Conversația' : 'The conversation' }}">
+                <div class="reading-comments-intro">
+                    <span class="reading-discussion-mark" aria-hidden="true">✳</span>
+                    <p class="eyebrow">{{ $isRomanian ? 'De aici, continuăm împreună.' : 'The conversation continues here.' }}</p>
+                </div>
+                {!! comments_template('/comments.php') !!}
+            </section>
         </div>
     @endwhile
 </x-layouts.master>

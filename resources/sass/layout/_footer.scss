@@ -1,0 +1,110 @@
+/* Keep the IndieWeb social widget usable if its plugin stylesheet is delayed. */
+
+.footer-widgets .relme {
+    ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    li {
+        display: inline-flex;
+    }
+    .relmename {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+    }
+    svg {
+        display: block;
+        width: 2rem;
+        height: 2rem;
+        fill: currentColor;
+    }
+}
+
+/* Footer widgets grid */
+
+.footer-widgets {
+    .widget {
+        .widget-title, h2 {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--color-on-surface-variant);
+            margin-bottom: 0.75rem;
+        }
+        .widget-inner, .wp-widget-group__inner-blocks {
+            &:not(.no-padding) {
+                @apply p-0;
+            }
+            .menu {
+                @apply list-none;
+                li {
+                    @apply w-full;
+                    a {
+                        @apply cursor-pointer w-full block py-2;
+                        color: var(--color-on-surface);
+                        transition: color 0.2s ease;
+                        &:hover {
+                            color: var(--color-primary);
+                        }
+                    }
+                    &, & * {
+                        cursor: pointer !important;
+                    }
+                    &:hover > a, &.current-menu-item > a {
+                        color: var(--color-primary);
+                    }
+                    ul {
+                        @apply ml-4 mt-1;
+                    }
+                }
+            }
+            .tag-cloud-link {
+                cursor: pointer !important;
+                transition: color 0.2s ease;
+                &:hover {
+                    color: var(--color-primary);
+                }
+            }
+        }
+    }
+    .widget_top-posts {
+        ul {
+            @apply list-disc list-inside;
+        }
+    }
+}
+
+.site-footer {
+    position: relative;
+}
+
+.site-footer:before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(to right, var(--primary) 0 30%, var(--sunshine) 30% 65%, var(--outline-variant) 65%);
+}
+
+.footer-widgets .widget {
+    min-width: 0;
+}
+
+.footer-widgets .widget-title, .footer-widgets .widget h2 {
+    padding-bottom: 0.65rem;
+    border-bottom: 1px solid var(--outline-variant);
+}

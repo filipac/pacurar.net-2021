@@ -1,0 +1,54 @@
+/* Reserve icon space while the small Material Symbols subset is loading. */
+
+.material-symbols-outlined {
+    width: 1em;
+    height: 1em;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+[x-cloak] {
+    display: none !important;
+}
+
+a:not(.underline) {
+    text-decoration: none !important;
+}
+
+::selection {
+    background: var(--sunshine);
+    color: #292e2b;
+}
+
+html {
+    scroll-padding-top: 7rem;
+}
+
+body {
+    background-image: radial-gradient(var(--outline-variant) 0.6px, transparent 0.6px);
+    background-size: 22px 22px;
+}
+
+a, button, input, textarea, select, video {
+    &:focus-visible {
+        outline: 3px solid var(--primary);
+        outline-offset: 5px;
+    }
+}
+
+button {
+    cursor: pointer;
+}
+
+.skip-link {
+    position: fixed;
+    left: 1rem;
+    top: -8rem;
+    z-index: 10000;
+    padding: 1rem 1.5rem;
+    background: var(--on-surface);
+    color: var(--surface);
+    &:focus {
+        top: 1rem;
+    }
+}
