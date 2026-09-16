@@ -13,6 +13,12 @@ class EnglishHealthPages
         $slug = trim(config('health.archive_slug', 'health'), '/');
         $path = $request->getPathInfo();
         $isHealthPage = $path === '/'.$slug || str_starts_with($path, '/'.$slug.'/');
+        $isLocal = str($request->getHost())->contains(['.test', '.local']);
+
+        if ($isLocal) {
+            return $next($request);
+        }
+
         // Match board-games: without WPML (including local development), use English.
         if (! $isHealthPage || ! in_array($request->method(), ['GET', 'HEAD'], true)
             || ! defined('ICL_LANGUAGE_CODE') || ICL_LANGUAGE_CODE === 'en') {
