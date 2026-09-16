@@ -69,7 +69,9 @@ role permissions. Never turn off HTTPS verification to fix a connection failure.
 
 ## Preview and publish
 
-1. Choose the destination (Local by default).
+1. Choose the destination. The app remembers your last selection in persistent
+   cache, including across browser sessions. Local is used when no selection is
+   saved or the cache is cleared.
 2. Fetch health data. Every source collection first requests today's Bucharest
    date. Only an empty result (no supported numerical measurements) triggers a
    second request for yesterday. Permission and request errors are reported without
