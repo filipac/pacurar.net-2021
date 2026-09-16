@@ -3,6 +3,13 @@
         <a class="health-back" href="{{ get_post_type_archive_link('health_entry') }}">← Health journal</a>
         @if(is_array($entry) && isset($entry['providers']))
         <header class="health-intro"><div><p class="health-eyebrow">{{ $entry['date'] }} / {{ $entry['timezone'] }}</p><h1>{{ \App\Health\MetricCatalog::TOPICS[$entry['topic']] }}</h1></div><p>One day, in detail.<br><span>Each provider keeps its own measurements. Values are never added together across providers.</span></p></header>
+        @php $metric = \App\Health\Presentation::prominent($entry); @endphp
+        @if($metric)
+        <section class="health-featured-metric" aria-label="Featured measurement">
+            <p class="health-featured-value"><span class="health-big-number">{{ \App\Health\Presentation::number($metric['value']) }}</span> <span class="health-unit">{{ $metric['unit'] }}</span></p>
+            <p class="health-metric-label">{{ $metric['label'] }} <span>· {{ \App\Health\MetricCatalog::SOURCES[$metric['source']] }}</span></p>
+        </section>
+        @endif
         @foreach($entry['providers'] as $source => $section)
             <section class="health-provider">
                 <div class="health-provider-heading"><h2>{{ \App\Health\MetricCatalog::SOURCES[$source] }}</h2><p>Fetched <time datetime="{{ $section['fetched_at'] }}">{{ $section['fetched_at'] }}</time></p></div>

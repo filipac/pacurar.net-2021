@@ -21,6 +21,11 @@
 .health-big-number { font-family: var(--font-headline, sans-serif); font-size: clamp(34px, 3.5vw, 48px); font-weight: 600; letter-spacing: -.04em; }
 .health-unit { font-size: 14px; color: var(--on-surface-variant); }.health-series-title { font-size: 28px; }
 .health-metric-label { font-size: 13px; margin-top: 9px; }.health-metric-label span { color: var(--on-surface-variant); font-size: 11px; }
+.health-featured-metric { margin-bottom: 32px; padding: 24px 28px; background: var(--surface-container-low); border: 1px solid var(--outline-variant); border-top: 5px solid var(--health-accent); border-radius: 5px; }
+.health-featured-value { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.health-featured-value .health-big-number { font-size: clamp(52px, 7vw, 88px); overflow-wrap: anywhere; }
+.health-featured-metric .health-unit, .health-featured-metric .health-metric-label { font-size: 16px; }
+.health-featured-metric .health-metric-label span { font-size: 13px; }
 .health-card-details { margin: 24px 0 12px; }.health-card-details div { display: flex; justify-content: space-between; gap: 16px; padding: 10px 0; border-top: 1px solid var(--outline-variant); font-size: 12px; }.health-card-details dd { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }.health-card-details small { color: var(--on-surface-variant); font-size: 10px; }.health-card-details dt small { display: block; margin-top: 3px; }
 .health-card footer { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 20px; font-size: 12px; }.health-card footer > a { text-decoration: underline; text-underline-offset: 4px; }.health-badges { display: flex; gap: 6px; }.health-badges span { font-size: 10px; padding: 4px 7px; border: 1px solid var(--outline-variant); border-radius: 20px; color: var(--on-surface-variant); }
 .health-empty { padding: 80px 20px; text-align: center; border: 1px dashed var(--outline-variant); }.health-empty h2 { font-size: 30px; margin-bottom: 12px; }.health-footnote { margin-top: 45px; padding-top: 20px; border-top: 1px solid var(--outline-variant); font-size: 12px; line-height: 1.9; color: var(--on-surface-variant); }.health-footnote a { text-decoration: underline; }
