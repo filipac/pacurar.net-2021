@@ -201,4 +201,21 @@ $ids = [];
 foreach ($processes as [$p, $pipes]) { $out = stream_get_contents($pipes[1]); $err = stream_get_contents($pipes[2]); fclose($pipes[1]); fclose($pipes[2]); $exit = proc_close($p); $data = json_decode($out, true); check($exit === 0 && ($data['status'] ?? null) === 200, 'Concurrent request succeeds'); $ids[] = $data['result']['id']; }
 check(count(array_unique($ids)) === 1, 'Concurrent creates produce exactly one post');
 require __DIR__.'/trends.php';
+foreach ([['cycling_distance', 'activity', 'Cycling distance', 'km', 12.5], ['waist_circumference', 'body-composition', 'Waist circumference', 'cm', 82.0]] as [$name, $topic, $label, $unit, $value]) {
+    wp_set_current_user($userId);
+    $newMetric = ['schema_version' => 1, 'topic' => $topic, 'date' => '2001-01-08', 'timezone' => 'Europe/Bucharest', 'expected_revision' => null,
+        'providers' => ['apple_health' => ['fetched_at' => '2001-01-08T10:00:00+02:00', 'series' => [], 'metrics' => [
+            ['key' => 'apple_health.'.$name, 'value' => $value, 'at' => '2001-01-08T08:00:00+02:00'],
+        ]]]];
+    $createdMetric = request('POST', $newMetric)->get_data();
+    check(($createdMetric['operation'] ?? null) === 'created', $name.' accepted by publishing contract');
+    check(wp_get_object_terms($createdMetric['id'], 'health_category', ['fields' => 'slugs']) === [$topic], $name.' assigned to correct topic');
+    wp_set_current_user(0);
+    $publicMetric = rest_do_request(new WP_REST_Request('GET', '/wp/v2/health-entries/'.$createdMetric['id']))->get_data()['health_data']['providers']['apple_health']['metrics'][0];
+    check($publicMetric['label'] === $label && $publicMetric['unit'] === $unit && $publicMetric['value'] === $value, $name.' exposes normalized public values');
+    $trendMetric = App\Health\Trends::published()['apple_health.'.$name.'|daily'];
+    check($trendMetric['days']['2001-01-08']['value'] === $value && $trendMetric['unit'] === $unit, $name.' available in comparison charts');
+    wp_set_current_user($userId);
+    check(request('POST', $newMetric)->get_data()['operation'] === 'unchanged', $name.' repeated publication does not duplicate data');
+}
 echo "\n$count integration checks passed; isolated database will be removed.\n";
