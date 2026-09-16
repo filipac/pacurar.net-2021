@@ -11,8 +11,8 @@
         <form class="health-trend-controls" method="get" action="{{ route('health.compare') }}" x-data="{ search: '', selected: {{ \Illuminate\Support\Js::from($selected[0] ?? '') }}, range: {{ \Illuminate\Support\Js::from($range) }} }">
             <div class="health-trend-toolbar">
                 <label>Date range<select name="range" x-model="range"><option value="7" @selected($range === '7')>Last 7 days</option><option value="30" @selected($range === '30')>Last 30 days</option><option value="90" @selected($range === '90')>Last 90 days</option><option value="all" @selected($range === 'all')>All published dates</option><option value="custom" @selected($range === 'custom')>Custom dates</option></select></label>
-                <label>From<input type="date" name="from" value="{{ $from }}" @change="range = 'custom'"></label>
-                <label>To<input type="date" name="to" value="{{ $to }}" @change="range = 'custom'"></label>
+                <label x-show="range === 'custom'" @if($range !== 'custom') style="display: none" @endif>From<input type="date" name="from" value="{{ $from }}" :disabled="range !== 'custom'" @disabled($range !== 'custom')></label>
+                <label x-show="range === 'custom'" @if($range !== 'custom') style="display: none" @endif>To<input type="date" name="to" value="{{ $to }}" :disabled="range !== 'custom'" @disabled($range !== 'custom')></label>
                 <button class="journal-button" type="submit">Show trends <span aria-hidden="true">↗</span></button>
             </div>
             <details class="health-metric-picker" @if($error) open @endif>
