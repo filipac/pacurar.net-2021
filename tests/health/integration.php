@@ -160,6 +160,19 @@ check($savedWithWarning['operation'] === 'created' && isset($savedWithWarning['c
 check(request('GET', ['topic' => 'weight', 'date' => '2001-01-06'])->get_data()['entry']['date'] === '2001-01-06', 'Cache failure does not roll back committed data');
 $cacheKernel->exitCode = 0;
 
+$mindful = ['schema_version' => 1, 'topic' => 'mindfulness', 'date' => '2001-01-07', 'timezone' => 'Europe/Bucharest', 'expected_revision' => null,
+    'providers' => ['apple_health' => ['fetched_at' => '2001-01-07T10:00:00+02:00', 'metrics' => [
+        ['key' => 'apple_health.mindful_minutes', 'value' => 12.5, 'at' => '2001-01-07T08:00:00+02:00']], 'series' => []]]];
+$mindfulCreated = request('POST', $mindful)->get_data();
+check(($mindfulCreated['operation'] ?? null) === 'created', 'Apple Health mindful minutes accepted');
+check(wp_get_object_terms($mindfulCreated['id'], 'health_category', ['fields' => 'slugs']) === ['mindfulness'], 'Mindful minutes assigned to mindfulness topic');
+wp_set_current_user(0);
+$publicMindful = rest_do_request(new WP_REST_Request('GET', '/wp/v2/health-entries/'.$mindfulCreated['id']))->get_data();
+$metric = $publicMindful['health_data']['providers']['apple_health']['metrics'][0];
+check($metric['value'] === 12.5 && $metric['unit'] === 'min' && $metric['label'] === 'Mindful minutes', 'Public mindful minutes expose normalized value, label and unit');
+wp_set_current_user($userId);
+check(request('POST', $mindful)->get_data()['operation'] === 'unchanged', 'Mindful minutes retry is unchanged');
+
 // Concurrent requests use independent database connections and PHP processes.
 $fixtureFile = $config['directory'].'/concurrent.json';
 file_put_contents($fixtureFile, json_encode($entry + ['unused' => false]));
