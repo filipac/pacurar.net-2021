@@ -235,6 +235,12 @@ all nested numerical fields use the same validation. Recognized keys, labels and
 labels are replaced with catalog labels. The public REST field is `health_data` at
 `/wp-json/wp/v2/health-entries`; updates use the authenticated custom endpoint.
 
+The endpoint accepts up to 4 MB of JSON per entry. Configure the blog's PHP
+`post_max_size` and web server body limit to at least 8 MB so larger heart/ECG
+payloads reach WordPress validation. On local Herd, `blog.test` has a per-site
+Nginx FastCGI `PHP_VALUE` setting of `post_max_size=8M`; recreating its Herd site
+configuration may require restoring that setting. This does not change production.
+
 After a successful create or update commits, the theme runs `cache:flush-all`:
 Laravel data cache, compiled Blade views and W3 Total Cache (when installed) are
 cleared, including filtered and paginated health archives. Unchanged entries and
