@@ -55,7 +55,7 @@ class HealthJournalProvider extends ServiceProvider
         foreach (['_health_data' => 'object', '_health_date' => 'string', '_health_identity' => 'string', '_health_revision' => 'string', '_health_fingerprint' => 'string'] as $key => $type) {
             register_post_meta('health_entry', $key, ['type' => $type, 'single' => true, 'show_in_rest' => false, 'auth_callback' => '__return_false']);
         }
-        if (get_option('pacurar_health_version') !== '1') {
+        if (get_option('pacurar_health_version') !== '2') {
             $caps = ['read' => true, 'edit_health_entries' => true, 'edit_published_health_entries' => true, 'publish_health_entries' => true];
             add_role('health_publisher', 'Health publisher', $caps);
             $role = get_role('health_publisher');
@@ -63,9 +63,9 @@ class HealthJournalProvider extends ServiceProvider
             $admin = get_role('administrator');
             foreach (array_merge(array_keys($caps), ['edit_others_health_entries', 'read_private_health_entries', 'edit_private_health_entries', 'delete_health_entries', 'delete_published_health_entries', 'delete_private_health_entries', 'delete_others_health_entries', 'manage_health_entries']) as $cap) $admin?->add_cap($cap);
             foreach (MetricCatalog::TOPICS as $slug => $label) if (! term_exists($slug, 'health_category')) wp_insert_term($label, 'health_category', ['slug' => $slug]);
-            foreach (['withings' => 'Withings', 'oura' => 'Oura'] as $slug => $label) if (! term_exists($slug, 'health_source')) wp_insert_term($label, 'health_source', ['slug' => $slug]);
+            foreach (MetricCatalog::SOURCES as $slug => $label) if (! term_exists($slug, 'health_source')) wp_insert_term($label, 'health_source', ['slug' => $slug]);
             flush_rewrite_rules(false);
-            update_option('pacurar_health_version', '1', false);
+            update_option('pacurar_health_version', '2', false);
         }
     }
 }

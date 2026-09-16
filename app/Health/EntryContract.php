@@ -21,10 +21,10 @@ class EntryContract
         $out = array_intersect_key($input, array_flip(['schema_version', 'topic', 'date', 'timezone']));
         $out['providers'] = [];
         foreach ($input['providers'] as $source => $section) {
-            if (! in_array($source, ['oura', 'withings'], true) || ! is_array($section)) {
+            if (! isset(MetricCatalog::SOURCES[$source]) || ! is_array($section)) {
                 self::invalid();
             }
-            self::keys($section, ['fetched_at', 'metrics', 'series']);
+            self::keys($section, ['fetched_at', 'metrics', 'series', 'workouts']);
             self::timestamp($section['fetched_at'] ?? null);
             $clean = ['fetched_at' => $section['fetched_at'], 'metrics' => [], 'series' => []];
             foreach (['metrics', 'series'] as $kind) {
@@ -59,21 +59,54 @@ class EntryContract
                             self::number($point['value'] ?? null);
                             $points[$point['at']] = ['at' => $point['at'], 'value' => (float) $point['value']];
                         }
-                        usort($points, fn ($a, $b) => strtotime($a['at']) <=> strtotime($b['at']));
+                        usort($points, fn ($a, $b) => (new \DateTimeImmutable($a['at'])) <=> (new \DateTimeImmutable($b['at'])));
                         $row['points'] = array_values($points);
                     }
                     $clean[$kind][] = $row;
                 }
                 usort($clean[$kind], fn ($a, $b) => strcmp($a['key'].($a['at'] ?? ''), $b['key'].($b['at'] ?? '')));
             }
-            if (! $clean['metrics'] && ! $clean['series']) {
+            if (isset($section['workouts'])) {
+                if ($source !== 'apple_health' || $input['topic'] !== 'activity' || ! is_array($section['workouts']) || count($section['workouts']) > 100) {
+                    self::invalid();
+                }
+                $workouts = [];
+                foreach ($section['workouts'] as $workout) {
+                    if (! is_array($workout)) {
+                        self::invalid();
+                    }
+                    self::keys($workout, ['type', 'start', 'end', 'origin', 'metrics', 'series']);
+                    if (! isset(MetricCatalog::WORKOUT_TYPES[$workout['type'] ?? '']) || ! isset(MetricCatalog::SOURCES[$workout['origin'] ?? ''])) {
+                        self::invalid();
+                    }
+                    self::timestamp($workout['start'] ?? null);
+                    self::timestamp($workout['end'] ?? null);
+                    if (strtotime($workout['end']) <= strtotime($workout['start'])) {
+                        self::invalid();
+                    }
+                    // Reuse the same field whitelist for workout measurements and charts.
+                    $nested = self::normalize(array_merge($out, ['providers' => [$source => ['fetched_at' => $clean['fetched_at'], 'metrics' => $workout['metrics'] ?? null, 'series' => $workout['series'] ?? null]]]))['providers'][$source];
+                    foreach (array_merge($nested['metrics'], $nested['series']) as $metric) {
+                        if (! str_starts_with($metric['key'], 'apple_health.workout.')) {
+                            self::invalid();
+                        }
+                    }
+                    $key = $workout['start'].'|'.$workout['type'];
+                    $workouts[$key] = array_intersect_key($workout, array_flip(['type', 'start', 'end', 'origin'])) + ['metrics' => $nested['metrics'], 'series' => $nested['series']];
+                }
+                ksort($workouts);
+                if ($workouts) {
+                    $clean['workouts'] = array_values($workouts);
+                }
+            }
+            if (! $clean['metrics'] && ! $clean['series'] && empty($clean['workouts'])) {
                 self::invalid();
             }
             $out['providers'][$source] = $clean;
         }
         ksort($out['providers']);
 
-        return $out;
+        return self::deduplicate($out);
     }
 
     public static function fingerprint(array $entry): string
@@ -103,9 +136,53 @@ class EntryContract
                     }
                 }
             }
+            // A partial export or a provider retry must not erase an already published session.
+            $workouts = [];
+            foreach (array_merge($previous['workouts'] ?? [], $incoming['providers'][$source]['workouts'] ?? []) as $workout) {
+                $identity = $workout['start'].'|'.$workout['type'];
+                foreach (['metrics', 'series'] as $kind) {
+                    $keys = array_column($workout[$kind], 'key');
+                    foreach ($workouts[$identity][$kind] ?? [] as $metric) {
+                        if (! in_array($metric['key'], $keys, true)) {
+                            $workout[$kind][] = $metric;
+                        }
+                    }
+                }
+                $workouts[$identity] = $workout;
+            }
+            if ($workouts) {
+                $incoming['providers'][$source]['workouts'] = array_values($workouts);
+            }
         }
 
         return self::normalize($incoming);
+    }
+
+    /** Prefer the richer exported workout, retaining its Oura origin, over duplicate API scalars. */
+    public static function deduplicate(array $entry): array
+    {
+        $workouts = $entry['providers']['apple_health']['workouts'] ?? [];
+        $oura = $entry['providers']['oura']['metrics'] ?? [];
+        if (! $workouts || ! $oura) {
+            return $entry;
+        }
+        $duplicates = [];
+        foreach ($workouts as $workout) {
+            if ($workout['origin'] !== 'oura') {
+                continue;
+            }
+            foreach ($oura as $metric) {
+                if ($metric['key'] === 'oura.workout.duration' && abs(strtotime($metric['at']) - strtotime($workout['start'])) <= 60 && abs($metric['value'] - (strtotime($workout['end']) - strtotime($workout['start']))) <= 120) {
+                    $duplicates[] = $metric['at'];
+                }
+            }
+        }
+        $entry['providers']['oura']['metrics'] = array_values(array_filter($oura, fn ($m) => ! (str_starts_with($m['key'], 'oura.workout.') && in_array($m['at'], $duplicates, true))));
+        if (! $entry['providers']['oura']['metrics'] && ! $entry['providers']['oura']['series']) {
+            unset($entry['providers']['oura']);
+        }
+
+        return $entry;
     }
 
     private static function keys(array $value, array $allowed): void

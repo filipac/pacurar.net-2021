@@ -103,6 +103,41 @@ wp_update_post(['ID' => $id, 'post_title' => 'Manual edit']);
 $updated['expected_revision'] = $read['revision']; $updated['providers']['withings']['metrics'][0]['value'] = 78;
 check(request('POST', $updated)->get_status() === 409, 'Manual WordPress edit invalidates preview');
 
+// Apple Health uses the same strict contract, role, topic/date identity and public field.
+$apple = ['schema_version' => 1, 'topic' => 'activity', 'date' => '2001-01-04', 'timezone' => 'Europe/Bucharest', 'expected_revision' => null,
+    'providers' => ['apple_health' => ['fetched_at' => '2001-01-04T10:00:00+02:00', 'metrics' => [], 'series' => [], 'workouts' => [
+        ['type' => 'outdoor-run', 'origin' => 'apple_health', 'start' => '2001-01-04T08:00:00+02:00', 'end' => '2001-01-04T08:10:00+02:00',
+            'metrics' => [['key' => 'apple_health.workout.distance', 'label' => 'Private custom title', 'value' => 1.5, 'unit' => 'private unit', 'at' => '2001-01-04T08:00:00+02:00']],
+            'series' => [['key' => 'apple_health.workout.heartRateData.Avg', 'points' => [['at' => '2001-01-04T08:01:00+02:00', 'value' => 120]]]]]]]]];
+$createdApple = request('POST', $apple);
+check($createdApple->get_status() === 200 && $createdApple->get_data()['operation'] === 'created', 'Apple Health workout-only entry accepted');
+$appleId = $createdApple->get_data()['id'];
+check(wp_get_object_terms($appleId, 'health_source', ['fields' => 'slugs']) === ['apple_health'], 'Apple Health source taxonomy assigned');
+check(request('POST', $apple)->get_data()['operation'] === 'unchanged', 'Apple Health repeated publish does not duplicate');
+$badApple = $apple; $badApple['providers']['apple_health']['workouts'][0]['route'] = [['latitude' => 44.1]];
+check(request('POST', $badApple)->get_status() === 422, 'Workout routes rejected');
+$badApple = $apple; $badApple['providers']['apple_health']['workouts'][0]['type'] = 'Private arbitrary text';
+check(request('POST', $badApple)->get_status() === 422, 'Workout type must be an allowed category');
+$badApple = $apple; $badApple['providers']['apple_health']['workouts'][0]['origin'] = 'Private watch name';
+check(request('POST', $badApple)->get_status() === 422, 'Private workout device names rejected');
+wp_set_current_user(0);
+$publicApple = rest_do_request(new WP_REST_Request('GET', '/wp/v2/health-entries/'.$appleId));
+check($publicApple->get_status() === 200 && $publicApple->get_data()['health_data']['providers']['apple_health']['workouts'][0]['metrics'][0]['label'] === 'Distance', 'Public Apple metrics use catalog labels');
+check(! str_contains(json_encode($publicApple->get_data()), 'Private'), 'Private export text never appears in public REST');
+wp_set_current_user($userId);
+$apple['expected_revision'] = $createdApple->get_data()['revision'];
+$apple['providers']['apple_health']['workouts'][0]['metrics'][0]['value'] = 1.6;
+check(request('POST', $apple)->get_data()['operation'] === 'updated', 'Apple Health correction updates same entry');
+$ouraOnly = $apple; $ouraOnly['date'] = '2001-01-05'; $ouraOnly['expected_revision'] = null;
+$ouraOnly['providers'] = ['oura' => ['fetched_at' => '2001-01-05T10:00:00+02:00', 'metrics' => [['key' => 'oura.workout.duration', 'value' => 600, 'at' => '2001-01-05T08:00:00+02:00']], 'series' => []]];
+$ouraCreated = request('POST', $ouraOnly)->get_data();
+$richer = $ouraOnly; $richer['expected_revision'] = $ouraCreated['revision']; $richer['providers']['apple_health'] = $apple['providers']['apple_health'];
+$richer['providers']['apple_health']['workouts'][0]['origin'] = 'oura';
+$richer['providers']['apple_health']['workouts'][0]['start'] = '2001-01-05T08:00:00+02:00';
+$richer['providers']['apple_health']['workouts'][0]['end'] = '2001-01-05T08:10:00+02:00';
+check(request('POST', $richer)->get_data()['operation'] === 'updated', 'Richer exported Oura workout replaces duplicate API scalars');
+check(wp_get_object_terms($ouraCreated['id'], 'health_source', ['fields' => 'slugs']) === ['apple_health'], 'Deduplicated source terms match retained workout data');
+
 // Concurrent requests use independent database connections and PHP processes.
 $fixtureFile = $config['directory'].'/concurrent.json';
 file_put_contents($fixtureFile, json_encode($entry + ['unused' => false]));

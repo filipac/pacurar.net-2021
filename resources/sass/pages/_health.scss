@@ -31,3 +31,13 @@
 .health-journal :is(a, button, select, summary):focus-visible { outline: 3px solid var(--primary); outline-offset: 4px; }
 @media(max-width: 1000px) { .health-grid { --health-columns: 2; }.health-intro { grid-template-columns: 1fr; gap: 24px; } }
 @media(max-width: 640px) { .health-journal { padding: 40px 18px; }.health-grid { --health-columns: 1; }.health-filters label { flex: 1; }.health-filters select { min-width: 0; width: 100%; }.health-provider { padding: 18px; }.health-provider-heading { display: block; }.health-provider-heading p { margin-top: 8px; }.health-big-number { font-size: 44px; } }
+
+.health-workout { border-top: 1px solid var(--outline-variant); margin-top: 32px; padding-top: 24px; }
+.health-workout h3 { font-family: var(--font-headline, sans-serif); font-size: 24px; margin-bottom: 8px; }
+.health-workout > p { font-size: 12px; color: var(--on-surface-variant); margin-bottom: 24px; }
+.health-badges { flex-wrap: wrap; }
+@media(max-width: 640px) {
+    .health-filters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .health-filters label { min-width: 0; }
+    .health-filters .health-count { margin-left: 0; text-align: right; }
+}
