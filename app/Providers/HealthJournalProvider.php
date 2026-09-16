@@ -34,10 +34,6 @@ class HealthJournalProvider extends ServiceProvider
             }
             if ($filters) $query->set('tax_query', $filters);
         });
-        add_filter('wp_nav_menu_items', function ($items, $args) {
-            if (($args->theme_location ?? '') !== 'top_menu' || str_contains($items, '/health')) return $items;
-            return $items.'<li class="menu-item"><a href="'.esc_url(get_post_type_archive_link('health_entry')).'">Health</a></li>';
-        }, 10, 2);
     }
 
     public function registerContent(): void
