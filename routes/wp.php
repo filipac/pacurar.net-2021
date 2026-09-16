@@ -19,4 +19,7 @@ WpRoute::post('post', [Single::class, 'index']);
 WpRoute::notFound([\App\Http\HandleNotFound::class, 'handle404']);
 WpRoute::addRoute('/_404', [\App\Http\HandleNotFound::class, 'handle404Terminate'], ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS']);
 
+WpRoute::postArchive('health_entry', [\App\Http\Controllers\HealthJournal::class, 'archive']);
+WpRoute::post('health_entry', [\App\Http\Controllers\HealthJournal::class, 'single']);
+
 WpRoute::autoDiscovery();
