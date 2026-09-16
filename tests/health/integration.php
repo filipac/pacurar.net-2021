@@ -200,4 +200,5 @@ for ($i = 0; $i < 3; $i++) {
 $ids = [];
 foreach ($processes as [$p, $pipes]) { $out = stream_get_contents($pipes[1]); $err = stream_get_contents($pipes[2]); fclose($pipes[1]); fclose($pipes[2]); $exit = proc_close($p); $data = json_decode($out, true); check($exit === 0 && ($data['status'] ?? null) === 200, 'Concurrent request succeeds'); $ids[] = $data['result']['id']; }
 check(count(array_unique($ids)) === 1, 'Concurrent creates produce exactly one post');
+require __DIR__.'/trends.php';
 echo "\n$count integration checks passed; isolated database will be removed.\n";

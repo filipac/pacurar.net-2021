@@ -4,6 +4,7 @@
             <div><p class="health-eyebrow">THE OPEN NOTEBOOK / HEALTH</p><h1>{{ config('health.title') }}</h1></div>
             <p>{{ config('health.description') }}<br><span>Each entry shows its measurement date. Each sync checks today and yesterday, adding missing entries and updating existing ones.</span>
                 @if($lastUpdated)<br><span>Last updated <time datetime="{{ $lastUpdated->format(DATE_ATOM) }}">{{ $lastUpdated->format('d M Y, H:i T') }}</time></span>@endif
+                <br><a class="health-compare-link" href="{{ route('health.compare') }}">Compare measurements & trends <span aria-hidden="true">↗</span></a>
             </p>
         </header>
         <form class="health-filters" method="get" action="{{ get_post_type_archive_link('health_entry') }}">

@@ -3,6 +3,8 @@
 use App\Models\Wp\Post\Post;
 use Illuminate\Support\Facades\Cache;
 
+Route::get(config('health.archive_slug', 'health').'/compare', [\App\Http\Controllers\HealthJournal::class, 'compare'])->name('health.compare');
+
 Route::name('loginSpotify')->get('loginSpotify', function () {
     return \Socialite::with('spotify')
         ->with(["access_type" => "offline"])

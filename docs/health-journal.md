@@ -270,3 +270,11 @@ before cleanup. Normal publishing uses the restricted role and needs no delete a
 
 Production deployment requires a separate deliberate user action. Running the command
 with `--direct` explicitly authorizes publication to the destination shown in its output.
+
+### Comparing published measurements
+
+The archive links to `/health/compare` (under the configured archive slug). Choose one available metric at a time, search by metric/topic/provider, and use the last 7/30/90 days, all published dates, or an inclusive custom date range. Selecting another metric automatically replaces the chart and preserves the date range. The GET URL preserves the selection for bookmarking.
+
+Charts read published `health_entry` metadata across all archive pages; drafts, private, scheduled, trashed and ordinary posts are excluded. Providers, units, datasets, and workout type/origin remain distinct. Scalar measurements use the daily value or an arithmetic mean when several readings exist. Sample series use an unweighted daily sample average, with minimum, maximum, reading count, and links to the original entries in accessible tables. Missing days stay empty and break the line. Timestamp metrics show the latest recorded time per day, plotted as local clock hours relative to the entry's measurement date (including negative hours for the previous night).
+
+The comparison reads one stored entry at a time to avoid loading the full historical ECG/sample payload into memory. It does not call providers or publish anything, and does not maintain a separate stale summary cache. New publications and updates are included on the next uncached request; the existing publishing cache flush covers this page too.
