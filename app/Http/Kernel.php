@@ -24,6 +24,7 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middleware = [
+        \App\Http\Middleware\EnglishHealthPages::class,
         \Illuminate\Session\Middleware\StartSession::class,
 //        LoginFromWalletRedirect::class,
         LoginWordpressUser::class,
