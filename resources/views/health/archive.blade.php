@@ -2,7 +2,9 @@
     <div class="health-journal">
         <header class="health-intro">
             <div><p class="health-eyebrow">THE OPEN NOTEBOOK / HEALTH</p><h1>{{ config('health.title') }}</h1></div>
-            <p>{{ config('health.description') }}<br><span>Each entry shows its measurement date. Each sync checks today and yesterday, adding missing entries and updating existing ones.</span></p>
+            <p>{{ config('health.description') }}<br><span>Each entry shows its measurement date. Each sync checks today and yesterday, adding missing entries and updating existing ones.</span>
+                @if($lastUpdated)<br><span>Last updated <time datetime="{{ $lastUpdated->format(DATE_ATOM) }}">{{ $lastUpdated->format('d M Y, H:i T') }}</time></span>@endif
+            </p>
         </header>
         <form class="health-filters" method="get" action="{{ get_post_type_archive_link('health_entry') }}">
             <label>Topic<select name="topic"><option value="">All topics</option>@foreach(\App\Health\MetricCatalog::TOPICS as $slug => $label)<option value="{{ $slug }}" @selected(request('topic') === $slug)>{{ $label }}</option>@endforeach</select></label>
