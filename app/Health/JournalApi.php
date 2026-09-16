@@ -77,9 +77,19 @@ class JournalApi
             }
             $wpdb->query('COMMIT');
             clean_post_cache($id);
-            if (function_exists('w3tc_flush_post')) w3tc_flush_post($id);
-            if (function_exists('w3tc_flush_url')) w3tc_flush_url(get_post_type_archive_link('health_entry'));
-            return $this->result($id, $post ? 'updated' : 'created');
+            $result = $this->result($id, $post ? 'updated' : 'created');
+            // Flush only after the data and taxonomies are committed. This also
+            // covers filtered/paginated archives and Laravel's cached views.
+            try {
+                if (app(\Illuminate\Contracts\Console\Kernel::class)->call('cache:flush-all') !== 0) {
+                    throw new \RuntimeException('Cache clearing failed.');
+                }
+            } catch (\Throwable) {
+                // The post is already saved; never report this as a failed write.
+                error_log('Health journal entry saved, but theme cache clearing failed.');
+                $result['cache_warning'] = 'Entry saved, but caches could not be cleared. Clear the blog caches manually.';
+            }
+            return $result;
         } catch (\Throwable) {
             $wpdb->query('ROLLBACK');
             if (is_int($id)) clean_post_cache($id);

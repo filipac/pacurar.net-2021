@@ -13,8 +13,8 @@ class FlushCache extends Command
     public function handle(): int
     {
         // Laravel caches
-        $this->call('cache:clear');
-        $this->call('view:clear');
+        $cacheResult = $this->call('cache:clear');
+        $viewResult = $this->call('view:clear');
 
         // W3 Total Cache
         if (function_exists('w3tc_flush_all')) {
@@ -22,6 +22,12 @@ class FlushCache extends Command
             $this->info('W3 Total Cache flushed.');
         } else {
             $this->warn('W3 Total Cache not available.');
+        }
+
+        if ($cacheResult !== self::SUCCESS || $viewResult !== self::SUCCESS) {
+            $this->error('Some Laravel caches could not be cleared.');
+
+            return self::FAILURE;
         }
 
         $this->info('All caches cleared.');

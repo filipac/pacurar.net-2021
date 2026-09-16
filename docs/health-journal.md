@@ -153,6 +153,77 @@ No backfill, automatic publishing, location data, provider notes or raw JSON dow
 are included. Apple Health ECG numerical samples can appear as charts and tables
 when the recording belongs to today or yesterday; classifications are excluded. Account, ring and device identifiers are excluded.
 
+## Publish from the console
+
+From the weight app directory:
+
+```sh
+php artisan health:publish
+```
+
+This uses exactly the same `PublishingWorkflow` service as the web UI. It takes the
+last Local/Production selection from persistent cache (`health:last_destination`),
+falling back to Local only if no valid selection exists. It prints the destination
+hostname before fetching, freezes today/yesterday in Europe/Bucharest, reads the
+newest Apple Health folder once, fetches all sources and prepares the same merged
+entries with existing provider data and revisions. No private weight history or
+Notes data is changed.
+
+The command displays each source/date outcome, create/update/unchanged actions,
+provider measurements, workout summaries and chart ranges. Choose entries from the
+numbered list (all are selected by default), then confirm publication. Confirmation
+defaults to **No**. Use `--details` to print all numerical measurements and chart
+samples. The terminal shows chart values rather than rendering SVG charts.
+
+For unattended use, `--direct` skips selection and confirmation prompts and publishes
+all available entries:
+
+```sh
+php artisan health:publish --direct --no-interaction
+```
+
+Both modes accept repeatable entry keys to limit what gets published:
+
+```sh
+php artisan health:publish --entry=activity:2026-09-16 --entry=heart:2026-09-15
+php artisan health:publish --direct --entry=activity:2026-09-16
+php artisan health:publish --details
+```
+
+Do not hard-code dated `--entry` filters for daily automation. A noninteractive
+invocation without `--direct` is rejected. `--direct` bypasses prompts only: it
+still uses the frozen preview, validation, provider retention, topic/date upserts,
+expiry and stale-revision checks. The command does not refetch while publishing.
+If the web destination changes during a command run, remaining publication stops;
+run it again to review the new destination. Connection credential changes are also
+rejected. The command never updates the remembered destination itself.
+
+Each published entry reports created/updated/unchanged/failed and its link. Successful
+entries are kept when another entry fails. Interactive mode offers to retry recoverable
+failures from the same preview, without republishing successful entries. Stale revisions
+require a fresh run. Direct mode attempts each selected entry once; rerunning safely
+upserts the same topic/date posts.
+
+Exit codes: **0** for success, cancellation, or no available entries; **1** for source
+request/permission errors, publishing failures, stale/expired previews or overlapping
+command runs; **2** for invalid entry selection or unattended use without `--direct`.
+Empty or unavailable source collections alone do not cause failure. A partially
+successful run can publish entries and still return 1, so automation can report the
+remaining errors. Console runs cannot overlap (a cache lock expires after at most one
+hour if a process is killed), and their private previews expire after 30 minutes.
+
+For a future cron job, use an absolute PHP executable and this command form:
+
+```sh
+/absolute/path/to/php /Users/filipac/Code/weight/artisan health:publish --direct --no-interaction
+```
+
+Run it under the same application environment and filesystem user/cache access as
+the web app, so it sees the same destination, encrypted tokens and export folders.
+Use your normal log location if redirecting output; the preview contains health
+measurements. Refresh exports independently for new Apple Health data. No cron job,
+scheduler entry, queue worker or production deployment is installed by this feature.
+
 ## Contract and tests
 
 The version-1 payload contains `topic`, `date`, `timezone`, `providers`,
@@ -163,6 +234,13 @@ all nested numerical fields use the same validation. Recognized keys, labels and
 `EntryContract.php` identical between the two repositories. Incoming free-text
 labels are replaced with catalog labels. The public REST field is `health_data` at
 `/wp-json/wp/v2/health-entries`; updates use the authenticated custom endpoint.
+
+After a successful create or update commits, the theme runs `cache:flush-all`:
+Laravel data cache, compiled Blade views and W3 Total Cache (when installed) are
+cleared, including filtered and paginated health archives. Unchanged entries and
+rejected requests do not flush caches. If cache clearing fails, the entry remains
+saved; the REST response includes `cache_warning` and the WordPress/PHP error log
+records the failure. Clear the blog caches manually in that case.
 
 Run the weight app tests with `./vendor/bin/phpunit`, then `npm run build`.
 The theme has a standalone isolated WordPress integration harness:
@@ -184,4 +262,5 @@ It requires local credentials with permission to delete its own synthetic fixtur
 (e.g. a local administrator). It records created IDs and checks their identities
 before cleanup. Normal publishing uses the restricted role and needs no delete access.
 
-Production deployment and publishing require a separate deliberate user action.
+Production deployment requires a separate deliberate user action. Running the command
+with `--direct` explicitly authorizes publication to the destination shown in its output.

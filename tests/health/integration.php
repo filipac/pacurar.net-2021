@@ -45,6 +45,17 @@ require $healthThemeRoot.'/vendor/autoload.php';
 $app = new Illuminate\Container\Container;
 Illuminate\Container\Container::setInstance($app);
 $app->instance('config', new Illuminate\Config\Repository(['health' => require $healthThemeRoot.'/config/health.php']));
+// Record invalidation without touching the real theme or W3TC caches.
+$cacheKernel = new class {
+    public int $calls = 0;
+    public int $exitCode = 0;
+    public function call($command): int {
+        if ($command !== 'cache:flush-all') throw new RuntimeException('Unexpected cache command.');
+        $this->calls++;
+        return $this->exitCode;
+    }
+};
+$app->instance(Illuminate\Contracts\Console\Kernel::class, $cacheKernel);
 $provider = new App\Providers\HealthJournalProvider($app);
 $provider->boot(); $provider->registerContent();
 $server = rest_get_server();
@@ -70,16 +81,20 @@ $bad = $entry; $bad['providers']['withings']['metrics'][0]['key'] = 'withings.me
 check(request('POST', $bad)->get_status() === 422, 'Unknown metrics rejected');
 $created = request('POST', $entry);
 check($created->get_status() === 200 && ($created->get_data()['operation'] ?? '') === 'created', 'Restricted publisher creates entry');
+check($cacheKernel->calls === 1, 'Successful create clears Laravel and W3TC via shared cache command');
 $id = $created->get_data()['id'];
 check(request('POST', $entry)->get_data()['id'] === $id, 'Repeated create returns same post');
 check(request('POST', $entry)->get_data()['operation'] === 'unchanged', 'Retry after lost response is unchanged');
+check($cacheKernel->calls === 1, 'Unchanged retries do not flush caches');
 check(wp_get_object_terms($id, 'health_category', ['fields' => 'slugs']) === ['weight'], 'Topic taxonomy assigned');
 check(wp_get_object_terms($id, 'health_source', ['fields' => 'slugs']) === ['withings'], 'Source taxonomy assigned');
 $read = request('GET', ['topic' => 'weight', 'date' => '2001-01-01'])->get_data();
 $updated = $entry; $updated['providers']['withings']['metrics'][0]['value'] = 79;
 check(request('POST', $updated)->get_status() === 409, 'Stale revision rejected');
+check($cacheKernel->calls === 1, 'Rejected updates do not flush caches');
 $updated['expected_revision'] = $read['revision'];
 check(request('POST', $updated)->get_data()['operation'] === 'updated', 'Current revision updates existing entry');
+check($cacheKernel->calls === 2, 'Successful update clears caches');
 check(request('POST', $updated)->get_data()['operation'] === 'unchanged', 'Update retry is idempotent');
 wp_set_current_user(0);
 $public = rest_do_request(new WP_REST_Request('GET', '/wp/v2/health-entries/'.$id));
@@ -138,6 +153,13 @@ $richer['providers']['apple_health']['workouts'][0]['end'] = '2001-01-05T08:10:0
 check(request('POST', $richer)->get_data()['operation'] === 'updated', 'Richer exported Oura workout replaces duplicate API scalars');
 check(wp_get_object_terms($ouraCreated['id'], 'health_source', ['fields' => 'slugs']) === ['apple_health'], 'Deduplicated source terms match retained workout data');
 
+$cacheKernel->exitCode = 1;
+$cacheFailure = $entry; $cacheFailure['date'] = '2001-01-06';
+$savedWithWarning = request('POST', $cacheFailure)->get_data();
+check($savedWithWarning['operation'] === 'created' && isset($savedWithWarning['cache_warning']), 'Cache failure reports saved entry with warning instead of failed write');
+check(request('GET', ['topic' => 'weight', 'date' => '2001-01-06'])->get_data()['entry']['date'] === '2001-01-06', 'Cache failure does not roll back committed data');
+$cacheKernel->exitCode = 0;
+
 // Concurrent requests use independent database connections and PHP processes.
 $fixtureFile = $config['directory'].'/concurrent.json';
 file_put_contents($fixtureFile, json_encode($entry + ['unused' => false]));
@@ -149,6 +171,7 @@ foreach (['DB_NAME' => $config['database'], 'DB_USER' => $config['user'], 'DB_PA
 $table_prefix = 'hjt_'; $_SERVER['HTTP_HOST'] = 'health-fixture.invalid'; $_SERVER['REQUEST_URI'] = '/'; $_SERVER['HTTPS'] = 'on';
 require ABSPATH.'wp-settings.php'; require $argv[3].'/vendor/autoload.php';
 $app = new Illuminate\Container\Container; Illuminate\Container\Container::setInstance($app); $app->instance('config', new Illuminate\Config\Repository(['health' => require $argv[3].'/config/health.php']));
+$app->instance(Illuminate\Contracts\Console\Kernel::class, new class { public function call($command): int { return 0; } });
 $provider = new App\Providers\HealthJournalProvider($app); $provider->boot(); $provider->registerContent();
 wp_set_current_user((int) $argv[4]);
 $entry = json_decode(file_get_contents($config['directory'].'/concurrent.json'), true); unset($entry['unused']); $entry['date'] = '2001-01-02';
