@@ -244,7 +244,9 @@ configuration may require restoring that setting. This does not change productio
 After a successful create or update commits, `App\Health\CacheInvalidator` purges
 only the changed single-entry URL, health archive URLs (including every page and
 topic/source filter combination), and the comparison landing page through W3TC's
-URL API. During the write it suppresses W3TC's automatic broad page/object purge
+URL API. Both trailing-slash and non-trailing-slash forms are purged: W3TC can
+cache `/health` separately from `/health/` (also for singles and pagination).
+During the write it suppresses W3TC's automatic broad page/object purge
 for that health entry; WordPress still invalidates its post/meta/term objects.
 Laravel data cache, compiled Blade views, unrelated blog pages and other health
 single pages stay cached. Health views read current WordPress data and do not

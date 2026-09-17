@@ -35,7 +35,7 @@ class CacheInvalidator
         global $wp_rewrite;
         $archive = get_post_type_archive_link('health_entry');
         $urls = [get_permalink($postId)];
-        if (! $archive) return array_filter($urls);
+        if (! $archive) return $this->slashVariants($urls);
 
         $count = (int) (wp_count_posts('health_entry')->publish ?? 0);
         $pages = max(1, (int) ceil($count / max(1, (int) config('health.per_page', 18))));
@@ -55,6 +55,24 @@ class CacheInvalidator
         }
         $urls[] = home_url('/'.trim(config('health.archive_slug', 'health'), '/').'/compare');
 
-        return array_values(array_unique(array_filter($urls)));
+        return $this->slashVariants($urls);
+    }
+
+    private function slashVariants(array $urls): array
+    {
+        $variants = [];
+        foreach (array_filter($urls) as $url) {
+            $variants[] = $url;
+            // W3TC keeps /health and /health/ in different cache entries, even
+            // in Disk: Enhanced mode. Change only the path, never the query.
+            [$base, $query] = array_pad(explode('?', $url, 2), 2, null);
+            $path = wp_parse_url($base, PHP_URL_PATH);
+            if (! $path || $path === '/') continue;
+            $suffix = $query === null ? '' : '?'.$query;
+            $variants[] = untrailingslashit($base).$suffix;
+            $variants[] = trailingslashit($base).$suffix;
+        }
+
+        return array_values(array_unique($variants));
     }
 }

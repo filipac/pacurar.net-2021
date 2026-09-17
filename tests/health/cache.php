@@ -3,8 +3,12 @@
 $app['config']->set('health.per_page', 2);
 $urls = (new App\Health\CacheInvalidator)->urls($id);
 $archive = get_post_type_archive_link('health_entry');
+check(in_array(untrailingslashit($archive), $urls, true) && in_array(trailingslashit($archive), $urls, true), 'Archive purges both slash and non-slash cache entries');
+check(in_array(untrailingslashit(get_permalink($id)), $urls, true) && in_array(trailingslashit(get_permalink($id)), $urls, true), 'Updated single purges both slash variants');
+check(in_array(home_url('/health/compare'), $urls, true) && in_array(home_url('/health/compare/'), $urls, true), 'Comparison purges both slash variants');
 $pages = (int) ceil(wp_count_posts('health_entry')->publish / 2);
 check(in_array(trailingslashit($archive).'page/'.$pages.'/', $urls, true), 'Last archive page is purged');
+check(in_array(trailingslashit($archive).'page/'.$pages, $urls, true), 'Non-slash pagination cache entry purged');
 $largeJournal = static function ($counts, $type) {
     if ($type === 'health_entry') { $counts = clone $counts; $counts->publish = 41; }
     return $counts;
@@ -13,6 +17,7 @@ add_filter('wp_count_posts', $largeJournal, 10, 2);
 check(in_array(trailingslashit($archive).'page/21/', (new App\Health\CacheInvalidator)->urls($id), true), 'Archive purge goes beyond W3TC default ten-page limit');
 remove_filter('wp_count_posts', $largeJournal, 10);
 check(in_array(add_query_arg(['topic' => 'heart', 'source' => 'oura'], $archive), $urls, true), 'Combined topic and source filter purged');
+check(in_array(add_query_arg(['topic' => 'heart', 'source' => 'oura'], untrailingslashit($archive)), $urls, true), 'Non-slash filtered archive purged without modifying query values');
 check(in_array(add_query_arg(['topic' => '', 'source' => 'oura'], $archive), $urls, true), 'Filter form empty select values supported');
 check(in_array(add_query_arg('source', 'oura', $archive), $urls, true), 'Compact source filter purged');
 check(! in_array(get_permalink($appleId), $urls, true), 'Other health single pages stay cached');
@@ -24,6 +29,7 @@ $wp_rewrite->init();
 $app['config']->set('health.per_page', 2);
 $plainUrls = (new App\Health\CacheInvalidator)->urls($id);
 check(in_array(add_query_arg('paged', 2, get_post_type_archive_link('health_entry')), $plainUrls, true), 'Plain permalink archive pagination supported');
+check(! array_filter($plainUrls, static fn ($url) => str_contains($url, 'paged=2/')), 'Slash variants never append slashes to query parameters');
 update_option('permalink_structure', '/%postname%/');
 $wp_rewrite->init();
 $app['config']->set('health.per_page', 18);
