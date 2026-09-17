@@ -45,17 +45,28 @@ require $healthThemeRoot.'/vendor/autoload.php';
 $app = new Illuminate\Container\Container;
 Illuminate\Container\Container::setInstance($app);
 $app->instance('config', new Illuminate\Config\Repository(['health' => require $healthThemeRoot.'/config/health.php']));
-// Record invalidation without touching the real theme or W3TC caches.
-$cacheKernel = new class {
+// Record URL purges without loading W3TC or touching real theme caches.
+$GLOBALS['healthPurgedUrls'] = [];
+if (! function_exists('w3tc_flush_url')) {
+    function w3tc_flush_url($url): void { $GLOBALS['healthPurgedUrls'][] = $url; }
+}
+$cacheInvalidator = new class extends App\Health\CacheInvalidator {
     public int $calls = 0;
-    public int $exitCode = 0;
-    public function call($command): int {
-        if ($command !== 'cache:flush-all') throw new RuntimeException('Unexpected cache command.');
+    public bool $fail = false;
+    public function flush(int $postId): void {
         $this->calls++;
-        return $this->exitCode;
+        if ($this->fail) throw new RuntimeException('Fixture purge failure.');
+        parent::flush($postId);
     }
 };
-$app->instance(Illuminate\Contracts\Console\Kernel::class, $cacheKernel);
+$app->instance(App\Health\CacheInvalidator::class, $cacheInvalidator);
+// A global flush command is never needed during health publishing.
+$app->instance(Illuminate\Contracts\Console\Kernel::class, new class {
+    public function call($command): int { throw new RuntimeException('Unexpected global cache command.'); }
+});
+update_option('permalink_structure', '/%postname%/');
+$wp_rewrite->init();
+wp_cache_set('unrelated-page', 'keep', 'health-test');
 $provider = new App\Providers\HealthJournalProvider($app);
 $provider->boot(); $provider->registerContent();
 $server = rest_get_server();
@@ -81,20 +92,27 @@ $bad = $entry; $bad['providers']['withings']['metrics'][0]['key'] = 'withings.me
 check(request('POST', $bad)->get_status() === 422, 'Unknown metrics rejected');
 $created = request('POST', $entry);
 check($created->get_status() === 200 && ($created->get_data()['operation'] ?? '') === 'created', 'Restricted publisher creates entry');
-check($cacheKernel->calls === 1, 'Successful create clears Laravel and W3TC via shared cache command');
+check($cacheInvalidator->calls === 1, 'Successful create performs a targeted URL purge');
 $id = $created->get_data()['id'];
+check(! isset($created->get_data()['cache_warning']), 'Health publishing does not invoke global Laravel cache commands');
+check(in_array(get_permalink($id), $GLOBALS['healthPurgedUrls'], true), 'Changed single page purged');
+check(in_array(get_post_type_archive_link('health_entry'), $GLOBALS['healthPurgedUrls'], true), 'Health archive purged');
+check(in_array(home_url('/health/compare'), $GLOBALS['healthPurgedUrls'], true), 'Comparison landing page purged');
+check(! in_array(home_url('/'), $GLOBALS['healthPurgedUrls'], true), 'Blog home is not purged');
+check(wp_cache_get('unrelated-page', 'health-test') === 'keep', 'Unrelated WordPress cached objects survive publication');
+check(has_filter('w3tc_flushable_post') === false, 'Automatic W3TC purge behavior restored after write');
 check(request('POST', $entry)->get_data()['id'] === $id, 'Repeated create returns same post');
 check(request('POST', $entry)->get_data()['operation'] === 'unchanged', 'Retry after lost response is unchanged');
-check($cacheKernel->calls === 1, 'Unchanged retries do not flush caches');
+check($cacheInvalidator->calls === 1, 'Unchanged retries do not flush caches');
 check(wp_get_object_terms($id, 'health_category', ['fields' => 'slugs']) === ['weight'], 'Topic taxonomy assigned');
 check(wp_get_object_terms($id, 'health_source', ['fields' => 'slugs']) === ['withings'], 'Source taxonomy assigned');
 $read = request('GET', ['topic' => 'weight', 'date' => '2001-01-01'])->get_data();
 $updated = $entry; $updated['providers']['withings']['metrics'][0]['value'] = 79;
 check(request('POST', $updated)->get_status() === 409, 'Stale revision rejected');
-check($cacheKernel->calls === 1, 'Rejected updates do not flush caches');
+check($cacheInvalidator->calls === 1, 'Rejected updates do not flush caches');
 $updated['expected_revision'] = $read['revision'];
 check(request('POST', $updated)->get_data()['operation'] === 'updated', 'Current revision updates existing entry');
-check($cacheKernel->calls === 2, 'Successful update clears caches');
+check($cacheInvalidator->calls === 2, 'Successful update clears caches');
 check(request('POST', $updated)->get_data()['operation'] === 'unchanged', 'Update retry is idempotent');
 wp_set_current_user(0);
 $public = rest_do_request(new WP_REST_Request('GET', '/wp/v2/health-entries/'.$id));
@@ -153,12 +171,12 @@ $richer['providers']['apple_health']['workouts'][0]['end'] = '2001-01-05T08:10:0
 check(request('POST', $richer)->get_data()['operation'] === 'updated', 'Richer exported Oura workout replaces duplicate API scalars');
 check(wp_get_object_terms($ouraCreated['id'], 'health_source', ['fields' => 'slugs']) === ['apple_health'], 'Deduplicated source terms match retained workout data');
 
-$cacheKernel->exitCode = 1;
+$cacheInvalidator->fail = true;
 $cacheFailure = $entry; $cacheFailure['date'] = '2001-01-06';
 $savedWithWarning = request('POST', $cacheFailure)->get_data();
 check($savedWithWarning['operation'] === 'created' && isset($savedWithWarning['cache_warning']), 'Cache failure reports saved entry with warning instead of failed write');
 check(request('GET', ['topic' => 'weight', 'date' => '2001-01-06'])->get_data()['entry']['date'] === '2001-01-06', 'Cache failure does not roll back committed data');
-$cacheKernel->exitCode = 0;
+$cacheInvalidator->fail = false;
 
 $mindful = ['schema_version' => 1, 'topic' => 'mindfulness', 'date' => '2001-01-07', 'timezone' => 'Europe/Bucharest', 'expected_revision' => null,
     'providers' => ['apple_health' => ['fetched_at' => '2001-01-07T10:00:00+02:00', 'metrics' => [
@@ -200,6 +218,7 @@ for ($i = 0; $i < 3; $i++) {
 $ids = [];
 foreach ($processes as [$p, $pipes]) { $out = stream_get_contents($pipes[1]); $err = stream_get_contents($pipes[2]); fclose($pipes[1]); fclose($pipes[2]); $exit = proc_close($p); $data = json_decode($out, true); check($exit === 0 && ($data['status'] ?? null) === 200, 'Concurrent request succeeds'); $ids[] = $data['result']['id']; }
 check(count(array_unique($ids)) === 1, 'Concurrent creates produce exactly one post');
+require __DIR__.'/cache.php';
 require __DIR__.'/trends.php';
 foreach ([['cycling_distance', 'activity', 'Cycling distance', 'km', 12.5], ['waist_circumference', 'body-composition', 'Waist circumference', 'cm', 82.0]] as [$name, $topic, $label, $unit, $value]) {
     wp_set_current_user($userId);

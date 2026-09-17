@@ -60,7 +60,7 @@ class JournalApi
                 'post_content' => $this->content($entry), 'post_name' => $entry['topic'].'-'.$entry['date'], 'comment_status' => 'closed', 'ping_status' => 'closed'];
             if ($post) $values['ID'] = $post->ID;
             else $values['post_author'] = get_current_user_id();
-            $id = wp_insert_post(wp_slash($values), true);
+            $id = CacheInvalidator::write(static fn () => wp_insert_post(wp_slash($values), true));
             if (is_wp_error($id)) throw new \RuntimeException('Post write failed.');
             foreach (['_health_data' => $entry, '_health_date' => $entry['date'], '_health_identity' => $entry['topic'].':'.$entry['date'], '_health_fingerprint' => $fingerprint] as $key => $value) {
                 update_post_meta($id, $key, wp_slash($value));
@@ -78,12 +78,9 @@ class JournalApi
             $wpdb->query('COMMIT');
             clean_post_cache($id);
             $result = $this->result($id, $post ? 'updated' : 'created');
-            // Flush only after the data and taxonomies are committed. This also
-            // covers filtered/paginated archives and Laravel's cached views.
+            // Purge only affected health URLs, after data and taxonomies commit.
             try {
-                if (app(\Illuminate\Contracts\Console\Kernel::class)->call('cache:flush-all') !== 0) {
-                    throw new \RuntimeException('Cache clearing failed.');
-                }
+                app(CacheInvalidator::class)->flush($id);
             } catch (\Throwable) {
                 // The post is already saved; never report this as a failed write.
                 error_log('Health journal entry saved, but theme cache clearing failed.');

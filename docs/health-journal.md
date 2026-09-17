@@ -241,10 +241,16 @@ payloads reach WordPress validation. On local Herd, `blog.test` has a per-site
 Nginx FastCGI `PHP_VALUE` setting of `post_max_size=8M`; recreating its Herd site
 configuration may require restoring that setting. This does not change production.
 
-After a successful create or update commits, the theme runs `cache:flush-all`:
-Laravel data cache, compiled Blade views and W3 Total Cache (when installed) are
-cleared, including filtered and paginated health archives. Unchanged entries and
-rejected requests do not flush caches. If cache clearing fails, the entry remains
+After a successful create or update commits, `App\Health\CacheInvalidator` purges
+only the changed single-entry URL, health archive URLs (including every page and
+topic/source filter combination), and the comparison landing page through W3TC's
+URL API. During the write it suppresses W3TC's automatic broad page/object purge
+for that health entry; WordPress still invalidates its post/meta/term objects.
+Laravel data cache, compiled Blade views, unrelated blog pages and other health
+single pages stay cached. Health views read current WordPress data and do not
+have a separate Laravel data cache. Keep query-string page caching disabled in
+W3TC, as usual, so arbitrary custom comparison ranges remain live.
+Unchanged entries and rejected requests do not flush caches. If cache clearing fails, the entry remains
 saved; the REST response includes `cache_warning` and the WordPress/PHP error log
 records the failure. Clear the blog caches manually in that case.
 
