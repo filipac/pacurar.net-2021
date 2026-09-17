@@ -42,7 +42,8 @@ class HealthJournal extends Controller
         $lastUpdated = $latest ? get_post_datetime($latest[0], 'modified', 'gmt') : null;
         $lastUpdated = $lastUpdated ? $lastUpdated->setTimezone(new \DateTimeZone('Europe/Bucharest')) : null;
 
-        return view('health.archive', ['posts' => $wp_query->posts, 'query' => $wp_query, 'lastUpdated' => $lastUpdated]);
+        return view('health.archive', ['posts' => $wp_query->posts, 'query' => $wp_query, 'lastUpdated' => $lastUpdated,
+            'overview' => \App\Health\Overview::latest()]);
     }
 
     public function single()

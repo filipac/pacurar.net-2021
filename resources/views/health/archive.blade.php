@@ -7,6 +7,28 @@
                 <br><a class="health-compare-link" href="{{ route('health.compare') }}">Compare measurements & trends <span aria-hidden="true">↗</span></a>
             </p>
         </header>
+        <section class="health-overview" aria-labelledby="health-overview-title">
+            <div class="health-overview-heading">
+                <h2 id="health-overview-title">At a glance</h2>
+                <p>Latest published readings · dates may differ</p>
+            </div>
+            <div class="health-overview-grid">
+                @foreach($overview as $reading)
+                    <article class="health-overview-item health-topic-{{ $reading['topic'] }}">
+                        <h3 class="health-topic-label">{{ $reading['label'] }}</h3>
+                        @if($reading['metric'])
+                            <a class="health-overview-reading" href="{{ $reading['url'] }}">
+                                <span class="health-overview-value"><span class="health-big-number">{{ \App\Health\Presentation::number($reading['metric']['value']) }}</span> <span class="health-unit">{{ $reading['metric']['unit'] }}</span></span>
+                                <span class="health-overview-caption">{{ $reading['metric']['label'] }} <span aria-hidden="true">↗</span></span>
+                                <span class="health-overview-meta"><time datetime="{{ $reading['date'] }}">{{ date('d M Y', strtotime($reading['date'])) }}</time> · {{ \App\Health\MetricCatalog::SOURCES[$reading['metric']['source']] }}</span>
+                            </a>
+                        @else
+                            <p class="health-overview-missing">No published reading yet</p>
+                        @endif
+                    </article>
+                @endforeach
+            </div>
+        </section>
         <form class="health-filters" method="get" action="{{ get_post_type_archive_link('health_entry') }}">
             <label>Topic<select name="topic"><option value="">All topics</option>@foreach(\App\Health\MetricCatalog::TOPICS as $slug => $label)<option value="{{ $slug }}" @selected(request('topic') === $slug)>{{ $label }}</option>@endforeach</select></label>
             <label>Source<select name="source"><option value="">All sources</option>@foreach(\App\Health\MetricCatalog::SOURCES as $slug => $label)<option value="{{ $slug }}" @selected(request('source') === $slug)>{{ $label }}</option>@endforeach</select></label>

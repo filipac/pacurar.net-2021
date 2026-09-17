@@ -281,6 +281,13 @@ with `--direct` explicitly authorizes publication to the destination shown in it
 
 ### Comparing published measurements
 
+The archive's “At a glance” row shows the newest published weight, sleep, activity
+(steps), and readiness readings. Each has its own measurement date, provider and
+entry link. Selection uses measurement dates rather than import/modification
+times and is independent of archive filters and pagination. Missing readings
+are labelled explicitly. It reads existing WordPress entries without requesting
+provider APIs or adding a separate cache.
+
 The archive links to `/health/compare` (under the configured archive slug). Choose one available metric at a time, search by metric/topic/provider, and use the last 7/30/90 days, all published dates, or an inclusive custom date range. Selecting another metric automatically replaces the chart and preserves the date range. The GET URL preserves the selection for bookmarking.
 
 Charts read published `health_entry` metadata across all archive pages; drafts, private, scheduled, trashed and ordinary posts are excluded. Providers, units, datasets, and workout type/origin remain distinct. Scalar measurements use the daily value or an arithmetic mean when several readings exist. Sample series use an unweighted daily sample average, with minimum, maximum, reading count, and links to the original entries in accessible tables. Missing days stay empty and break the line. Timestamp metrics show the latest recorded time per day, plotted as local clock hours relative to the entry's measurement date (including negative hours for the previous night).

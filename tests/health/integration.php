@@ -237,4 +237,5 @@ foreach ([['cycling_distance', 'activity', 'Cycling distance', 'km', 12.5], ['wa
     wp_set_current_user($userId);
     check(request('POST', $newMetric)->get_data()['operation'] === 'unchanged', $name.' repeated publication does not duplicate data');
 }
+require __DIR__.'/overview.php';
 echo "\n$count integration checks passed; isolated database will be removed.\n";
