@@ -283,7 +283,8 @@ with `--direct` explicitly authorizes publication to the destination shown in it
 
 The archive's “At a glance” row shows the newest published weight, sleep, activity
 (steps), and readiness readings. Each has its own measurement date, provider and
-entry link. Selection uses measurement dates rather than import/modification
+entry link. Its Compare link opens trends with that exact provider metric selected.
+Selection uses measurement dates rather than import/modification
 times and is independent of archive filters and pagination. Missing readings
 are labelled explicitly. It reads existing WordPress entries without requesting
 provider APIs or adding a separate cache.

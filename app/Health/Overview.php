@@ -34,7 +34,7 @@ class Overview
                         foreach ($entry['providers'][$source]['metrics'] ?? [] as $metric) {
                             if (($metric['key'] ?? null) !== $key || ! is_numeric($metric['value'] ?? null) || ! is_finite((float) $metric['value'])) continue;
                             $item += ['date' => $entry['date'], 'url' => get_permalink($id)];
-                            $item['metric'] = ['value' => $metric['value'], 'unit' => $definition['unit'], 'label' => $definition['label'], 'source' => $source];
+                            $item['metric'] = ['key' => $key, 'value' => $metric['value'], 'unit' => $definition['unit'], 'label' => $definition['label'], 'source' => $source];
                             break 4;
                         }
                     }

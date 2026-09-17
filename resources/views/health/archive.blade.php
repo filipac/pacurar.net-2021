@@ -22,6 +22,7 @@
                                 <span class="health-overview-caption">{{ $reading['metric']['label'] }} <span aria-hidden="true">↗</span></span>
                                 <span class="health-overview-meta"><time datetime="{{ $reading['date'] }}">{{ date('d M Y', strtotime($reading['date'])) }}</time> · {{ \App\Health\MetricCatalog::SOURCES[$reading['metric']['source']] }}</span>
                             </a>
+                            <a class="health-overview-compare" href="{{ route('health.compare', ['metric' => $reading['metric']['key'].'|daily']) }}" aria-label="Compare {{ $reading['metric']['label'] }} from {{ \App\Health\MetricCatalog::SOURCES[$reading['metric']['source']] }}">Compare <span aria-hidden="true">↗</span></a>
                         @else
                             <p class="health-overview-missing">No published reading yet</p>
                         @endif
