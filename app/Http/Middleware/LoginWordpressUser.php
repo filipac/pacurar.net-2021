@@ -20,14 +20,14 @@ class LoginWordpressUser
         if ($request->is('oauth/clients')) {
             return $next($request);
         }
-        if(!$request->hasCookie('blog_token') && get_current_user_id() !== 1) {
+        if (!$request->hasCookie('blog_token') && get_current_user_id() !== 1) {
             wp_logout();
             return $next($request);
         }
         if (is_user_logged_in()) {
             $user = wp_get_current_user();
             \Illuminate\Support\Facades\Auth::guard('wordpress')->loginUsingWordpressUser($user);
-        } else if(!is_user_logged_in() && \Illuminate\Support\Facades\Auth::guard('wordpress')->check()) {
+        } elseif (!is_user_logged_in() && \Illuminate\Support\Facades\Auth::guard('wordpress')->check()) {
             \Illuminate\Support\Facades\Auth::guard('wordpress')->logout();
         }
         return $next($request);

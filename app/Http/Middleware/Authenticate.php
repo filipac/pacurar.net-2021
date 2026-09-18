@@ -13,6 +13,6 @@ class Authenticate extends Middleware
      */
     protected function redirectTo(Request $request): ?string
     {
-        return $request->expectsJson() ? null : route('loginweb3');
+        return $request->expectsJson() ? null : wp_login_url($request->fullUrl());
     }
 }

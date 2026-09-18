@@ -1,8 +1,13 @@
 @push('head')
     <meta name="csrf-token" content="{{ csrf_token() }}">
 @endpush
-@push('scripts')
-@endpush
+@once
+    @push('scripts')
+        <script src="/tinymce/tinymce.min.js"></script>
+        @viteReactRefresh
+        @vite(['resources/js/react-app.tsx'])
+    @endpush
+@endonce
 
 <x-layouts.master extra-classes-content=" min-h-header-home ">
     <x-slot name="belowContent">
