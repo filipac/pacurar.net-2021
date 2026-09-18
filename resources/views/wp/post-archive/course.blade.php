@@ -1,4 +1,4 @@
 
 @foreach($posts as $post)
-    @dump($post->getAcfFields())
+    @dump($post->getAcfFields(), $post)
 @endforeach
