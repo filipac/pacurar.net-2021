@@ -40,7 +40,7 @@ class PublicHealthFixture implements HealthApiClientInterface
         $data = [
             '2026-09-15'=>['body'=>(object)['weight_kg'=>['withings'=>[['value'=>71.618,'measured_at'=>'2026-09-15T09:30:19+03:00'],['value'=>72.0,'measured_at'=>'2026-09-15T20:00:00+03:00']],'apple'=>['value'=>71.6,'measured_at'=>'2026-09-15T00:00:00+03:00']]],
                 'activity'=>(object)['active_energy_kcal'=>['apple'=>0]],
-                'workouts'=>[['provider'=>'apple','origin'=>'oura','type'=>'strength','start'=>'2026-09-15T19:00:00+03:00','end'=>'2026-09-15T19:30:00+03:00','energy_kcal'=>123,'hr_bpm'=>140],['provider'=>'oura','origin'=>'oura','type'=>null,'start'=>'2026-09-15T19:00:00+03:00','end'=>null,'energy_kcal'=>120]]],
+                'workouts'=>[['provider'=>'apple','origin'=>'oura','type'=>'strength','start'=>'2026-09-15T19:00:00+03:00','end'=>'2026-09-15T19:30:00+03:00','active_energy_kcal'=>123,'average_hr_bpm'=>140],['provider'=>'oura','origin'=>'oura','type'=>null,'start'=>'2026-09-15T19:00:00+03:00','end'=>null,'active_energy_kcal'=>120]]],
             '2026-09-17'=>['body'=>(object)['weight_kg'=>['withings'=>['value'=>71.2,'measured_at'=>'2026-09-17T08:00:00+03:00']]],'heart'=>(object)['hrv_ms'=>['oura'=>[['value'=>45,'source_timestamp'=>'2026-09-16T22:00:00+03:00'],['value'=>47,'source_timestamp'=>'2026-09-17T01:00:00+03:00']]]]],
         ];
         $days = [];
@@ -48,7 +48,7 @@ class PublicHealthFixture implements HealthApiClientInterface
             $key=$date->format('Y-m-d');
             $days[]=['date'=>$key]+($data[$key] ?? [])+['body'=>(object)[],'activity'=>(object)[],'heart'=>(object)[],'workouts'=>[]];
         }
-        return ['meta'=>['schema_version'=>'fixture','from'=>$from,'to'=>$to,'timezone'=>'Europe/Bucharest','days'=>count($days)],'days'=>$days];
+        return ['meta'=>['schema_version'=>1,'schema_url'=>'https://blog.test/wp-json/health/v1/schema','from'=>$from,'to'=>$to,'timezone'=>'Europe/Bucharest','days'=>count($days)],'days'=>$days];
     }
 }
 $fixture = new PublicHealthFixture;
@@ -56,10 +56,13 @@ $app->instance(HealthApiClientInterface::class,$fixture);
 Laravel\Mcp\Facades\Mcp::web('/mcp',HealthServer::class);
 $checks = 0;
 function check(bool $ok,string $label): void { global $checks; if (!$ok) throw new RuntimeException($label); $checks++; echo "PASS $label\n"; }
-$send = function (string $method,array $params=[],array $headers=[]) use ($app) {
+$contractResponses = [];
+$send = function (string $method,array $params=[],array $headers=[]) use ($app, &$contractResponses) {
     $request=Request::create('https://blog.test/mcp','POST',[],[],[],array_merge(['CONTENT_TYPE'=>'application/json','HTTP_ACCEPT'=>'application/json, text/event-stream','REMOTE_ADDR'=>'192.0.2.3'],$headers),json_encode(['jsonrpc'=>'2.0','id'=>1,'method'=>$method,'params'=>(object)$params]));
     $app->instance('request',$request);Facade::clearResolvedInstance('request');
     $response=(new HealthMcpHttp)->handle($request,fn($request)=>$app['router']->dispatch($request));
+    $wire = json_decode($response->getContent(),false,512,JSON_THROW_ON_ERROR);
+    if ($method === 'tools/call' && isset($wire->result->structuredContent)) $contractResponses[] = ['tool'=>$params['name'],'result'=>$wire->result->structuredContent];
     return [$response,json_decode($response->getContent(),true,512,JSON_THROW_ON_ERROR)];
 };
 $call = function (string $name,array $input=[]) use ($send) { return $send('tools/call',['name'=>$name,'arguments'=>(object)$input])[1]; };
@@ -74,6 +77,7 @@ check(count($tools)===6,'Exactly six tools discovered');
 foreach ($tools as $tool) {
     check($tool['annotations']['readOnlyHint']===true && $tool['annotations']['destructiveHint']===false,'Read-only annotations: '.$tool['name']);
     check($tool['inputSchema']['additionalProperties']===false,'Closed arguments: '.$tool['name']);
+    check(($tool['outputSchema']['type'] ?? null)==='object' && isset($tool['outputSchema']['properties'], $tool['outputSchema']['oneOf']), 'Typed success/error output schema: '.$tool['name']);
 }
 $schema=$call('health_schema')['result']['structuredContent'];
 check($schema===$fixture->schema(),'Schema is canonical representation');
@@ -95,7 +99,7 @@ check(count($zero['observations'])===1 && $zero['observations'][0]['value']===0,
 $workouts=$call('health_workouts',$range)['result']['structuredContent']['workouts'];
 check(count($workouts)===2,'Cross-provider workouts are not deduplicated');
 $workouts=$call('health_workouts',$range+['type'=>'strength','provider'=>'apple','origin'=>'oura'])['result']['structuredContent']['workouts'];
-check(count($workouts)===1 && $workouts[0]['hr_bpm']===140 && $workouts[0]['end']==='2026-09-15T19:30:00+03:00','Workout filters preserve all source fields');
+check(count($workouts)===1 && $workouts[0]['average_hr_bpm']===140 && $workouts[0]['end']==='2026-09-15T19:30:00+03:00','Workout filters preserve all source fields');
 $summary=$call('health_summary',$range+['metric'=>'body.weight_kg','provider'=>'withings'])['result']['structuredContent']['statistics'];
 check($summary['count']===3 && $summary['missing_days']===['2026-09-16'],'Summary counts observations and reports missing dates');
 check(abs($summary['numeric_change'] - (71.2-71.618))<0.00001 && $summary['median']===71.618,'Summary descriptive statistics are correct');
@@ -106,6 +110,8 @@ check($latest['results'][0]['date']==='2026-09-17' && $latest['results'][1]['dat
 check($latest['results'][0]['observations'][0]['measured_at']==='2026-09-17T08:00:00+03:00','Latest preserves source measurement time');
 check($latest['meta']['lookback_days']===365,'Latest reports bounded search window');
 check((new DateTimeImmutable($fixture->lastRange[0]))->diff(new DateTimeImmutable($fixture->lastRange[1]))->days===364,'Latest queries 365 inclusive days');
+$missingLatest=$call('health_latest',['metrics'=>['body.waist_cm'],'providers'=>['apple']])['result']['structuredContent'];
+check($missingLatest['results'][0]['date']===null && $missingLatest['results'][0]['observations']===[], 'Missing latest reading has nullable date and empty observations');
 $before=$fixture->calls;
 foreach ([['from'=>'2026-02-30','to'=>'2026-03-01'],['from'=>'2026-09-17','to'=>'2026-09-15'],['from'=>'2025-01-01','to'=>'2026-01-01'],['from'=>['bad'],'to'=>'2026-09-15']] as $bad) check($errorCode($call('health_timeline',$bad))==='invalid_range','Invalid or oversized range rejected');
 check($fixture->calls===$before,'Invalid requests never fetch timeline');
@@ -141,4 +147,7 @@ $_SERVER['REQUEST_URI']='/mcp';
 check(App\Health\AnalyticsNoCache::isRequest(),'MCP path is excluded from W3TC caching');
 (new Illuminate\Filesystem\Filesystem)->deleteDirectory($base);
 Illuminate\Support\Facades\Date::setTestNow();
+if ($contractPath = getenv('HEALTH_MCP_CONTRACT_FILE')) {
+    file_put_contents($contractPath, json_encode(['tools'=>$tools,'responses'=>$contractResponses], JSON_THROW_ON_ERROR));
+}
 echo "$checks MCP checks passed\n";

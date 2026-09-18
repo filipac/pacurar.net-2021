@@ -4,6 +4,7 @@ namespace App\Mcp\Tools;
 
 use App\Health\AnalyticsCatalog;
 use App\Health\MetricCatalog;
+use App\Mcp\HealthOutputSchema;
 use App\Mcp\HealthToolException;
 use App\Mcp\HealthTools;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
@@ -56,6 +57,7 @@ abstract class HealthTool extends Tool
     {
         $result = parent::toArray();
         $result['inputSchema']['additionalProperties'] = false;
+        $result['outputSchema'] = HealthOutputSchema::for(substr($this->name, 7));
 
         return $result;
     }
