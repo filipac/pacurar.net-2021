@@ -44,7 +44,7 @@ class AppServiceProvider extends ServiceProvider
                 | E_USER_WARNING
                 | E_RECOVERABLE_ERROR);
         }
-        if (!session_id() && !app()->runningInConsole() && !headers_sent()) {
+        if (!\App\Mcp\HealthMcpHttp::isRequest() && !session_id() && !app()->runningInConsole() && !headers_sent()) {
             session_start();
         }
 
@@ -70,7 +70,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         add_action('init', function () {
-            if (is_admin()) {
+            if (is_admin() || \App\Mcp\HealthMcpHttp::isRequest()) {
                 return;
             }
 
@@ -86,7 +86,7 @@ class AppServiceProvider extends ServiceProvider
                     },
                 ])
                 ->thenReturn();
-            request()->setLaravelSession(session());
+            request()->setLaravelSession(session()->driver());
             //            dd($req, session());
 
             if ($req->hasSession()) {
@@ -154,6 +154,7 @@ class AppServiceProvider extends ServiceProvider
         // dd(site_url());
 
         add_action('wp_loaded', function () {
+            if (\App\Mcp\HealthMcpHttp::isRequest()) return;
             if (isset($_SESSION['set_lang']) && $_SESSION['set_lang'] == '1') {
                 return;
             }

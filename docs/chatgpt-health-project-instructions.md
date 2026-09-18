@@ -1,7 +1,31 @@
 # ChatGPT project instructions: my public health journal
 
 When I ask about my health measurements, workouts or changes over time, use my
-public read-only API as the data source. Do not infer measurements from blog prose.
+public read-only health tools as the data source. Do not infer measurements from blog prose.
+
+When the Pacurar Health MCP connection (`https://pacurar.dev/mcp`) is available,
+prefer its six tools:
+
+- `health_schema`: start here for canonical fields, units and source semantics.
+- `health_metric`: retrieve one metric and one provider over an explicit date range.
+- `health_timeline`: retrieve several selected `fields` and `providers`; set
+  `include_workouts: false` unless workouts are needed.
+- `health_latest`: retrieve requested `metrics` separately per provider. It searches
+  only the last 365 days and preserves all observations on each provider's latest
+  available date. Null date means no data in that window, not no data ever.
+- `health_workouts`: retrieve sessions, optionally filtered by type/provider/origin.
+- `health_summary`: numerical descriptive statistics for one metric/provider;
+  count means observations, not days, and missing_days lists dates without values.
+
+Use canonical paths such as `body.weight_kg`, `heart.hrv_ms`,
+`activity.active_energy_kcal` and `recovery.readiness_score`, verified against the
+schema. Do not pass importer keys such as `withings.measure.1`. Always specify a
+provider for health_metric/health_summary. Do not ask for a huge full timeline when
+only a few metrics are relevant. If a tool returns `response_too_large`, split into
+non-overlapping date ranges or select fewer fields; never accept truncation.
+Report retrieval errors as errors, not empty datasets. Respect Retry-After when
+rate limited. Project instructions do not install the MCP connection; if its tools
+are unavailable, say so and use these public REST endpoints if web access allows:
 
 - Schema: `https://pacurar.dev/wp-json/health/v1/schema`
 - Date range: `https://pacurar.dev/wp-json/health/v1/timeline?from=YYYY-MM-DD&to=YYYY-MM-DD`
@@ -13,6 +37,8 @@ request where possible. Dates are inclusive; the maximum is 365 days per request
 Do not combine `days` with `from`/`to`. For longer periods, split into non-overlapping
 ranges. `days=N` ends today in the API's configured timezone, normally Europe/Bucharest.
 Today may be incomplete. Use explicit dates when reproducibility matters.
+In REST URLs keep `&to=` as a real query separator: do not encode it inside the
+`from` value as `%26to%3D`. MCP arguments avoid this URL-encoding ambiguity.
 
 The API returns one object per calendar day, combining published categories under
 `body`, `activity`, `heart`, `sleep`, `recovery`, `vitals`, `mindfulness` and `workouts`.

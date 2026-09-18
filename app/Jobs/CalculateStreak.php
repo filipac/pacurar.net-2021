@@ -85,7 +85,7 @@ class CalculateStreak implements ShouldQueue
 
         foreach ($all as $p) {
             if ($last) {
-                if (!$p->date->isSameDay($last->date) && $p->date->diffInDays($last->date) <= 1) {
+                if (!$p->date->isSameDay($last->date) && $p->date->diffInDays($last->date, true) <= 1) {
                     if (!$startedOn) {
                         $startedOn = $last->date->format('U');
                     }

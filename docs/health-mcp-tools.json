@@ -1,0 +1,285 @@
+{
+  "resultType": "complete",
+  "ttlMs": 0,
+  "cacheScope": "private",
+  "tools": [
+    {
+      "name": "health_schema",
+      "title": "Schema",
+      "description": "Retrieve the authoritative public health schema: metric paths, units, provider identifiers, value shapes, source datasets, provenance and timestamp semantics. Call this before choosing metrics; it is the same schema as the WordPress health REST API.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "health_timeline",
+      "title": "Timeline",
+      "description": "Retrieve published health data for an inclusive date range of at most 365 days. Select fields/providers to reduce output; otherwise returns the complete canonical timeline. Preserves empty days, source timestamps and all observations. Never merges providers or adds workout energy to daily totals.",
+      "inputSchema": {
+        "properties": {
+          "from": {
+            "description": "Inclusive first date, YYYY-MM-DD in the WordPress timezone.",
+            "type": "string"
+          },
+          "to": {
+            "description": "Inclusive last date, YYYY-MM-DD. At most 365 calendar days.",
+            "type": "string"
+          },
+          "fields": {
+            "description": "Exact scalar metric paths from health_schema, for example body.weight_kg.",
+            "minItems": 1,
+            "maxItems": 50,
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true,
+            "type": "array"
+          },
+          "providers": {
+            "description": "Optional providers; omitted means all. Never merges providers.",
+            "minItems": 1,
+            "maxItems": 3,
+            "items": {
+              "enum": [
+                "apple",
+                "oura",
+                "withings"
+              ],
+              "type": "string"
+            },
+            "uniqueItems": true,
+            "type": "array"
+          },
+          "include_workouts": {
+            "description": "Defaults to true. Set false when only scalar metrics are needed.",
+            "type": "boolean"
+          }
+        },
+        "type": "object",
+        "required": [
+          "from",
+          "to"
+        ],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "health_metric",
+      "title": "Metric",
+      "description": "Retrieve one published health metric as a provider-specific time series. Use this instead of health_timeline when analysis requires only one metric. Preserves measurement timestamps and multiple observations. Never merges providers. Missing data is never zero.",
+      "inputSchema": {
+        "properties": {
+          "from": {
+            "description": "Inclusive first date, YYYY-MM-DD in the WordPress timezone.",
+            "type": "string"
+          },
+          "to": {
+            "description": "Inclusive last date, YYYY-MM-DD. At most 365 calendar days.",
+            "type": "string"
+          },
+          "metric": {
+            "description": "Exact scalar metric path from health_schema.",
+            "type": "string"
+          },
+          "provider": {
+            "enum": [
+              "apple",
+              "oura",
+              "withings"
+            ],
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "required": [
+          "from",
+          "to",
+          "metric",
+          "provider"
+        ],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "health_latest",
+      "title": "Latest",
+      "description": "Retrieve each requested metric separately for each provider on its latest available date within the last 365 days, ending today in the WordPress timezone. Returns all observations on that date, not an arbitrary intraday selection. A null date and empty observations mean none in this bounded lookback; no provider preference.",
+      "inputSchema": {
+        "properties": {
+          "metrics": {
+            "description": "Exact scalar metric paths from health_schema, for example body.weight_kg.",
+            "minItems": 1,
+            "maxItems": 50,
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true,
+            "type": "array"
+          },
+          "providers": {
+            "description": "Optional providers; omitted means all. Never merges providers.",
+            "minItems": 1,
+            "maxItems": 3,
+            "items": {
+              "enum": [
+                "apple",
+                "oura",
+                "withings"
+              ],
+              "type": "string"
+            },
+            "uniqueItems": true,
+            "type": "array"
+          }
+        },
+        "type": "object",
+        "required": [
+          "metrics"
+        ],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "health_workouts",
+      "title": "Workouts",
+      "description": "Retrieve individual published workouts within an inclusive date range of at most 365 days. Optional exact type/provider/origin filters. Preserves every published field and repeated numerical observations. Cross-provider copies are not deduplicated; do not add workout calories to daily active energy.",
+      "inputSchema": {
+        "properties": {
+          "from": {
+            "description": "Inclusive first date, YYYY-MM-DD in the WordPress timezone.",
+            "type": "string"
+          },
+          "to": {
+            "description": "Inclusive last date, YYYY-MM-DD. At most 365 calendar days.",
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "other",
+              "indoor-run",
+              "outdoor-run",
+              "running",
+              "indoor-walk",
+              "outdoor-walk",
+              "walking",
+              "strength",
+              "indoor-cycling",
+              "cycling",
+              "swimming",
+              "hiking",
+              "yoga",
+              "pilates",
+              "rowing",
+              "elliptical",
+              "hiit"
+            ],
+            "type": "string"
+          },
+          "provider": {
+            "enum": [
+              "apple",
+              "oura",
+              "withings"
+            ],
+            "type": "string"
+          },
+          "origin": {
+            "enum": [
+              "apple",
+              "oura",
+              "withings"
+            ],
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "required": [
+          "from",
+          "to"
+        ],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "health_summary",
+      "title": "Summary",
+      "description": "Calculate descriptive statistics for one numerical metric and one provider over at most 365 inclusive days. Counts all observations, lists missing days, and returns min/max/mean/median/first/last/numeric change. No health interpretation, medical scores, correlations or causal conclusions. Use health_metric for original observations or clock times.",
+      "inputSchema": {
+        "properties": {
+          "from": {
+            "description": "Inclusive first date, YYYY-MM-DD in the WordPress timezone.",
+            "type": "string"
+          },
+          "to": {
+            "description": "Inclusive last date, YYYY-MM-DD. At most 365 calendar days.",
+            "type": "string"
+          },
+          "metric": {
+            "description": "Exact scalar metric path from health_schema.",
+            "type": "string"
+          },
+          "provider": {
+            "enum": [
+              "apple",
+              "oura",
+              "withings"
+            ],
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "required": [
+          "from",
+          "to",
+          "metric",
+          "provider"
+        ],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    }
+  ],
+  "_meta": {
+    "io.modelcontextprotocol/serverInfo": {
+      "name": "pacurar.dev public health",
+      "version": "1.0.0"
+    }
+  }
+}

@@ -8,6 +8,11 @@ use Illuminate\Contracts\Auth\Authenticatable as UserContract;
 
 class EloquentWordpressUserProvider extends EloquentUserProvider
 {
+    public function rehashPasswordIfRequired(UserContract $user, array $credentials, bool $force = false)
+    {
+        // WordPress owns password hashes and their upgrades, including on Laravel 11+.
+    }
+
     /**
      * Retrieve a user by the given credentials.
      *

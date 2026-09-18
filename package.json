@@ -43,7 +43,7 @@
         "graphql": "^16.6.0",
         "graphql-request": "~5.0.0",
         "pinia": "^2.0.29",
-        "puppeteer": "^5.5.0",
+        "puppeteer": "^24.43.1",
         "react": "^18.2.0",
         "react-lazy-with-preload": "^2.2.1",
         "recoil": "^0.7.6",

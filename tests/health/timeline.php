@@ -134,3 +134,11 @@ check($rejects[0] === '/existing-exclusion' && preg_match('~'.$rejects[1].'~i', 
 $_SERVER['REQUEST_URI'] = '/health/';
 check(apply_filters('w3tc_can_cache', true) === true, 'Unrelated health pages keep their normal W3TC caching policy');
 $_SERVER['REQUEST_URI'] = $originalUri;
+
+// MCP reads precisely the canonical public representation, including privacy rules.
+$mcpClient = new App\Mcp\WordPressHealthApiClient;
+check($mcpClient->schema() === AnalyticsCatalog::schema(), 'MCP adapter reuses the canonical analytics schema');
+check(wp_json_encode($mcpClient->timeline($params['from'], $params['to'])) === wp_json_encode(timelineRequest($params)->get_data()), 'MCP adapter returns the same public timeline after edits and privacy changes');
+$_SERVER['REQUEST_URI'] = '/mcp';
+check(apply_filters('w3tc_can_cache', true) === false && preg_match('~'.end($rejects).'~i', '/mcp?transport=http') === 1, 'W3TC excludes MCP transport without disabling unrelated page caching');
+$_SERVER['REQUEST_URI'] = $originalUri;

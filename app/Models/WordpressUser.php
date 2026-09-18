@@ -140,6 +140,11 @@ class WordpressUser extends Authenticatable
         return $this->{$this->getPasswordColumnKey()};
     }
 
+    public function getAuthPasswordName()
+    {
+        return $this->getPasswordColumnKey();
+    }
+
     /**
      * Usage for notifiable for email
      *
