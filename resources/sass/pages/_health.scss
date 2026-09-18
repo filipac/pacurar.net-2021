@@ -17,12 +17,33 @@
 .health-overview-reading:hover .health-overview-caption { text-decoration: underline; text-underline-offset: 4px; }
 .health-overview-value { display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline; line-height: 1.1; font-variant-numeric: tabular-nums; }
 .health-overview-value .health-big-number { font-size: clamp(32px, 3.5vw, 46px); overflow-wrap: anywhere; }
+.health-overview-change { display: block; margin-top: 12px; color: var(--on-surface-variant); font-size: 11px; line-height: 1.6; }
+.health-overview-change strong { color: var(--on-surface); font-family: var(--font-label, monospace); font-weight: 500; font-variant-numeric: tabular-nums; }
+.health-overview-change-note { display: block; font-size: 10px; }
 .health-overview-caption { display: block; font-size: 12px; margin-top: 12px; }
 .health-overview-caption > span { float: right; }
 .health-overview-meta { display: block; color: var(--on-surface-variant); font-size: 11px; line-height: 1.6; margin-top: 8px; }
 .health-overview-missing { color: var(--on-surface-variant); font-size: 13px; }
 .health-overview-compare { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; margin-top: 8px; font-size: 12px; font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
 .health-overview-compare:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; border-radius: 2px; }
+.health-comparison { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--outline-variant); font-size: 12px; }
+.health-deltas { display: flex; flex-wrap: wrap; gap: 10px 24px; margin: 0; }
+.health-deltas > div { display: grid; gap: 4px; }
+.health-deltas dt { color: var(--on-surface-variant); font-size: 10px; }
+.health-deltas dd { margin: 0; font-family: var(--font-label, monospace); font-size: 12px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.health-week { display: flex; align-items: center; gap: 14px; margin-top: 12px; }
+.health-week > svg, .health-chart .health-week > svg { width: 150px; height: 42px; flex-shrink: 0; color: var(--health-accent, var(--on-surface)); overflow: visible; }
+.health-week > span { font-size: 10px; line-height: 1.5; color: var(--on-surface-variant); }
+.health-week small { display: block; font-size: 10px; font-variant-numeric: tabular-nums; }
+.health-comparison-basis { margin-top: 8px; color: var(--on-surface-variant); font-size: 10px; line-height: 1.6; }
+.health-comparison a { color: var(--on-surface); text-decoration: underline; text-underline-offset: 3px; }
+.health-comparison a:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
+.health-metric-history { min-width: 245px; vertical-align: top; }
+.health-metric-history > .health-comparison { margin: 0; padding: 0; border: 0; }
+.health-week-data { font-size: 11px; margin-top: 10px; }
+.health-week-data summary { cursor: pointer; color: var(--on-surface-variant); line-height: 1.6; }
+.health-week-data table { margin-top: 12px; }
+.health-week-data table :is(th, td) { padding: 7px; font-size: 11px; }
 @media(max-width: 900px) {
     .health-overview-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .health-overview-item:nth-child(3) { border-left: 0; }

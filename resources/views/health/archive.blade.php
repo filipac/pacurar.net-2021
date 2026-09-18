@@ -19,6 +19,10 @@
                         @if($reading['metric'])
                             <a class="health-overview-reading" href="{{ $reading['url'] }}">
                                 <span class="health-overview-value"><span class="health-big-number">{{ \App\Health\Presentation::number($reading['metric']['value']) }}</span> <span class="health-unit">{{ $reading['metric']['unit'] }}</span></span>
+                                @if($reading['change'])
+                                    <span class="health-overview-change"><strong>{{ $reading['change']['text'] }}</strong> vs <time datetime="{{ $reading['change']['date'] }}">{{ date('d M Y', strtotime($reading['change']['date'])) }}</time>
+                                    {{-- <span class="health-overview-change-note">Previous day with data</span></span> --}}
+                                @endif
                                 <span class="health-overview-caption">{{ $reading['metric']['label'] }} <span aria-hidden="true">↗</span></span>
                                 <span class="health-overview-meta"><time datetime="{{ $reading['date'] }}">{{ date('d M Y', strtotime($reading['date'])) }}</time> · {{ \App\Health\MetricCatalog::SOURCES[$reading['metric']['source']] }}</span>
                             </a>
@@ -40,7 +44,7 @@
             <div class="health-grid" x-data="healthMasonry">
                 @foreach($posts as $healthPost)
                     @php
-                        $entry = get_post_meta($healthPost->ID, '_health_data', true);
+                        $entry = $entries[$healthPost->ID];
                         $metric = is_array($entry) ? \App\Health\Presentation::prominent($entry) : null;
                     @endphp
                     @if(is_array($entry) && isset($entry['topic']))
@@ -48,6 +52,7 @@
                         <div class="health-card-heading"><span class="health-topic-label">{{ \App\Health\MetricCatalog::TOPICS[$entry['topic']] }}</span><time datetime="{{ $entry['date'] }}">{{ date('d M Y', strtotime($entry['date'])) }}</time></div>
                         <h2><a href="{{ get_permalink($healthPost) }}">@if($metric)<span class="health-big-number">{{ \App\Health\Presentation::number($metric['value']) }}</span> <span class="health-unit">{{ $metric['unit'] }}</span>@else<span class="health-series-title">A day in detail</span>@endif</a></h2>
                         @if($metric)<p class="health-metric-label">{{ $metric['label'] }} <span>· {{ \App\Health\MetricCatalog::SOURCES[$metric['source']] }}</span></p>@endif
+                        @if($metric)@include('health.comparison', ['comparison' => $comparisons->metric($entry['topic'], $entry['date'], $metric['key'].'|daily'), 'compact' => true])@endif
                         <dl class="health-card-details">
                         @foreach($entry['providers'] as $source => $section)
                             @foreach(array_slice($section['metrics'], 0, 3) as $detail)

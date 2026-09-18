@@ -42,13 +42,17 @@ class HealthJournal extends Controller
         $lastUpdated = $latest ? get_post_datetime($latest[0], 'modified', 'gmt') : null;
         $lastUpdated = $lastUpdated ? $lastUpdated->setTimezone(new \DateTimeZone('Europe/Bucharest')) : null;
 
+        $entries = [];
+        foreach ($wp_query->posts as $healthPost) $entries[$healthPost->ID] = get_post_meta($healthPost->ID, '_health_data', true);
         return view('health.archive', ['posts' => $wp_query->posts, 'query' => $wp_query, 'lastUpdated' => $lastUpdated,
+            'entries' => $entries, 'comparisons' => new \App\Health\Comparisons($entries),
             'overview' => \App\Health\Overview::latest()]);
     }
 
     public function single()
     {
         global $post;
-        return view('health.single', ['post' => $post, 'entry' => get_post_meta($post->ID, '_health_data', true)]);
+        $entry = get_post_meta($post->ID, '_health_data', true);
+        return view('health.single', ['post' => $post, 'entry' => $entry, 'comparisons' => new \App\Health\Comparisons([$entry])]);
     }
 }

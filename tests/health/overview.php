@@ -36,3 +36,21 @@ $refreshed = array_column(App\Health\Overview::latest(), null, 'topic');
 check($refreshed['weight']['metric']['value'] === 71.5 && $refreshed['weight']['metric']['source'] === 'withings', 'Overview uses archive provider priority within the same day and reflects updates');
 wp_update_post(['ID' => $recovery, 'post_status' => 'draft']);
 check(array_column(App\Health\Overview::latest(), null, 'topic')['recovery']['metric'] === null, 'Missing readiness is shown as unavailable rather than fabricated');
+
+check($overview['weight']['change'] === null, 'Overview never compares a current provider with a different earlier provider');
+overviewFixture('weight', '2004-12-30', 'apple_health.weight_body_mass', 74);
+// Switch the latest reading back to Apple Health to exercise a gap in its data.
+unset($entry['providers']['withings']);
+update_post_meta($currentWeight, '_health_data', $entry);
+overviewFixture('activity', '2005-01-01', 'oura.daily_activity.steps', 100);
+overviewFixture('activity', '2005-01-02', 'oura.daily_activity.steps', 50, 'private');
+$gaps = array_column(App\Health\Overview::latest(), null, 'topic');
+check($gaps['weight']['change']['date'] === '2004-12-30' && $gaps['weight']['change']['text'] === '-2 kg', 'Overview uses the most recent earlier day with the same metric across date gaps');
+check($gaps['activity']['change']['date'] === '2005-01-01' && $gaps['activity']['change']['text'] === '-100 steps', 'Overview excludes hidden baselines and preserves current zero values');
+check($gaps['sleep']['change'] === null, 'Overview omits a change when no earlier value exists');
+overviewFixture('activity', '2005-01-04', 'oura.daily_activity.steps', 0);
+check(array_column(App\Health\Overview::latest(), null, 'topic')['activity']['change']['text'] === '0 steps', 'Overview shows zero change against a zero baseline');
+for ($day = 3; $day <= 25; $day++) overviewFixture('weight', sprintf('2005-01-%02d', $day), 'apple_health.weight_body_mass', 80);
+overviewFixture('weight', '2005-02-01', 'withings.measure.1', 72);
+$batched = array_column(App\Health\Overview::latest(), null, 'topic')['weight'];
+check($batched['change']['date'] === '2005-01-01' && $batched['change']['text'] === '-1 kg', 'Overview scans beyond the first summary batch without switching providers');

@@ -242,14 +242,15 @@ Nginx FastCGI `PHP_VALUE` setting of `post_max_size=8M`; recreating its Herd sit
 configuration may require restoring that setting. This does not change production.
 
 After a successful create or update commits, `App\Health\CacheInvalidator` purges
-only the changed single-entry URL, health archive URLs (including every page and
+only the changed single-entry URL, later same-topic entries within seven days
+(whose comparisons depend on the changed reading), health archive URLs (including every page and
 topic/source filter combination), and the comparison landing page through W3TC's
 URL API. Both trailing-slash and non-trailing-slash forms are purged: W3TC can
 cache `/health` separately from `/health/` (also for singles and pagination).
 During the write it suppresses W3TC's automatic broad page/object purge
 for that health entry; WordPress still invalidates its post/meta/term objects.
 Laravel data cache, compiled Blade views, unrelated blog pages and other health
-single pages stay cached. Health views read current WordPress data and do not
+single pages outside that dependency window stay cached. Health views read current WordPress data and do not
 have a separate Laravel data cache. Keep query-string page caching disabled in
 W3TC, as usual, so arbitrary custom comparison ranges remain live.
 Unchanged entries and rejected requests do not flush caches. If cache clearing fails, the entry remains
@@ -284,6 +285,10 @@ with `--direct` explicitly authorizes publication to the destination shown in it
 The archive's “At a glance” row shows the newest published weight, sleep, activity
 (steps), and readiness readings. Each has its own measurement date, provider and
 entry link. Its Compare link opens trends with that exact provider metric selected.
+Each tile also shows the change from the most recent earlier published day with
+that same provider metric, with the comparison date shown explicitly. Missing
+calendar days are skipped here; a change is omitted if no earlier reading exists.
+This uses compact daily summaries in small batches without loading raw samples.
 Selection uses measurement dates rather than import/modification
 times and is independent of archive filters and pagination. Missing readings
 are labelled explicitly. It reads existing WordPress entries without requesting
@@ -294,3 +299,30 @@ The archive links to `/health/compare` (under the configured archive slug). Choo
 Charts read published `health_entry` metadata across all archive pages; drafts, private, scheduled, trashed and ordinary posts are excluded. Providers, units, datasets, and workout type/origin remain distinct. Scalar measurements use the daily value or an arithmetic mean when several readings exist. Sample series use an unweighted daily sample average, with minimum, maximum, reading count, and links to the original entries in accessible tables. Missing days stay empty and break the line. Timestamp metrics show the latest recorded time per day, plotted as local clock hours relative to the entry's measurement date (including negative hours for the previous night).
 
 The comparison reads one stored entry at a time to avoid loading the full historical ECG/sample payload into memory. It does not call providers or publish anything, and does not maintain a separate stale summary cache. New publications and updates are included on the next uncached request; the existing publishing cache flush covers this page too.
+
+### Changes and weekly trends on entries
+
+Archive cards show changes and a compact seven-day sparkline for their featured
+metric. Detail pages show them for scalar measurements and sample series, including
+workout metrics. Each comparison keeps the provider, metric and workout type/origin
+separate. Changes use the exact previous day and seven days earlier, relative to
+the entry's measurement date; unavailable baselines are omitted. The sparkline
+covers the entry date and six preceding days, needs at least two available days,
+and leaves gaps for missing dates. Weekly values are expandable on detail pages;
+“Explore week” opens the comparison page with that metric and date range selected.
+
+Repeated numerical readings use daily arithmetic means, and sample series use
+unweighted sample means. These are labelled “Daily average”. Timestamp changes
+compare local clock times in Europe/Bucharest, accounting for daylight saving;
+percentage metrics show percentage-point changes (`pp`). Signs are neutral rather
+than indicating good or bad health.
+
+For these inline comparisons, `_health_daily_summary` stores a versioned, compact
+derived index without raw samples. Writing `_health_data` regenerates it inside
+the publisher's transaction. Existing entries are summarized on first use under
+the same topic/date lock, so no republishing or migration command is required.
+Once indexed, each archive or detail page makes one bounded summary query for its
+topics and date window; rendering additional metrics makes no further queries.
+Correcting a historical entry also invalidates affected later single-page caches.
+The isolated integration harness verifies exact dates, gaps, provider separation,
+averages, clock-time/DST handling, backfills and the query count.

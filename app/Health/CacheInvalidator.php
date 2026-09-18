@@ -35,6 +35,16 @@ class CacheInvalidator
         global $wp_rewrite;
         $archive = get_post_type_archive_link('health_entry');
         $urls = [get_permalink($postId)];
+        // A corrected historical reading also changes comparisons on the next
+        // seven same-topic entries. Keep those pages fresh without a global purge.
+        $entry = get_post_meta($postId, '_health_data', true);
+        if (is_array($entry) && Trends::validDate($entry['date'] ?? null) && isset(MetricCatalog::TOPICS[$entry['topic'] ?? ''])) {
+            $date = new \DateTimeImmutable($entry['date'], new \DateTimeZone('Europe/Bucharest'));
+            $dependents = get_posts(['post_type' => 'health_entry', 'post_status' => 'publish', 'fields' => 'ids', 'posts_per_page' => -1,
+                'meta_query' => [['key' => '_health_date', 'value' => [$date->modify('+1 day')->format('Y-m-d'), $date->modify('+7 days')->format('Y-m-d')], 'compare' => 'BETWEEN']],
+                'tax_query' => [['taxonomy' => 'health_category', 'field' => 'slug', 'terms' => $entry['topic']]], 'suppress_filters' => true]);
+            foreach ($dependents as $dependent) $urls[] = get_permalink($dependent);
+        }
         if (! $archive) return $this->slashVariants($urls);
 
         $count = (int) (wp_count_posts('health_entry')->publish ?? 0);

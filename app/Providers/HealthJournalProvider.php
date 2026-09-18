@@ -10,6 +10,9 @@ class HealthJournalProvider extends ServiceProvider
     public function boot(): void
     {
         add_action('init', [$this, 'registerContent']);
+        add_action('added_post_meta', [\App\Health\DailySummary::class, 'sync'], 10, 4);
+        add_action('updated_post_meta', [\App\Health\DailySummary::class, 'sync'], 10, 4);
+        add_action('deleted_post_meta', [\App\Health\DailySummary::class, 'remove'], 10, 3);
         add_action('rest_api_init', function () {
             $api = new JournalApi;
             register_rest_route('pacurar2020/v1', '/health-connection', ['methods' => 'GET', 'permission_callback' => [$api, 'permission'],
@@ -52,7 +55,7 @@ class HealthJournalProvider extends ServiceProvider
                 'hierarchical' => $hierarchical, 'rewrite' => false,
                 'capabilities' => ['manage_terms' => 'manage_health_entries', 'edit_terms' => 'manage_health_entries', 'delete_terms' => 'manage_health_entries', 'assign_terms' => 'edit_health_entries']]);
         }
-        foreach (['_health_data' => 'object', '_health_date' => 'string', '_health_identity' => 'string', '_health_revision' => 'string', '_health_fingerprint' => 'string'] as $key => $type) {
+        foreach (['_health_data' => 'object', '_health_daily_summary' => 'object', '_health_date' => 'string', '_health_identity' => 'string', '_health_revision' => 'string', '_health_fingerprint' => 'string'] as $key => $type) {
             register_post_meta('health_entry', $key, ['type' => $type, 'single' => true, 'show_in_rest' => false, 'auth_callback' => '__return_false']);
         }
         if (get_option('pacurar_health_version') !== '2') {

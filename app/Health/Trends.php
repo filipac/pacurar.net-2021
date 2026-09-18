@@ -112,7 +112,7 @@ class Trends
         return compact('days', 'points', 'segments', 'min', 'max');
     }
 
-    private static function plotValue(float $value, string $date, string $unit): float
+    public static function plotValue(float $value, string $date, string $unit): float
     {
         if ($unit !== 'timestamp') return $value;
         $local = (new \DateTimeImmutable('@'.(int) $value))->setTimezone(new \DateTimeZone('Europe/Bucharest'));
