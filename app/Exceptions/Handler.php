@@ -15,7 +15,7 @@ class Handler extends ExceptionHandler
         // Passport requests login directly, without passing through Authenticate middleware.
         if ($exception instanceof \Laravel\Passport\Exceptions\AuthenticationException
             && ! $this->shouldReturnJson($request, $exception)) {
-            return redirect()->guest(route('loginweb3'));
+            return redirect()->guest(wp_login_url($request->fullUrl()));
         }
 
         return parent::unauthenticated($request, $exception);

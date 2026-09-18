@@ -70,7 +70,9 @@ class AppServiceProvider extends ServiceProvider
         });
 
         add_action('init', function () {
-            if (is_admin() || \App\Mcp\HealthMcpHttp::isRequest()) {
+            // OAuth uses the HTTP kernel's session middleware. Starting it here too
+            // creates a second session ID for new visitors and loses authorization state.
+            if (is_admin() || \App\Mcp\HealthMcpHttp::isRequest() || request()->is('oauth/*')) {
                 return;
             }
 

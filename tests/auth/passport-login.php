@@ -14,6 +14,12 @@ use Illuminate\Session\Store;
 use Illuminate\View\ViewServiceProvider;
 use Laravel\Passport\Exceptions\AuthenticationException as PassportAuthenticationException;
 
+// Stub the native WordPress helper; WordPress carries the return URL explicitly.
+function wp_login_url(string $redirect = ''): string
+{
+    return 'https://pacurar.dev/wp-login.php?'.http_build_query(['redirect_to' => $redirect]);
+}
+
 $app = new Application(dirname(__DIR__, 2));
 $app->instance('config', new Repository(['app' => ['debug' => false], 'view' => ['paths' => []]]));
 $app->register(FilesystemServiceProvider::class);
@@ -46,7 +52,10 @@ $request->setRouteResolver(fn () => $authorize);
 $app->instance('request', $request);
 $response = $handler->render($request, new PassportAuthenticationException(guards: ['wordpress']));
 $check($response->getStatusCode() === 302, 'Passport guest browser is redirected instead of receiving an empty 401');
-$check($response->headers->get('Location') === 'https://pacurar.dev/login-web3', 'Login remains on the authorization hostname');
+$loginUrl = $response->headers->get('Location');
+$check(parse_url($loginUrl, PHP_URL_HOST) === 'pacurar.dev' && parse_url($loginUrl, PHP_URL_PATH) === '/wp-login.php', 'Passport uses native WordPress login on the authorization hostname');
+parse_str(parse_url($loginUrl, PHP_URL_QUERY), $loginQuery);
+$check(($loginQuery['redirect_to'] ?? null) === $request->fullUrl(), 'WordPress login receives the complete OAuth return URL');
 $check($session->get('url.intended') === $request->fullUrl(), 'Full authorization URL including state, PKCE, resource and callback survives login');
 $check(redirect()->intended('/')->getTargetUrl() === $request->fullUrl(), 'Login can resume the saved authorization request');
 
