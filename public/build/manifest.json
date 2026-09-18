@@ -77,6 +77,12 @@
       "_lodash-C-76dkfd.js"
     ]
   },
+  "resources/js/oauth-clients.js": {
+    "file": "assets/oauth-clients-C3F00nYB.js",
+    "name": "oauth-clients",
+    "src": "resources/js/oauth-clients.js",
+    "isEntry": true
+  },
   "resources/js/react-app.tsx": {
     "file": "assets/react-app-BIFlCaMC.js",
     "name": "react-app",
@@ -92,7 +98,7 @@
     ]
   },
   "resources/sass/app.scss": {
-    "file": "assets/app-DjN1mhgH.css",
+    "file": "assets/app-gg5_s_mf.css",
     "src": "resources/sass/app.scss",
     "isEntry": true
   },

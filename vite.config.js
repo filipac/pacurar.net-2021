@@ -36,6 +36,7 @@ export default defineConfig({
                 'resources/sass/tailwind.css',
                 'resources/sass/app.scss',
                 'resources/js/app.js',
+                'resources/js/oauth-clients.js',
                 'resources/js/alpine.js',
                 'resources/js/react-app.tsx',
             ],

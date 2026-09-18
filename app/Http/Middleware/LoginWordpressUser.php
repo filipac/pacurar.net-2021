@@ -16,6 +16,10 @@ class LoginWordpressUser
      */
     public function handle(Request $request, Closure $next)
     {
+        // Client management uses native WordPress authentication, including other administrators.
+        if ($request->is('oauth/clients')) {
+            return $next($request);
+        }
         if(!$request->hasCookie('blog_token') && get_current_user_id() !== 1) {
             wp_logout();
             return $next($request);

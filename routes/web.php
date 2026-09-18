@@ -3,6 +3,11 @@
 use App\Models\Wp\Post\Post;
 use Illuminate\Support\Facades\Cache;
 
+Route::middleware(\App\Http\Middleware\ManageOAuthClients::class)->group(function () {
+    Route::get('/oauth/clients', [\App\Http\Controllers\OAuthClients::class, 'index'])->name('oauth.clients');
+    Route::post('/oauth/clients', [\App\Http\Controllers\OAuthClients::class, 'mutate'])->middleware('throttle:30,1')->name('oauth.clients.mutate');
+});
+
 Route::get(config('health.archive_slug', 'health').'/compare', [\App\Http\Controllers\HealthJournal::class, 'compare'])->name('health.compare');
 
 Route::name('loginSpotify')->get('loginSpotify', function () {

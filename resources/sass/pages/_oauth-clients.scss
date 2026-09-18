@@ -1,0 +1,45 @@
+.oauth-clients {
+    max-width: 1100px; margin: 0 auto; padding: 3rem 1.5rem 5rem; color: var(--on-surface);
+    h1 { font-size: clamp(2.5rem, 5vw, 4rem) !important; font-weight:700; letter-spacing: -.045em; line-height: 1.1 !important; margin: .5rem 0 0; }
+    h2 { font-size: 1.35rem; font-weight: 650; }
+    h3 { font-size: 1.25rem; font-weight: 650; margin: 0; overflow-wrap: anywhere; }
+    p { line-height: 1.6; }
+    .oauth-eyebrow, dt { font: .7rem/1.6 var(--font-mono, monospace); letter-spacing: .08em; text-transform: uppercase; color: var(--on-surface-variant); }
+    .oauth-heading { display:flex; justify-content:space-between; gap:2rem; align-items:end; padding-bottom:2rem; border-bottom:2px solid var(--on-surface); }
+    .oauth-heading > p { max-width: 23rem; color:var(--on-surface-variant); }
+    .oauth-create { display:grid; grid-template-columns:1fr 1.3fr; gap:3rem; padding:2rem 0; border-bottom:1px solid var(--outline-variant); }
+    .oauth-create p { color:var(--on-surface-variant); }
+    summary, button { cursor:pointer; font:inherit; font-weight:600; }
+    summary { padding:.7rem 0; }
+    summary span { float:right; }
+    button { border:1px solid var(--outline-variant); padding:.65rem 1rem; border-radius:4px; background:var(--surface-container-low); color:var(--on-surface); }
+    button:hover { border-color:var(--on-surface); }
+    button:disabled { opacity:.5; cursor:wait; }
+    .oauth-primary { background:var(--primary); color:var(--on-primary); border-color:var(--primary); }
+    .oauth-danger { color:var(--primary); }
+    label { display:block; margin:1rem 0 .35rem; font-size:.875rem; font-weight:600; }
+    input:not([type=checkbox]):not([type=hidden]), textarea { display:block; box-sizing:border-box; width:100%; background:var(--surface-container-low); color:var(--on-surface); border:1px solid var(--outline-variant); border-radius:3px; padding:.7rem; font:inherit; }
+    textarea { resize:vertical; }
+    :is(input, textarea, button, summary, a):focus-visible { outline:2px solid var(--primary); outline-offset:3px; }
+    .oauth-checkbox { display:flex; gap:.6rem; align-items:center; }
+    .oauth-help { font-size:.8rem; margin:.5rem 0 1rem; color:var(--on-surface-variant); }
+    .oauth-list-heading { display:flex; align-items:center; justify-content:space-between; margin:2rem 0 1rem; }
+    .oauth-list-heading span, .oauth-footer { font-size:.85rem; color:var(--on-surface-variant); }
+    .oauth-client { border:1px solid var(--outline-variant); border-left:3px solid var(--primary); padding:1.5rem; margin-bottom:1rem; background:var(--surface-container-low); }
+    .oauth-client header { display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+    .oauth-badge { font-size:.7rem; padding:.2rem .6rem; border:1px solid var(--outline-variant); border-radius:20px; }
+    .is-revoked { color:var(--on-surface-variant); }
+    .oauth-client-grid { display:grid; grid-template-columns:1fr 1.2fr; gap:2rem; margin-top:1rem; }
+    dt { margin-top:.75rem; } dd { margin:.25rem 0 0; font-size:.9rem; overflow-wrap:anywhere; }
+    code { font-size:.85em; } .oauth-uri { display:block; margin-bottom:.25rem; }
+    .oauth-grants { color:var(--on-surface-variant); }
+    .oauth-actions { display:flex; align-items:start; flex-wrap:wrap; gap:.75rem; border-top:1px solid var(--outline-variant); margin-top:1.5rem; padding-top:1rem; }
+    .oauth-actions > details { flex:1; min-width:200px; } .oauth-actions details form { max-width:600px; padding:0 1rem 1rem 0; }
+    .oauth-actions details button { margin-top:1rem; }
+    .oauth-footer { display:flex; justify-content:space-between; gap:2rem; margin-top:2rem; }
+    .oauth-footer p { max-width:38rem; } nav { display:flex; white-space:nowrap; gap:1rem; align-items:start; }
+    dialog { width:min(560px, 90vw); max-height:85vh; overflow:auto; padding:2rem; background:var(--surface); color:var(--on-surface); border:1px solid var(--outline-variant); border-radius:6px; }
+    dialog::backdrop { background:rgb(0 0 0 / .6); }
+    #oauth-status:not(:empty) { border-left:3px solid var(--primary); background:var(--surface-container); padding:1rem; margin:1rem 0; }
+    @media(max-width:700px) { .oauth-heading,.oauth-footer { display:block; } .oauth-heading > p { margin-top:1.5rem; } .oauth-create,.oauth-client-grid { grid-template-columns:1fr; gap:1rem; } .oauth-client { padding:1rem; } nav { margin-top:1rem; } }
+}
