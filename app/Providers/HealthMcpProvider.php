@@ -23,7 +23,7 @@ final class HealthMcpProvider extends ServiceProvider
 
     public function boot(): void
     {
-        // Outside the session/CSRF web group: all six tools only read public data.
+        // Stateless Passport authentication; tools read published health data or the token owner's identity.
 
         Passport::authorizationView(function ($parameters) {
             return view('mcp.authorize', $parameters);

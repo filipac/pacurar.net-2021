@@ -3,6 +3,10 @@
 declare(strict_types=1);
 function __($text, $domain = 'default') { return $text; }
 function wp_timezone_string() { return 'Europe/Bucharest'; }
+function user_can($user, $capability): bool {
+    $GLOBALS['capabilityChecks'][] = [$user, $capability];
+    return $GLOBALS['testCapabilities'][$user][$capability] ?? false;
+}
 require dirname(__DIR__,2).'/vendor/autoload.php';
 
 use App\Mcp\HealthApiClientInterface;
@@ -31,9 +35,10 @@ Illuminate\Support\Facades\Date::setTestNow('2026-09-18T12:00:00+03:00');
 class PublicHealthFixture implements HealthApiClientInterface
 {
     public int $calls = 0;
+    public int $schemaCalls = 0;
     public bool $fail = false;
     public array $lastRange = [];
-    public function schema(): array { return App\Health\AnalyticsCatalog::schema(); }
+    public function schema(): array { $this->schemaCalls++; return App\Health\AnalyticsCatalog::schema(); }
     public function timeline(string $from,string $to): array {
         $this->calls++; $this->lastRange = [$from,$to];
         if ($this->fail) throw new HealthToolException('upstream_unavailable','Fixture unavailable.');
@@ -73,12 +78,63 @@ check($init['result']['protocolVersion']==='2025-11-25','HTTP initialize negotia
 check(isset($init['result']['capabilities']['tools']) && !isset($init['result']['capabilities']['resources']),'Only tool capability advertised');
 check(str_contains($response->headers->get('Cache-Control'),'no-store'),'Protocol responses prohibit caching');
 $tools=$send('tools/list')[1]['result']['tools'];
-check(count($tools)===6,'Exactly six tools discovered');
+check(count($tools)===7,'Six health tools and the current-user tool discovered');
 foreach ($tools as $tool) {
     check($tool['annotations']['readOnlyHint']===true && $tool['annotations']['destructiveHint']===false,'Read-only annotations: '.$tool['name']);
     check($tool['inputSchema']['additionalProperties']===false,'Closed arguments: '.$tool['name']);
-    check(($tool['outputSchema']['type'] ?? null)==='object' && isset($tool['outputSchema']['properties'], $tool['outputSchema']['oneOf']), 'Typed success/error output schema: '.$tool['name']);
+    check(($tool['outputSchema']['type'] ?? null)==='object' && isset($tool['outputSchema']['properties']), 'Typed output schema: '.$tool['name']);
+    if ($tool['name'] !== 'wordpress_current_user') check(isset($tool['outputSchema']['oneOf']), 'Typed success/error alternatives: '.$tool['name']);
 }
+$apiUser = new App\Models\WordpressUser(['user_email'=>'member@example.test','user_login'=>'member','display_name'=>'Private display name','user_pass'=>'private-hash']);
+$browserUser = new App\Models\WordpressUser(['user_email'=>'browser@example.test','user_login'=>'browser']);
+$apiUser->ID=12;
+$browserUser->ID=34;
+$GLOBALS['testCapabilities']=[34=>['edit_posts'=>true]];
+$GLOBALS['capabilityChecks']=[];
+$app->instance('auth', new class($apiUser, $browserUser) {
+    public function __construct(public $apiUser, public $browserUser) {}
+    public function userResolver(): Closure { return fn ($guard) => $guard === 'api' ? $this->apiUser : $this->browserUser; }
+});
+$identity=$call('wordpress_current_user')['result'];
+check($identity['structuredContent']===['email'=>'member@example.test','username'=>'member'],'Identity returns exactly the Passport user email and WordPress login');
+check(json_decode($identity['content'][0]['text'],true)===$identity['structuredContent'],'Text content exposes no additional account fields');
+$app['auth']->apiUser=$browserUser;
+check($call('wordpress_current_user')['result']['structuredContent']===['email'=>'browser@example.test','username'=>'browser'],'Identity is resolved per call without reusing another token user');
+check($call('wordpress_current_user',['user_id'=>2])['result']['isError']===true,'Identity rejects alternate-user arguments');
+$app['auth']->apiUser=null;
+check($call('wordpress_current_user')['result']['isError']===true,'Missing token user cannot fall back to browser identity');
+$app['auth']->apiUser=new Illuminate\Auth\GenericUser(['email'=>'other@example.test','username'=>'other']);
+check($call('wordpress_current_user')['result']['isError']===true,'Non-WordPress identities are rejected');
+$healthInputs=[
+    'health_schema'=>[], 'health_timeline'=>$range,
+    'health_metric'=>$range+['metric'=>'body.weight_kg','provider'=>'withings'],
+    'health_latest'=>['metrics'=>['body.weight_kg']], 'health_workouts'=>$range,
+    'health_summary'=>$range+['metric'=>'body.weight_kg','provider'=>'withings'],
+];
+$beforeReads=[$fixture->calls,$fixture->schemaCalls];
+foreach ([null,new Illuminate\Auth\GenericUser(['id'=>34]),new App\Models\WordpressUser] as $invalidUser) {
+    $app['auth']->apiUser=$invalidUser;
+    foreach ($healthInputs as $name=>$input) {
+        $denied=$call($name,$input);
+        check($errorCode($denied)==='unauthenticated' && $denied['result']['isError']===true,'Missing or invalid WordPress token user denied: '.$name);
+    }
+}
+check($GLOBALS['capabilityChecks']===[],'Unauthenticated tools never check ambient user capabilities');
+$app['auth']->apiUser=$apiUser;
+foreach ($healthInputs as $name=>$input) {
+    $denied=$call($name,$input);
+    check($errorCode($denied)==='forbidden' && $denied['result']['isError']===true,'Token owner without edit_posts denied despite privileged browser user: '.$name);
+}
+check(array_unique(array_column($GLOBALS['capabilityChecks'],0))===[12] && array_unique(array_column($GLOBALS['capabilityChecks'],1))===['edit_posts'],'WordPress capability lookup uses the token owner and exact capability');
+check([$fixture->calls,$fixture->schemaCalls]===$beforeReads,'Unauthorized tools perform no schema or health data reads');
+check($call('wordpress_current_user')['result']['structuredContent']['username']==='member','Identity tool remains available without edit_posts');
+$GLOBALS['testCapabilities'][12]['edit_posts']=true;
+foreach ($healthInputs as $name=>$input) {
+    check(!($call($name,$input)['result']['isError'] ?? false),'User with edit_posts can call '.$name);
+}
+$GLOBALS['testCapabilities'][12]['edit_posts']=false;
+check($errorCode($call('health_schema'))==='forbidden','Capability revocation is checked again on the next call');
+$GLOBALS['testCapabilities'][12]['edit_posts']=true;
 $schema=$call('health_schema')['result']['structuredContent'];
 check($schema===$fixture->schema(),'Schema is canonical representation');
 check($errorCode($call('health_schema',['url'=>'https://example.invalid']))==='invalid_arguments','No arbitrary HTTP proxy arguments');

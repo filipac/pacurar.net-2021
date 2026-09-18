@@ -1,6 +1,6 @@
 # Public health MCP
 
-The theme provides a public, read-only MCP server at **`/mcp`** using the official
+The theme provides an OAuth-authenticated, read-only MCP server at **`/mcp`** using the official
 [`laravel/mcp` 1.0 package](https://laravel.com/framework/docs/13.x/mcp) on Laravel 13.
 It uses the SDK's stateless Streamable HTTP transport and structured tool results.
 The SDK owns initialization, JSON-RPC handling, tool discovery and protocol negotiation.
@@ -15,7 +15,7 @@ published WordPress health entries
   → App\Health\TimelineApi / AnalyticsCatalog (existing REST service)
   → HealthApiClientInterface / WordPressHealthApiClient
   → HealthTools (selection and descriptive statistics)
-  → six Laravel MCP tools → /mcp
+  → six health tools + WordPress current-user tool → /mcp
 ```
 
 `app/Mcp/WordPressHealthApiClient.php` calls the existing PHP REST service directly.
@@ -34,7 +34,7 @@ operations. `config/health_mcp.php` provides deployment settings.
 ## Tools and inputs
 
 The complete discovery response, including JSON schemas, is in
-[`health-mcp-tools.json`](health-mcp-tools.json). These are **canonical analytics
+[`health-mcp-tools.json`](health-mcp-tools.json). Health tools use **canonical analytics
 paths**, not importer keys such as `withings.measure.1`.
 
 | Tool | Required arguments | Optional arguments |
@@ -45,6 +45,18 @@ paths**, not importer keys such as `withings.measure.1`.
 | `health_latest` | `metrics` | `providers` |
 | `health_workouts` | `from`, `to` | `type`, `provider`, `origin` |
 | `health_summary` | `from`, `to`, `metric`, `provider` | none |
+| `wordpress_current_user` | none | none |
+
+`wordpress_current_user` returns exactly `{"email":"member@example.com","username":"member"}`
+for the WordPress account authenticated by the current Passport access token. It does
+not use the browser's WordPress session, accept a user ID, or expose any other account
+fields. Responses share the MCP transport's no-store cache protection.
+
+All six `health_*` tools additionally require the token owner's WordPress
+`edit_posts` capability, checked through `user_can` on every call before reading
+any health data or schema. No particular role name is required. Missing authentication
+returns `unauthenticated`; insufficient capability returns `forbidden` with
+`isError: true`. `wordpress_current_user` only requires authentication.
 
 Dates are inclusive, strictly `YYYY-MM-DD`, with at most 365 calendar days.
 Provider identifiers are `apple`, `oura`, `withings`. Metric lists contain 1–50
@@ -156,11 +168,11 @@ The configured hostname must match the request Host. If Origin is supplied, it
 must match the configured scheme/host/port; ordinary server-to-server requests
 need no Origin header. A configured URL does not change the `/mcp` route path.
 
-No authentication, WordPress credentials, cookies or owner session are needed.
-The endpoint sits outside the Laravel web/CSRF/session group because it only reads
-intentionally public data. Normal theme session behavior remains in place elsewhere.
-Only six explicit operations exist: no URL proxy, SQL, shell, filesystem resources,
-private APIs or WordPress editing. Debug toolbar injection is disabled here.
+The endpoint requires a Passport OAuth access token (`Authorization: Bearer ...`).
+It sits outside the Laravel web/CSRF/session group. Browser cookies alone do not
+authenticate MCP calls. Health tool authorization checks the token owner's WordPress
+capabilities rather than the current browser session. Seven read-only tools exist;
+none permit WordPress editing. Debug toolbar injection is disabled here.
 
 Requests are limited to 16 KiB and 30 requests/minute per client IP by default,
 including protocol requests. Use a persistent Laravel cache store for the limiter.
@@ -189,7 +201,7 @@ php tests/health/integration.php
 ```
 
 The first suite uses an in-memory cache and a fake canonical client with the actual
-Laravel MCP HTTP dispatcher: 67 checks. The second creates/drops its own dedicated
+Laravel MCP HTTP dispatcher, including authenticated identity isolation. The second creates/drops its own dedicated
 `health_journal_test_*` database: 202 checks including canonical adapter equality,
 privacy filtering and W3TC exclusions. It needs local database CREATE/DROP privileges;
 it does not write to the real blog's tables.
@@ -242,8 +254,9 @@ with Streamable HTTP, or the SDK's `php artisan mcp:inspector mcp` command.
 
 After deployment, enable Developer mode under **Settings → Security and login**,
 then add the public MCP URL from the **Plugins** plus button. Name it "Pacurar Health",
-use `https://pacurar.dev/mcp`, and choose no authentication if prompted. Review the
-six discovered read-only tools and add the connection to the conversation.
+use `https://pacurar.dev/mcp`, and choose OAuth authentication. Sign in with a
+WordPress account that has `edit_posts` to use the health tools. Review the
+seven discovered read-only tools and add the connection to the conversation.
 Availability depends on account/workspace policy. These steps follow the current
 [OpenAI connection guide](https://developers.openai.com/plugins/deploy/connect-chatgpt).
 

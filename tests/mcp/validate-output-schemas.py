@@ -26,7 +26,8 @@ for tool in data["tools"]:
     schema = tool["outputSchema"]
     Draft202012Validator.check_schema(schema)
     validators[tool["name"]] = Draft202012Validator(schema, format_checker=FormatChecker())
-    validators[tool["name"]].validate({"error": {"code": "upstream_unavailable", "message": "Unavailable"}})
+    if tool["name"] != "wordpress_current_user":
+        validators[tool["name"]].validate({"error": {"code": "upstream_unavailable", "message": "Unavailable"}})
     assert not validators[tool["name"]].is_valid({}), "Missing result fields must fail"
 
 successful_tools = set()
@@ -48,4 +49,4 @@ clock = copy.deepcopy(metric)
 clock["observations"] = [{"date": "2026-09-15", "value": "2026-09-14T23:00:00+03:00", "measured_at": None}]
 validators["health_metric"].validate(clock)
 
-print(f"Validated {len(data['responses'])} protocol results against all six output schemas; negative cases passed.")
+print(f"Validated {len(data['responses'])} protocol results against all {len(validators)} output schemas; negative cases passed.")

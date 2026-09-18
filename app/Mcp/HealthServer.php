@@ -12,5 +12,13 @@ final class HealthServer extends \Laravel\Mcp\Server
 
     protected array $capabilities = [self::CAPABILITY_TOOLS => ['listChanged' => false]];
 
-    protected array $tools = [Tools\Schema::class, Tools\Timeline::class, Tools\Metric::class, Tools\Latest::class, Tools\Workouts::class, Tools\Summary::class];
+    protected array $tools = [
+        Tools\Schema::class,
+        Tools\Timeline::class,
+        Tools\Metric::class,
+        Tools\Latest::class,
+        Tools\Workouts::class,
+        Tools\Summary::class,
+        Tools\CurrentUser::class
+    ];
 }

@@ -9,7 +9,7 @@
       "description": "Retrieve the authoritative public health schema: metric paths, units, provider identifiers, value shapes, source datasets, provenance and timestamp semantics. Call this before choosing metrics; it is the same schema as the WordPress health REST API.",
       "inputSchema": {
         "type": "object",
-        "properties": {},
+        "properties": [],
         "additionalProperties": false
       },
       "annotations": {
@@ -5018,6 +5018,40 @@
             ]
           }
         ]
+      }
+    },
+    {
+      "name": "wordpress_current_user",
+      "title": "Current User",
+      "description": "Return only the email and username of the WordPress user authenticated by the current MCP access token. Takes no arguments and cannot look up other users.",
+      "inputSchema": {
+        "type": "object",
+        "properties": [],
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "outputSchema": {
+        "properties": {
+          "email": {
+            "description": "WordPress user_email.",
+            "type": "string"
+          },
+          "username": {
+            "description": "WordPress user_login.",
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "required": [
+          "email",
+          "username"
+        ],
+        "additionalProperties": false
       }
     }
   ],

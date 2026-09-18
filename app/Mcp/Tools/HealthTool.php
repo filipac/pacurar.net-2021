@@ -7,6 +7,7 @@ use App\Health\MetricCatalog;
 use App\Mcp\HealthOutputSchema;
 use App\Mcp\HealthToolException;
 use App\Mcp\HealthTools;
+use App\Models\WordpressUser;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
@@ -18,6 +19,15 @@ abstract class HealthTool extends Tool
     public function handle(Request $request, HealthTools $tools): ResponseFactory
     {
         try {
+            $user = $request->user('api');
+            if (! $user instanceof WordpressUser || (int) $user->getAuthIdentifier() <= 0) {
+                throw new HealthToolException('unauthenticated', 'WordPress authentication is required.');
+            }
+            // Check the token owner, never the ambient WordPress browser session.
+            if (! user_can((int) $user->getAuthIdentifier(), 'edit_posts')) {
+                throw new HealthToolException('forbidden', 'The authenticated WordPress user must have the edit_posts capability.');
+            }
+
             $data = $tools->execute(substr($this->name, 7), $request->all());
             $json = json_encode($data, JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
             if (strlen($json) > (int) config('health_mcp.max_response_bytes', 262144)) {
