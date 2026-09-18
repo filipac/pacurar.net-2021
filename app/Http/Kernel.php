@@ -9,7 +9,7 @@ use App\Providers\CustomFieldsServiceProvider;
 use App\Providers\CustomPostTypesProvider;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Foundation\Http\Events\RequestHandled;
-use Illuminate\Pipeline\Pipeline;
+use Illuminate\Routing\Pipeline;
 use Illuminate\Support\Facades\Facade;
 use LaraWelP\Foundation\Http\Kernel as HttpKernel;
 use Exception;
