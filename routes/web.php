@@ -9,7 +9,7 @@ Route::middleware(\App\Http\Middleware\ManageOAuthClients::class)->group(functio
 });
 
 Route::get('tttt', function () {
-    return true;
+    return redirect()->route('poop');
 })->middleware('throttle:30,1', \Laravel\Passport\Http\Middleware\CreateFreshApiToken::class, 'auth:wordpress,api');
 
 Route::get(config('health.archive_slug', 'health').'/compare', [\App\Http\Controllers\HealthJournal::class, 'compare'])->name('health.compare');
