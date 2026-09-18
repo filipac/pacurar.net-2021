@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d2324e408d6ed47db310088eb4f3fa97",
+    "content-hash": "ef28019fb5439d48870b2f26658e269a",
     "packages": [
         {
             "name": "amrshawky/currency",
@@ -3065,7 +3065,7 @@
         },
         {
             "name": "larawelp/all",
-            "version": "0.x-dev",
+            "version": "v0.0.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/larawelp/monorepo.git",
@@ -3093,7 +3093,6 @@
                 "laravel/folio": "Optional file-based page routing.",
                 "laravel/horizon": "Optional Redis queue dashboard."
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -3123,7 +3122,7 @@
             ],
             "description": "WordPress integration for Laravel.",
             "support": {
-                "source": "https://github.com/larawelp/monorepo/tree/0.x",
+                "source": "https://github.com/larawelp/monorepo/tree/v0.0.11",
                 "issues": "https://github.com/larawelp/monorepo/issues"
             },
             "time": "2026-09-18T13:56:16+00:00"
@@ -11283,7 +11282,6 @@
         "corcel/acf": 20,
         "jgrossi/corcel": 20,
         "laravel/folio": 10,
-        "larawelp/all": 20,
         "livewire/volt": 10,
         "peerme/mx-sdk-laravel": 20,
         "peerme/mx-sdk-php": 20,

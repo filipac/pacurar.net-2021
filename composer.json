@@ -23,7 +23,7 @@
         "jgrossi/corcel": "7.0.x-dev",
         "johnbillion/extended-cpts": "^4.5",
         "jwilsson/spotify-web-api-php": "^5.5",
-        "larawelp/all": "0.x-dev",
+        "larawelp/all": "0.0.11",
         "larawelp/sage-theme-blocks": "*",
         "laravel/folio": "^1.0@beta",
         "laravel/horizon": "^5.10",

@@ -11,6 +11,9 @@ public GitHub repositories and the committed references in `composer.lock`; no
 local `/Users/...` path repositories remain. Install the lock file, do not resolve
 fresh branches on production.
 
+LaraWelP is pinned to the `v0.0.11` release at the same tested commit listed below,
+rather than tracking `0.x-dev`.
+
 | Repository | Branch | Published commit |
 | --- | --- | --- |
 | [larawelp/monorepo](https://github.com/larawelp/monorepo) | `0.x` | `8846a98030e0865a80a459c1df14cc0d42b72597` |
