@@ -26,7 +26,9 @@ entries and arbitrary private fields.
 `app/Providers/HealthMcpProvider.php` registers the SDK route and a WordPress
 `template_redirect` bridge before normal HTML routing. `app/Mcp/HealthMcpHttp.php`
 provides the stateless transport boundary. `app/Mcp/Tools/` contains tool descriptions,
-input schemas and read-only annotations; `app/Mcp/HealthTools.php` implements the
+input schemas and read-only annotations; `app/Mcp/HealthOutputSchema.php` describes
+each tool's structured output, including typed provider maps, repeated observations,
+nullable timestamps and errors. `app/Mcp/HealthTools.php` implements the
 operations. `config/health_mcp.php` provides deployment settings.
 
 ## Tools and inputs
@@ -115,7 +117,7 @@ Weight statistics (`health_summary`):
 Illustrative `health_metric` structured result (fixture data):
 ```json
 {
-  "meta":{"from":"2026-09-15","to":"2026-09-17","days":3,"timezone":"Europe/Bucharest","schema_version":"fixture"},
+  "meta":{"from":"2026-09-15","to":"2026-09-17","days":3,"timezone":"Europe/Bucharest","schema_version":1,"schema_url":"https://blog.test/wp-json/health/v1/schema"},
   "metric":"body.weight_kg","provider":"withings","unit":"kg",
   "observations":[
     {"date":"2026-09-15","value":71.618,"measured_at":"2026-09-15T09:30:19+03:00"},
@@ -181,10 +183,25 @@ php tests/health/integration.php
 ```
 
 The first suite uses an in-memory cache and a fake canonical client with the actual
-Laravel MCP HTTP dispatcher: 59 checks. The second creates/drops its own dedicated
+Laravel MCP HTTP dispatcher: 66 checks. The second creates/drops its own dedicated
 `health_journal_test_*` database: 197 checks including canonical adapter equality,
 privacy filtering and W3TC exclusions. It needs local database CREATE/DROP privileges;
 it does not write to the real blog's tables.
+
+Validate the fixture protocol results against every advertised output schema,
+including empty results, repeated measurements and errors (no database or network
+calls during tests):
+
+```sh
+python3 -m venv /tmp/health-mcp-schema-tests
+/tmp/health-mcp-schema-tests/bin/pip install 'jsonschema[format]==4.26.0'
+/tmp/health-mcp-schema-tests/bin/python tests/mcp/validate-output-schemas.py
+```
+
+After deploying schema changes, refresh the tools in the ChatGPT connection
+(or remove and re-add the connection if it retains the old discovery response).
+The “output schema recommended” badge should disappear once ChatGPT reads the
+updated `tools/list` response.
 
 Initialize (use the local trusted Herd certificate; do not disable TLS in production):
 ```sh

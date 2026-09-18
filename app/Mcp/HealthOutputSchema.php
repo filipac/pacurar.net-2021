@@ -45,7 +45,7 @@ final class HealthOutputSchema
         $workout = self::object($workoutProperties, $workoutRequired);
         $day = ['date' => $date];
         foreach (AnalyticsCatalog::GROUPS as $group) {
-            $day[$group] = self::map(self::object(array_fill_keys(array_values(AnalyticsCatalog::PROVIDERS), $reading), []))
+            $day[$group] = self::map(['$ref' => '#/$defs/providerReadings'])
                 + ['description' => 'Metric field names from health_schema.fields.'.$group.', each containing separate provider readings.'];
         }
         $day['workouts'] = self::list($workout);
@@ -74,9 +74,16 @@ final class HealthOutputSchema
 
         // Keep top-level properties visible to clients while covering isError results too.
         // Laravel's schema builder does not support typed maps or root alternatives.
-        return self::object($properties + ['error' => self::object(['code' => $string, 'message' => $string])], []) + [
+        $result = self::object($properties + ['error' => self::object(['code' => $string, 'message' => $string])], []) + [
             'oneOf' => [['required' => array_keys($properties)], ['required' => ['error']]],
         ];
+        if ($operation === 'timeline') {
+            $result['$defs'] = ['reading' => $reading, 'providerReadings' => self::object(
+                array_fill_keys(array_values(AnalyticsCatalog::PROVIDERS), ['$ref' => '#/$defs/reading']), []
+            )];
+        }
+
+        return $result;
     }
 
     private static function catalog(): array

@@ -1,4 +1,4 @@
-"""Validate actual fixture protocol responses; requires jsonschema==4.26.0."""
+"""Validate actual fixture protocol responses; requires jsonschema[format]==4.26.0."""
 
 import copy
 import json
