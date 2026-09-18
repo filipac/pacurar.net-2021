@@ -239,4 +239,5 @@ foreach ([['cycling_distance', 'activity', 'Cycling distance', 'km', 12.5], ['wa
 }
 require __DIR__.'/overview.php';
 require __DIR__.'/comparisons.php';
+require __DIR__.'/timeline.php';
 echo "\n$count integration checks passed; isolated database will be removed.\n";

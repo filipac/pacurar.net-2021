@@ -9,11 +9,16 @@ class HealthJournalProvider extends ServiceProvider
 {
     public function boot(): void
     {
+        \App\Health\AnalyticsNoCache::boot();
         add_action('init', [$this, 'registerContent']);
         add_action('added_post_meta', [\App\Health\DailySummary::class, 'sync'], 10, 4);
         add_action('updated_post_meta', [\App\Health\DailySummary::class, 'sync'], 10, 4);
         add_action('deleted_post_meta', [\App\Health\DailySummary::class, 'remove'], 10, 3);
         add_action('rest_api_init', function () {
+            register_rest_route('health/v1', '/timeline', ['methods' => 'GET', 'permission_callback' => '__return_true',
+                'callback' => [new \App\Health\TimelineApi, 'timeline']]);
+            register_rest_route('health/v1', '/schema', ['methods' => 'GET', 'permission_callback' => '__return_true',
+                'callback' => static fn () => new \WP_REST_Response(\App\Health\AnalyticsCatalog::schema(), 200, \App\Health\AnalyticsNoCache::headers())]);
             $api = new JournalApi;
             register_rest_route('pacurar2020/v1', '/health-connection', ['methods' => 'GET', 'permission_callback' => [$api, 'permission'],
                 'callback' => static fn () => ['schema_version' => 1, 'can_publish' => true, 'username' => wp_get_current_user()->user_login, 'site_url' => home_url()]]);

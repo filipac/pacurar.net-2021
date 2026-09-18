@@ -282,6 +282,10 @@ with `--direct` explicitly authorizes publication to the destination shown in it
 
 ### Comparing published measurements
 
+For a read-only, provider-separated daily export intended for analysis clients,
+see [the analytics API](health-analytics-api.md). `/wp-json/health/v1/timeline` and
+`/wp-json/health/v1/schema` explicitly bypass response caching, including W3TC.
+
 The archive's “At a glance” row shows the newest published weight, sleep, activity
 (steps), and readiness readings. Each has its own measurement date, provider and
 entry link. Its Compare link opens trends with that exact provider metric selected.
