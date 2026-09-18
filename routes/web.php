@@ -117,21 +117,21 @@ Route::any('/a2f6product/{product_id}', function ($product_id) {
 })->where('product_id', '.*');
 
 
-//Route::get('me', function() {
-//   return view('misc.me');
-//});
+Route::get('me', function () {
+    return view('misc.me');
+});
 //
-//Route::get('user', function () {
-////    Auth::loginUsingId(1, true);
-////    session()->put('x', 'y');
-//    dump(
-//        \Illuminate\Support\Facades\Auth::user(),
-//        \Illuminate\Support\Facades\Auth::guard('wordpress'),
-//        session()->all(),
-//        session()->getId(),
-//    );
-////    dd(\Illuminate\Support\Facades\Auth::guard('wordpress')->user(), \Illuminate\Support\Facades\Session::all(), $_SESSION);
-//});
+Route::get('user', function () {
+    //    Auth::loginUsingId(1, true);
+    //    session()->put('x', 'y');
+    dump(
+        \Illuminate\Support\Facades\Auth::user(),
+        \Illuminate\Support\Facades\Auth::guard('wordpress'),
+        session()->all(),
+        session()->getId(),
+    );
+    //    dd(\Illuminate\Support\Facades\Auth::guard('wordpress')->user(), \Illuminate\Support\Facades\Session::all(), $_SESSION);
+});
 
 
 // Route::any('front_page', 'Generic\Home@index');

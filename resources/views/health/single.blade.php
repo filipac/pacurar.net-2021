@@ -17,7 +17,7 @@
                 @include('health.measurements', ['chartPrefix' => 'health-chart-'.$source, 'historyContext' => 'daily'])
                 @foreach($section['workouts'] ?? [] as $workout)
                     <section class="health-workout">
-                        <h3>{{ \App\Health\MetricCatalog::WORKOUT_TYPES[$workout['type']] }}</h3>
+                        <h3>{{ \App\Health\MetricCatalog::workoutLabel($workout) }}</h3>
                         <p><time datetime="{{ $workout['start'] }}">{{ (new DateTimeImmutable($workout['start']))->setTimezone(new DateTimeZone($entry['timezone']))->format('d M H:i') }}</time> – <time datetime="{{ $workout['end'] }}">{{ (new DateTimeImmutable($workout['end']))->setTimezone(new DateTimeZone($entry['timezone']))->format('H:i') }}</time> · {{ \App\Health\MetricCatalog::SOURCES[$workout['origin']] }}</p>
                         @include('health.measurements', ['section' => $workout, 'chartPrefix' => 'health-workout-'.$source.'-'.$loop->index, 'historyContext' => $workout['type'].'|'.$workout['origin']])
                     </section>

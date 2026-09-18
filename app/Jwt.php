@@ -81,7 +81,7 @@ class Jwt
             ->withClaim('uid', $address);
 
         if (isset($sessionId)) {
-            $builder->identifiedBy($sessionId);
+            $builder = $builder->identifiedBy($sessionId);
         }
 
         return $builder

@@ -2,7 +2,7 @@
 
 namespace App\Livewire;
 
-use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Http;
 use Livewire\Component;
 
 class ExchangeEgold extends Component
@@ -16,25 +16,18 @@ class ExchangeEgold extends Component
         return view('livewire.exchange');
     }
 
-    public function price()
+    public function price(): string
     {
-        $x = new \ccxt\binance(['apiKey' => env('BINANCE_KEY'), 'secret' => env('BINANCE_SECRET')]);
-        $x = $x->fetch_ticker('EGLD/EUR');
-//        dd($x);
-        $ask = Arr::get($x, 'last', 0);
-//        $percentage = bcmul(1.05, $ask, 10);
-        $unEgld = bcadd($ask, 0, 10);
+        // This public ticker is the same last-trade price previously read through CCXT.
+        $ticker = Http::acceptJson()->connectTimeout(5)->timeout(10)
+            ->get('https://api.binance.com/api/v3/ticker/24hr', ['symbol' => 'EGLDEUR'])
+            ->throw()->json();
+        $price = $ticker['lastPrice'] ?? null;
+        if (($ticker['symbol'] ?? null) !== 'EGLDEUR' || ! is_string($price)
+            || ! preg_match('/^\d+(?:\.\d+)?$/D', $price) || bccomp($price, '0', 10) <= 0) {
+            throw new \RuntimeException('Binance did not return a valid EGLD/EUR price.');
+        }
 
-        return bcdiv(1, $unEgld, 10);
-
-        /*
-         * $unEgld .. 1
-         * 1 ..... x
-         */
-
-//        $unEgld ........ 1;
-//        10 ............. x
-//        ray(bcadd($ask, $percentage, 10), $ask);
-        return $unEgld;
+        return bcdiv('1', $price, 10);
     }
 }

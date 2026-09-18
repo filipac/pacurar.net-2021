@@ -40,7 +40,7 @@ class PublicHealthFixture implements HealthApiClientInterface
         $data = [
             '2026-09-15'=>['body'=>(object)['weight_kg'=>['withings'=>[['value'=>71.618,'measured_at'=>'2026-09-15T09:30:19+03:00'],['value'=>72.0,'measured_at'=>'2026-09-15T20:00:00+03:00']],'apple'=>['value'=>71.6,'measured_at'=>'2026-09-15T00:00:00+03:00']]],
                 'activity'=>(object)['active_energy_kcal'=>['apple'=>0]],
-                'workouts'=>[['provider'=>'apple','origin'=>'oura','type'=>'strength','start'=>'2026-09-15T19:00:00+03:00','end'=>'2026-09-15T19:30:00+03:00','active_energy_kcal'=>123,'average_hr_bpm'=>140],['provider'=>'oura','origin'=>'oura','type'=>null,'start'=>'2026-09-15T19:00:00+03:00','end'=>null,'active_energy_kcal'=>120]]],
+                'workouts'=>[['provider'=>'apple','origin'=>'oura','type'=>'other','original_type'=>'Boxing','start'=>'2026-09-15T19:00:00+03:00','end'=>'2026-09-15T19:30:00+03:00','active_energy_kcal'=>123,'average_hr_bpm'=>140],['provider'=>'oura','origin'=>'oura','type'=>null,'start'=>'2026-09-15T19:00:00+03:00','end'=>null,'active_energy_kcal'=>120]]],
             '2026-09-17'=>['body'=>(object)['weight_kg'=>['withings'=>['value'=>71.2,'measured_at'=>'2026-09-17T08:00:00+03:00']]],'heart'=>(object)['hrv_ms'=>['oura'=>[['value'=>45,'source_timestamp'=>'2026-09-16T22:00:00+03:00'],['value'=>47,'source_timestamp'=>'2026-09-17T01:00:00+03:00']]]]],
         ];
         $days = [];
@@ -98,8 +98,9 @@ $zero=$call('health_metric',$range+['metric'=>'activity.active_energy_kcal','pro
 check(count($zero['observations'])===1 && $zero['observations'][0]['value']===0,'Stored zero retained; missing days never become zero');
 $workouts=$call('health_workouts',$range)['result']['structuredContent']['workouts'];
 check(count($workouts)===2,'Cross-provider workouts are not deduplicated');
-$workouts=$call('health_workouts',$range+['type'=>'strength','provider'=>'apple','origin'=>'oura'])['result']['structuredContent']['workouts'];
+$workouts=$call('health_workouts',$range+['type'=>'other','provider'=>'apple','origin'=>'oura'])['result']['structuredContent']['workouts'];
 check(count($workouts)===1 && $workouts[0]['average_hr_bpm']===140 && $workouts[0]['end']==='2026-09-15T19:30:00+03:00','Workout filters preserve all source fields');
+check($workouts[0]['original_type']==='Boxing' && $workouts[0]['type']==='other', 'MCP preserves original activity name alongside normalized category');
 $summary=$call('health_summary',$range+['metric'=>'body.weight_kg','provider'=>'withings'])['result']['structuredContent']['statistics'];
 check($summary['count']===3 && $summary['missing_days']===['2026-09-16'],'Summary counts observations and reports missing dates');
 check(abs($summary['numeric_change'] - (71.2-71.618))<0.00001 && $summary['median']===71.618,'Summary descriptive statistics are correct');

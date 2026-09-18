@@ -153,6 +153,8 @@ $badApple = $apple; $badApple['providers']['apple_health']['workouts'][0]['type'
 check(request('POST', $badApple)->get_status() === 422, 'Workout type must be an allowed category');
 $badApple = $apple; $badApple['providers']['apple_health']['workouts'][0]['origin'] = 'Private watch name';
 check(request('POST', $badApple)->get_status() === 422, 'Private workout device names rejected');
+$badApple = $apple; $badApple['providers']['apple_health']['workouts'][0]['original_type'] = ['name' => 'Boxing'];
+check(request('POST', $badApple)->get_status() === 422, 'Original activity name must be a string');
 wp_set_current_user(0);
 $publicApple = rest_do_request(new WP_REST_Request('GET', '/wp/v2/health-entries/'.$appleId));
 check($publicApple->get_status() === 200 && $publicApple->get_data()['health_data']['providers']['apple_health']['workouts'][0]['metrics'][0]['label'] === 'Distance', 'Public Apple metrics use catalog labels');
@@ -160,7 +162,12 @@ check(! str_contains(json_encode($publicApple->get_data()), 'Private'), 'Private
 wp_set_current_user($userId);
 $apple['expected_revision'] = $createdApple->get_data()['revision'];
 $apple['providers']['apple_health']['workouts'][0]['metrics'][0]['value'] = 1.6;
+$apple['providers']['apple_health']['workouts'][0]['original_type'] = " <b>Outdoor Run</b>\n";
 check(request('POST', $apple)->get_data()['operation'] === 'updated', 'Apple Health correction updates same entry');
+$namedApple = get_post_meta($appleId, '_health_data', true)['providers']['apple_health']['workouts'][0];
+check($namedApple['original_type'] === 'Outdoor Run' && str_contains(get_post($appleId)->post_content, '<h3>Outdoor Run</h3>'), 'Original activity name sanitized, stored and rendered');
+$publicNamedApple = rest_do_request(new WP_REST_Request('GET', '/wp/v2/health-entries/'.$appleId))->get_data();
+check($publicNamedApple['health_data']['providers']['apple_health']['workouts'][0]['original_type'] === 'Outdoor Run', 'Public structured entry retains original activity name');
 $ouraOnly = $apple; $ouraOnly['date'] = '2001-01-05'; $ouraOnly['expected_revision'] = null;
 $ouraOnly['providers'] = ['oura' => ['fetched_at' => '2001-01-05T10:00:00+02:00', 'metrics' => [['key' => 'oura.workout.duration', 'value' => 600, 'at' => '2001-01-05T08:00:00+02:00']], 'series' => []]];
 $ouraCreated = request('POST', $ouraOnly)->get_data();

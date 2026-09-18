@@ -107,7 +107,7 @@ class JournalApi
             foreach ($section['metrics'] as $metric) $html .= '<li>'.esc_html($metric['label'].': '.$metric['value'].' '.$metric['unit']).'</li>';
             $html .= '</ul>';
             foreach ($section['workouts'] ?? [] as $workout) {
-                $html .= '<h3>'.esc_html(MetricCatalog::WORKOUT_TYPES[$workout['type']]).'</h3><p>'.esc_html($workout['start'].' – '.$workout['end']).'</p><ul>';
+                $html .= '<h3>'.esc_html(MetricCatalog::workoutLabel($workout)).'</h3><p>'.esc_html($workout['start'].' – '.$workout['end']).'</p><ul>';
                 foreach ($workout['metrics'] as $metric) $html .= '<li>'.esc_html($metric['label'].': '.$metric['value'].' '.$metric['unit']).'</li>';
                 $html .= '</ul>';
             }

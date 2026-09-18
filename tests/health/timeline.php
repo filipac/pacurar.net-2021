@@ -31,7 +31,7 @@ timelineFixture('2031-04-02', 'activity', [
             ['type' => 'cycling', 'origin' => 'apple_health', 'start' => '2031-04-02T18:02:00+03:00', 'end' => '2031-04-02T18:25:00+03:00',
                 'route' => 'private-location', 'metrics' => [timelineMetric('apple_health.workout.duration', 1380), timelineMetric('apple_health.workout.distance', 7.3),
                     timelineMetric('apple_health.workout.activeEnergyBurned', 162), timelineMetric('apple_health.workout.avgHeartRate', 115)]],
-            ['type' => 'strength', 'origin' => 'oura', 'start' => '2031-04-02T16:00:00+03:00', 'end' => '2031-04-02T16:30:00+03:00',
+            ['type' => 'other', 'original_type' => '<b>Boxing</b>', 'origin' => 'oura', 'start' => '2031-04-02T16:00:00+03:00', 'end' => '2031-04-02T16:30:00+03:00',
                 'metrics' => [timelineMetric('apple_health.workout.duration', 1800)]],
         ]],
     'oura' => ['metrics' => [timelineMetric('oura.daily_activity.active_calories', 578), timelineMetric('oura.daily_activity.equivalent_walking_distance', 2100),
@@ -75,6 +75,8 @@ check(count($middle['workouts']) === 4 && array_column($middle['workouts'], 'sta
 $cycling = $middle['workouts'][3];
 check($cycling['type'] === 'cycling' && $cycling['duration_minutes'] === 23 && $cycling['distance_km'] === 7.3 && $cycling['active_energy_kcal'] === 162 && $cycling['average_hr_bpm'] === 115, 'Structured workouts retain type, times and numerical session metrics');
 check($middle['workouts'][2]['provider'] === 'apple' && $middle['workouts'][2]['origin'] === 'oura', 'Imported workout origin is retained separately from export provider');
+check($middle['workouts'][2]['type'] === 'other' && $middle['workouts'][2]['original_type'] === 'Boxing', 'Timeline retains sanitized original names for uncategorized workouts');
+check(!isset($cycling['original_type']), 'Legacy workouts do not fabricate original names');
 check($middle['workouts'][0]['average_hr_bpm'] === 120 && $middle['workouts'][0]['active_energy_kcal'] === 150 && $middle['workouts'][0]['type'] === null && $middle['workouts'][0]['end'] === null, 'Partial native workouts join across topics without fabricating missing type or end');
 check(! str_contains(wp_json_encode($data), 'private-') && ! str_contains(wp_json_encode($data), '999') && ! str_contains(wp_json_encode($data), 'fetched_at'), 'Timeline excludes private text, raw series, credentials and import timestamps');
 $empty = timelineRequest(['from' => '2031-04-10', 'to' => '2031-04-11'])->get_data();

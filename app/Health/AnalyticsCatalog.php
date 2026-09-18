@@ -140,6 +140,7 @@ class AnalyticsCatalog
                 'provider' => ['type' => 'string', 'values' => array_values(self::PROVIDERS)],
                 'origin' => ['type' => 'string|null', 'values' => array_values(self::PROVIDERS)],
                 'type' => ['type' => 'string|null', 'values' => MetricCatalog::WORKOUT_TYPES],
+                'original_type' => ['type' => 'string', 'description' => 'Optional sanitized Apple Health activity name, at most 80 characters. Identifies activities such as Boxing when type is other. Omitted if unavailable.'],
                 'start' => ['type' => 'string|null', 'unit' => 'ISO 8601'],
                 'end' => ['type' => 'string|null', 'unit' => 'ISO 8601'],
                 'repeated_metrics' => ['description' => 'Repeated workout fields are arrays of {value, source_timestamp}; they are never reduced.'],

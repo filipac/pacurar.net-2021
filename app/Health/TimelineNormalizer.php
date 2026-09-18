@@ -43,6 +43,9 @@ class TimelineNormalizer
                 $identity = 'apple|'.$start.'|'.$workout['type'].'|'.$workout['origin'];
                 $record = ['provider' => 'apple', 'origin' => AnalyticsCatalog::PROVIDERS[$workout['origin']], 'type' => $workout['type'],
                     'start' => $start, 'end' => $end, '_metrics' => []];
+                if (($name = MetricCatalog::originalWorkoutType($workout['original_type'] ?? null)) !== null) {
+                    $record['original_type'] = $name;
+                }
                 foreach ($workout['metrics'] ?? [] as $metric) {
                     $definition = $this->definition($metric, $source, 'activity');
                     if ($definition && $definition['group'] === 'workouts') $record['_metrics'][$definition['field']][] = $this->observation($metric, $definition);

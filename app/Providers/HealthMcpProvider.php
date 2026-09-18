@@ -9,6 +9,7 @@ use App\Mcp\WordPressHealthApiClient;
 use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Mcp\Facades\Mcp;
+use Laravel\Passport\Passport;
 
 final class HealthMcpProvider extends ServiceProvider
 {
@@ -23,7 +24,13 @@ final class HealthMcpProvider extends ServiceProvider
     public function boot(): void
     {
         // Outside the session/CSRF web group: all six tools only read public data.
-        Mcp::web('/mcp', HealthServer::class);
+
+        Passport::authorizationView(function ($parameters) {
+            return view('mcp.authorize', $parameters);
+        });
+
+        Mcp::oauthRoutes();
+        Mcp::web('/mcp', HealthServer::class)->middleware('auth:api');
         add_action('template_redirect', function () {
             if (! HealthMcpHttp::isRequest()) {
                 return;
