@@ -58,48 +58,84 @@ any health data or schema. No particular role name is required. Missing authenti
 returns `unauthenticated`; insufficient capability returns `forbidden` with
 `isError: true`. `wordpress_current_user` only requires authentication.
 
-## OAuth scopes and Inspector
+## OAuth scopes per MCP resource
 
-`config/health_mcp.php` defines the supported scope names and consent descriptions.
-The application provider registers these with Passport and sets them as defaults
-for authorization requests that omit `scope`. `HealthOAuthMetadata` advertises
-them on the SDK's root and nested authorization-server/protected-resource discovery
-routes, with no-store headers and W3TC exclusions. The MCP 401 challenge also
-advertises `scope="mcp:use health"`. Do not edit the SDK in `vendor`.
+`config/mcp_oauth.php` separates the authorization server's supported scope
+catalog from endpoint-specific scope lists:
 
-The same application middleware extends the SDK's `/oauth/register` response
-with the space-separated `scope` value `mcp:use health`. Discovery metadata alone
-does not correct the SDK's original registration response, which only listed
-`mcp:use`. Registration keeps the SDK's redirect validation and client creation.
+```php
+'scopes' => [
+    'mcp:use' => 'Use MCP server',
+    'health' => 'Access to health data',
+],
+'default_scopes' => ['mcp:use'],
+'resources' => [
+    '/mcp' => ['mcp:use', 'health'],
+    // '/mcp-notes' => ['mcp:use'],
+],
+```
 
-Each health tool declares OAuth `securitySchemes` with both scopes (also mirrored
-in `_meta` for compatibility). Missing-scope errors include
+Passport registers the full scope catalog so it can issue tokens for any resource.
+Authorization-server metadata advertises that catalog. Protected-resource metadata
+advertises only the exact endpoint's scopes: `/mcp` includes `health`; other paths
+(including `/mcp/another-server`) and the root discovery document use the default
+scopes unless explicitly configured. No omitted authorization scope grants health.
+
+`HealthOAuthMetadata` extends the SDK routes in application code with no-store
+headers and W3TC exclusions. The shared `/oauth/register` route validates and
+returns the client's requested scopes as a space-separated string. If the client
+omits `scope`, registration omits it too, leaving selection to resource discovery;
+it never adds `health` to a non-health client. Registration metadata is not a grant:
+users still authorize scopes, and the tools still validate them.
+
+`HealthMcpHttp` handles only `/mcp` and advertises its scope list in the 401
+challenge. Each health tool declares OAuth `securitySchemes` with `mcp:use health`
+(also mirrored in `_meta`). Missing-scope errors include
 `_meta["mcp/www_authenticate"]` with `insufficient_scope`, the resource metadata
-URL and the required scopes so ChatGPT can offer reauthorization. WordPress
-capability failures do not request reauthorization: another OAuth login cannot
-grant `edit_posts`.
+URL and required scopes so clients can offer reauthorization. WordPress capability
+failures do not trigger another OAuth login; login cannot grant `edit_posts`.
+The identity tool remains available without the health scope.
 
-ChatGPT reuses its dynamically registered client for a connection. After deploying,
-refresh the connection's tools and invoke a health tool to trigger the new scope
-challenge. If a connection still requests only `mcp:use`, recreate the ChatGPT
-connection so it performs fresh registration; a reconnect alone may reuse the old
-registration. Verify the actual consent URL includes `health`, not just discovery.
+For a new unrelated server, register its endpoint with `Mcp::web` and `auth:api`,
+add the exact path and its scopes to `mcp_oauth.resources`, and implement tools
+extending the SDK's `Tool`, not `HealthTool`. Give those tools their own required
+scope checks and declarations. Do not reuse `HealthMcpHttp`, which has the health
+endpoint's origin and payload policies. Merely registering a scope does not make
+it mandatory everywhere, and a scope is a permission, not a token audience or URL
+restriction.
 
-After adding a scope, clear cached configuration with `php artisan config:clear`
-(or rebuild it during deployment), then disconnect/clear the Inspector's saved
-OAuth state and authorize again. If Inspector has an explicit Scope override,
-set it to `mcp:use health`. The authorization URL must contain
-`scope=mcp%3Ause+health` (spaces may also be encoded as `%20`). Check discovery at
-`/.well-known/oauth-protected-resource/mcp` and
-`/.well-known/oauth-authorization-server` on the same host as `/mcp`.
-
-Advertising a scope does not grant it to existing tokens. Passport defaults do
-not extend an explicit `scope=mcp:use` request; clients must request `health` and
-the user must authorize it. Identity-only tokens remain usable for
-`wordpress_current_user`; health tools reject them before reading data.
+After changing configuration, clear/rebuild the config cache during deployment.
+Refresh the connector's tools and authorize again. Inspector's explicit Scope
+setting for the health server should be `mcp:use health`. Verify that exact value
+in the consent URL; old tokens do not acquire new scopes. A connection retaining
+its old registration may need to be recreated. Do not edit SDK vendor files.
 
 Run `php tests/mcp/oauth-scopes.php` and `php tests/mcp/run.php` to validate
-discovery, default scopes, challenges, and per-tool scope/capability checks.
+resource isolation, registration, defaults, challenges, and health permissions.
+
+## Minimal OAuth test server
+
+`/mcp-test` exposes only `wordpress_current_user` through `App\Mcp\TestServer`.
+It uses Passport `auth:api`, advertises only `mcp:use`, and requires neither the
+health scope nor `edit_posts`. The tool returns only the token owner's email and
+username. Its responses bypass W3TC and shared caches.
+
+Add a separate connector using `https://pacurar.dev/mcp-test` after deployment
+(use `https://blog.test/mcp-test` with local Inspector). The protected-resource
+document is `/.well-known/oauth-protected-resource/mcp-test`; the expected consent
+URL has `scope=mcp%3Ause`, with no `health`. Registration remains shared at
+`/oauth/register` and reflects only scopes requested by the client. This tests a
+fresh connection independently of the existing health connection.
+
+`config/mcp_test.php` provides `MCP_TEST_ENABLED`, `MCP_TEST_PUBLIC_URL` and
+`MCP_TEST_RATE_LIMIT`. The URL defaults to `APP_URL/mcp-test`; set it explicitly
+if the public MCP host differs from `APP_URL`. Disable the test endpoint with
+`MCP_TEST_ENABLED=false` after testing, then rebuild cached configuration.
+
+The health and test transports share the stateless `McpHttp` boundary but have
+separate URLs, enable flags, scope challenges and rate-limit buckets. Run
+`php tests/mcp/test-server.php` to verify minimal-token access, the single-tool
+list, rejection of health calls, and authentication/cache protections.
 
 Dates are inclusive, strictly `YYYY-MM-DD`, with at most 365 calendar days.
 Provider identifiers are `apple`, `oura`, `withings`. Metric lists contain 1–50

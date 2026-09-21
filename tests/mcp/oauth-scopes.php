@@ -12,6 +12,7 @@ $app->instance('config', new Illuminate\Config\Repository([
     'view' => ['paths' => []],
     'database'=>['default'=>'sqlite','connections'=>['sqlite'=>['driver'=>'sqlite','database'=>':memory:','prefix'=>'']]],
     'auth'=>['guards'=>['api'=>['provider'=>'wordpress']]],
+    'mcp_oauth' => require dirname(__DIR__, 2).'/config/mcp_oauth.php',
     'health_mcp' => require dirname(__DIR__, 2).'/config/health_mcp.php',
 ]));
 Illuminate\Support\Facades\Facade::setFacadeApplication($app);
@@ -40,7 +41,7 @@ foreach (['/.well-known/oauth-protected-resource', '/.well-known/oauth-protected
     $response = $router->dispatch($request);
     $data = $response->getData(true);
     check($response->getStatusCode() === 200, 'Discovery route exists: '.$path);
-    check($data['scopes_supported'] === ['mcp:use', 'health'], 'Both scopes advertised: '.$path);
+    check($data['scopes_supported'] === ($path === '/.well-known/oauth-protected-resource' ? ['mcp:use'] : ['mcp:use', 'health']), 'Resource-specific scopes advertised: '.$path);
     check(str_contains($response->headers->get('Cache-Control'), 'no-store'), 'Discovery is uncached: '.$path);
     if (str_contains($path, 'authorization-server')) {
         check($data['code_challenge_methods_supported'] === ['S256'], 'PKCE retained');
@@ -52,12 +53,12 @@ foreach (['/.well-known/oauth-protected-resource', '/.well-known/oauth-protected
         fn ($pattern) => preg_match('~'.$pattern.'~', $path))) > 0, 'W3TC page-cache reject rule matches: '.$path);
 }
 check(Laravel\Passport\Passport::hasScope('health') && Laravel\Passport\Passport::hasScope('mcp:use'), 'Passport accepts both scopes');
-check(Laravel\Passport\Passport::$defaultScope === 'mcp:use health', 'Omitted scope defaults to both');
+check(Laravel\Passport\Passport::$defaultScope === 'mcp:use', 'Omitted scope never defaults to health');
 // Exercise the actual SDK registration controller against a disposable in-memory DB.
 foreach (glob(dirname(__DIR__, 2).'/vendor/laravel/passport/database/migrations/*create_oauth_clients_table.php') as $migration) (require $migration)->up();
 config(['mcp.redirect_domains'=>['https://client.example']]);
 $request = Illuminate\Http\Request::create('https://blog.test/oauth/register', 'POST', [
-    'client_name'=>'Scope test', 'redirect_uris'=>['https://client.example/callback'],
+    'client_name'=>'Scope test', 'redirect_uris'=>['https://client.example/callback'], 'scope'=>'mcp:use health',
 ], server: ['HTTP_ACCEPT'=>'application/json']);
 $app->instance('request', $request);
 $response = $router->dispatch($request);
@@ -72,4 +73,26 @@ $request = Illuminate\Http\Request::create('https://blog.test/oauth/register', '
 $app->instance('request', $request);
 $response = $router->dispatch($request);
 check($response->getStatusCode() === 400 && !isset($response->getData(true)['scope']), 'Invalid registration remains rejected without scope metadata');
+// A second MCP resource can advertise its own scopes without receiving health.
+config(['mcp_oauth.resources'=>['/mcp'=>['mcp:use','health'], '/mcp-notes'=>['mcp:use']]]);
+foreach (['/mcp-notes', '/mcp-future', '/mcp/nested'] as $resource) {
+    $request = Illuminate\Http\Request::create('https://blog.test/.well-known/oauth-protected-resource'.$resource);
+    $app->instance('request', $request);
+    $data = $router->dispatch($request)->getData(true);
+    check($data['scopes_supported'] === ['mcp:use'], 'Other resources never inherit health: '.$resource);
+}
+foreach ([null, 'mcp:use'] as $scope) {
+    $params = ['client_name'=>'Non-health MCP', 'redirect_uris'=>['https://client.example/callback']];
+    if ($scope !== null) $params['scope'] = $scope;
+    $request = Illuminate\Http\Request::create('https://blog.test/oauth/register', 'POST', $params, server: ['HTTP_ACCEPT'=>'application/json']);
+    $app->instance('request', $request);
+    $response = $router->dispatch($request);
+    check($response->getStatusCode() === 201 && ($response->getData(true)['scope'] ?? null) === $scope, 'Registration never adds health to omitted or minimal scopes');
+}
+$beforeClients = Laravel\Passport\Passport::client()->count();
+$request = Illuminate\Http\Request::create('https://blog.test/oauth/register', 'POST', ['redirect_uris'=>['https://client.example/callback'], 'scope'=>'mcp:use unknown'], server: ['HTTP_ACCEPT'=>'application/json']);
+$app->instance('request', $request);
+$response = $router->dispatch($request);
+check($response->getStatusCode() === 400 && $response->getData(true)['error'] === 'invalid_scope', 'Unknown registration scopes rejected');
+check(Laravel\Passport\Passport::client()->count() === $beforeClients, 'Invalid scopes create no client');
 echo "$checks OAuth discovery checks passed\n";

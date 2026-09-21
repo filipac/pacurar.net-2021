@@ -6,6 +6,8 @@ use App\Mcp\HealthApiClientInterface;
 use App\Mcp\HealthMcpHttp;
 use App\Mcp\HealthOAuthMetadata;
 use App\Mcp\HealthServer;
+use App\Mcp\TestServer;
+use App\Mcp\TestMcpHttp;
 use App\Mcp\WordPressHealthApiClient;
 use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\ServiceProvider;
@@ -17,7 +19,7 @@ final class HealthMcpProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(HealthApiClientInterface::class, WordPressHealthApiClient::class);
-        if (HealthMcpHttp::isRequest()) {
+        if (HealthMcpHttp::isRequest() || TestMcpHttp::isRequest()) {
             config(['debugbar.enabled' => false]);
         }
     }
@@ -30,8 +32,8 @@ final class HealthMcpProvider extends ServiceProvider
             return view('mcp.authorize', $parameters);
         });
 
-        Passport::tokensCan(array_replace(Passport::$scopes, config('health_mcp.scopes')));
-        Passport::defaultScopes(array_keys(config('health_mcp.scopes')));
+        Passport::tokensCan(array_replace(Passport::$scopes, config('mcp_oauth.scopes')));
+        Passport::defaultScopes(config('mcp_oauth.default_scopes'));
 
         Mcp::oauthRoutes();
         foreach ($this->app['router']->getRoutes() as $route) {
@@ -41,13 +43,15 @@ final class HealthMcpProvider extends ServiceProvider
             }
         }
         Mcp::web('/mcp', HealthServer::class)->middleware('auth:api');
+        Mcp::web('/mcp-test', TestServer::class)->middleware('auth:api');
         add_action('template_redirect', function () {
-            if (! HealthMcpHttp::isRequest()) {
+            if (! HealthMcpHttp::isRequest() && ! TestMcpHttp::isRequest()) {
                 return;
             }
             $request = request();
+            $transport = TestMcpHttp::isRequest() ? TestMcpHttp::class : HealthMcpHttp::class;
             $response = (new Pipeline($this->app))->send($request)
-                ->through([\App\Http\Middleware\TrustProxies::class, HealthMcpHttp::class])
+                ->through([\App\Http\Middleware\TrustProxies::class, $transport])
                 ->then(fn ($request) => $this->app['router']->dispatch($request));
             $response->send();
             $this->app->make(\Illuminate\Contracts\Http\Kernel::class)->terminate($request, $response);

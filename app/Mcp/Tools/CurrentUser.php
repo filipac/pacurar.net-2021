@@ -50,6 +50,8 @@ final class CurrentUser extends Tool
     public function toArray(): array
     {
         $result = parent::toArray();
+        $result['securitySchemes'] = [['type' => 'oauth2', 'scopes' => ['mcp:use']]];
+        $result['_meta']['securitySchemes'] = $result['securitySchemes'];
         $result['inputSchema']['additionalProperties'] = false;
         $result['outputSchema']['additionalProperties'] = false;
 

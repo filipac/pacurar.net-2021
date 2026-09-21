@@ -24,7 +24,8 @@ $app->instance('config',new Illuminate\Config\Repository([
     'logging'=>['default'=>'null','channels'=>['null'=>['driver'=>'monolog','handler'=>Monolog\Handler\NullHandler::class]]],
     'app'=>['key'=>str_repeat('a',32),'url'=>'https://blog.test','env'=>'testing'],
     'cache'=>['default'=>'array','stores'=>['array'=>['driver'=>'array']]],
-    'health_mcp'=>['scopes'=>['mcp:use'=>'Use MCP server','health'=>'Access to health data'],'enabled'=>true,'public_url'=>'https://blog.test/mcp','requests_per_minute'=>200,'max_response_bytes'=>262144],
+    'mcp_oauth'=>require dirname(__DIR__,2).'/config/mcp_oauth.php',
+    'health_mcp'=>['enabled'=>true,'public_url'=>'https://blog.test/mcp','requests_per_minute'=>200,'max_response_bytes'=>262144],
 ]));
 Facade::setFacadeApplication($app);
 $app->singleton(Illuminate\Contracts\Debug\ExceptionHandler::class,Illuminate\Foundation\Exceptions\Handler::class);

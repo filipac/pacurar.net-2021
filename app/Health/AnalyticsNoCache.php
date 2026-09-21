@@ -35,6 +35,7 @@ class AnalyticsNoCache
         $uris[] = '[?&]rest_route=(%2F|/)health(%2F|/)v1(%2F|/)(timeline|schema)(%2F|/|&|$)';
         $uris[] = '^/oauth/clients(/|[?]|$)';
         $uris[] = '^/mcp(/|[?]|$)';
+        $uris[] = '^/mcp-test(/|[?]|$)';
         $uris[] = '^/\\.well-known/oauth-(authorization-server|protected-resource)(/|[?]|$)';
         return array_values(array_unique($uris));
     }
@@ -47,6 +48,7 @@ class AnalyticsNoCache
         if (is_string($path) && preg_match('~^/\.well-known/oauth-(authorization-server|protected-resource)(/|$)~', $path)) return true;
         if (is_string($path) && rtrim($path, '/') === '/oauth/clients') return true;
         if (is_string($path) && rtrim($path, '/') === '/mcp') return true;
+        if (is_string($path) && rtrim($path, '/') === '/mcp-test') return true;
         return is_string($path) && (bool) preg_match('~/(?:'.preg_quote(rest_get_url_prefix(), '~').')/health/v1/(timeline|schema)/?$~D', rawurldecode($path));
     }
 

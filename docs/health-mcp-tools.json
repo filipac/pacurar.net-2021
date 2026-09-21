@@ -5172,6 +5172,24 @@
           "username"
         ],
         "additionalProperties": false
+      },
+      "securitySchemes": [
+        {
+          "type": "oauth2",
+          "scopes": [
+            "mcp:use"
+          ]
+        }
+      ],
+      "_meta": {
+        "securitySchemes": [
+          {
+            "type": "oauth2",
+            "scopes": [
+              "mcp:use"
+            ]
+          }
+        ]
       }
     }
   ],
