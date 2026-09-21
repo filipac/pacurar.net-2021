@@ -21,10 +21,10 @@ abstract class HealthTool extends Tool
         try {
             $user = $request->user('api');
             if (! $user instanceof WordpressUser || (int) $user->getAuthIdentifier() <= 0) {
-                throw new HealthToolException('unauthenticated', 'WordPress authentication is required.');
+                return $this->authenticationError('unauthenticated', 'WordPress authentication is required.', 'invalid_token');
             }
             if (!$user->tokenCan('health')) {
-                throw new HealthToolException('forbidden', 'The authenticated WordPress user must have the health scope granted.');
+                return $this->authenticationError('forbidden', 'The authenticated WordPress user must have the health scope granted.', 'insufficient_scope');
             }
             // Check the token owner, never the ambient WordPress browser session.
             if (! user_can((int) $user->getAuthIdentifier(), 'edit_posts')) {
@@ -48,6 +48,18 @@ abstract class HealthTool extends Tool
         return Response::make(Response::error(json_encode($data, JSON_THROW_ON_ERROR)))->withStructuredContent($data);
     }
 
+    private function authenticationError(string $code, string $message, string $oauthError): ResponseFactory
+    {
+        $data = ['error' => ['code' => $code, 'message' => $message]];
+
+        return Response::make(Response::error(json_encode($data, JSON_THROW_ON_ERROR)))
+            ->withStructuredContent($data)
+            ->withMeta('mcp/www_authenticate', [
+                'Bearer resource_metadata="'.url('/.well-known/oauth-protected-resource/mcp')
+                .'", error="'.$oauthError.'", error_description="Authorize access to health data to continue", scope="mcp:use health"',
+            ]);
+    }
+
     public function schema(JsonSchema $schema): array
     {
         $operation = substr($this->name, 7);
@@ -69,6 +81,8 @@ abstract class HealthTool extends Tool
     public function toArray(): array
     {
         $result = parent::toArray();
+        $result['securitySchemes'] = [['type' => 'oauth2', 'scopes' => ['mcp:use', 'health']]];
+        $result['_meta']['securitySchemes'] = $result['securitySchemes'];
         $result['inputSchema']['additionalProperties'] = false;
         $result['outputSchema'] = HealthOutputSchema::for(substr($this->name, 7));
 

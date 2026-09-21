@@ -35,7 +35,8 @@ final class HealthMcpProvider extends ServiceProvider
 
         Mcp::oauthRoutes();
         foreach ($this->app['router']->getRoutes() as $route) {
-            if (str_starts_with($route->getName() ?? '', 'mcp.oauth.')) {
+            if (str_starts_with($route->getName() ?? '', 'mcp.oauth.')
+                || $route->getControllerClass() === \Laravel\Mcp\Server\Http\Controllers\OAuthRegisterController::class) {
                 $route->middleware(HealthOAuthMetadata::class);
             }
         }

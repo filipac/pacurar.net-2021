@@ -84,6 +84,7 @@ foreach ($tools as $tool) {
     check($tool['inputSchema']['additionalProperties']===false,'Closed arguments: '.$tool['name']);
     check(($tool['outputSchema']['type'] ?? null)==='object' && isset($tool['outputSchema']['properties']), 'Typed output schema: '.$tool['name']);
     if ($tool['name'] !== 'wordpress_current_user') check(isset($tool['outputSchema']['oneOf']), 'Typed success/error alternatives: '.$tool['name']);
+    if ($tool['name'] !== 'wordpress_current_user') check(($tool['securitySchemes'][0]['scopes'] ?? []) === ['mcp:use','health'] && $tool['_meta']['securitySchemes'] === $tool['securitySchemes'], 'Health tool advertises required OAuth scopes: '.$tool['name']);
 }
 $apiUser = new App\Models\WordpressUser(['user_email'=>'member@example.test','user_login'=>'member','display_name'=>'Private display name','user_pass'=>'private-hash']);
 $browserUser = new App\Models\WordpressUser(['user_email'=>'browser@example.test','user_login'=>'browser']);
@@ -124,7 +125,10 @@ $app['auth']->apiUser=$apiUser;
 $GLOBALS['testCapabilities'][12]['edit_posts']=true;
 $apiUser->withAccessToken(new Laravel\Passport\AccessToken(['oauth_scopes'=>['mcp:use']]));
 foreach ($healthInputs as $name=>$input) {
-    check($errorCode($call($name,$input))==='forbidden','Missing health scope denies privileged token owner: '.$name);
+    $denied = $call($name,$input);
+    check($errorCode($denied)==='forbidden','Missing health scope denies privileged token owner: '.$name);
+    $challenge = $denied['result']['_meta']['mcp/www_authenticate'][0] ?? '';
+    check(str_contains($challenge, 'error="insufficient_scope"') && str_contains($challenge, 'scope="mcp:use health"'), 'Missing scope triggers tool-level reauthorization: '.$name);
 }
 check([$fixture->calls,$fixture->schemaCalls]===$beforeReads,'Missing scope performs no health reads');
 check($call('wordpress_current_user')['result']['structuredContent']['username']==='member','Identity remains available without health scope');
@@ -133,6 +137,7 @@ $GLOBALS['testCapabilities'][12]['edit_posts']=false;
 foreach ($healthInputs as $name=>$input) {
     $denied=$call($name,$input);
     check($errorCode($denied)==='forbidden' && $denied['result']['isError']===true,'Token owner without edit_posts denied despite privileged browser user: '.$name);
+    check(!isset($denied['result']['_meta']['mcp/www_authenticate']), 'Capability denial does not trigger an OAuth loop: '.$name);
 }
 check(array_unique(array_column($GLOBALS['capabilityChecks'],0))===[12] && array_unique(array_column($GLOBALS['capabilityChecks'],1))===['edit_posts'],'WordPress capability lookup uses the token owner and exact capability');
 check([$fixture->calls,$fixture->schemaCalls]===$beforeReads,'Unauthorized tools perform no schema or health data reads');

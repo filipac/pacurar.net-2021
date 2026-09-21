@@ -14,9 +14,14 @@ final class HealthOAuthMetadata
         $response = $next($request);
         if ($response instanceof JsonResponse && $response->isSuccessful()) {
             $metadata = $response->getData(true);
-            $metadata['scopes_supported'] = array_values(array_unique(array_merge(
-                $metadata['scopes_supported'] ?? [], array_keys(config('health_mcp.scopes'))
-            )));
+            if ($response->getStatusCode() === 201 && isset($metadata['client_id'])) {
+                // DCR clients may retain this list instead of re-reading discovery on reconnect.
+                $metadata['scope'] = implode(' ', array_keys(config('health_mcp.scopes')));
+            } else {
+                $metadata['scopes_supported'] = array_values(array_unique(array_merge(
+                    $metadata['scopes_supported'] ?? [], array_keys(config('health_mcp.scopes'))
+                )));
+            }
             $response->setData($metadata);
         }
         foreach (AnalyticsNoCache::headers() as $key => $value) {
