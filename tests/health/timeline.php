@@ -39,7 +39,8 @@ timelineFixture('2031-04-02', 'activity', [
     'withings' => ['metrics' => [timelineMetric('withings.workout.calories', 150, '2031-04-02T11:00:00+03:00')]],
 ]);
 timelineFixture('2031-04-02', 'heart', [
-    'apple_health' => ['metrics' => [timelineMetric('apple_health.heart_rate_variability', 64), timelineMetric('apple_health.resting_heart_rate', 53)]],
+    'apple_health' => ['metrics' => [timelineMetric('apple_health.heart_rate_variability', 64), timelineMetric('apple_health.resting_heart_rate', 53),
+        timelineMetric('apple_health.blood_pressure.systolic', 116.85714285714), timelineMetric('apple_health.blood_pressure.diastolic', 74.571428571429)]],
     'oura' => ['metrics' => [timelineMetric('oura.sleep.average_hrv', 52)], 'series' => [['key' => 'oura.heartrate.bpm', 'points' => [['value' => 999]]]]],
     'withings' => ['metrics' => [timelineMetric('withings.workout.hr_average', 120, '2031-04-02T11:00:00+03:00')]],
 ]);
@@ -60,6 +61,7 @@ check($data['meta']['days'] === 3 && $data['meta']['timezone'] === 'Europe/Bucha
 check(array_column($data['days'], 'date') === ['2031-04-01', '2031-04-02', '2031-04-03'], 'Timeline merges topics into one chronological object per day');
 check($data['days'][0]['body']['weight_kg']['withings']['value'] === 72.2 && $data['days'][2]['body']['weight_kg']['withings']['value'] === 71.77, 'Timeline includes both boundary dates and excludes adjacent dates');
 $middle = $data['days'][1];
+check($middle['heart']['blood_pressure_systolic']['apple'] === 116.85714285714 && $middle['heart']['blood_pressure_diastolic']['apple'] === 74.571428571429, 'Timeline exposes both Apple blood pressure components without rounding');
 check(! isset($middle['body']['weight_kg']), 'Timeline excludes unpublished and password-protected readings even for otherwise public days');
 check($middle['activity']['active_energy_kcal'] === ['apple' => 613, 'oura' => 578], 'Overlapping provider values remain separate without averaging or preferred provider');
 check($middle['activity']['steps']['apple'] === 0 && ! isset($middle['activity']['steps']['oura']), 'Actual zero is preserved and missing provider metrics remain absent');
