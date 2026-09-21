@@ -48,7 +48,7 @@ final class HealthOAuthMetadata
 
     public static function resourceScopes(string $path): array
     {
-        return config('mcp_oauth.resources')[rtrim($path, '/') ?: '/']
+        return McpServers::find($path)['scopes']
             ?? config('mcp_oauth.default_scopes');
     }
 }

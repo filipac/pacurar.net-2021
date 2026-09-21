@@ -10,7 +10,7 @@ function user_can($user, $capability): bool {
 require dirname(__DIR__,2).'/vendor/autoload.php';
 
 use App\Mcp\HealthApiClientInterface;
-use App\Mcp\HealthMcpHttp;
+use App\Mcp\McpHttp;
 use App\Mcp\HealthServer;
 use App\Mcp\HealthToolException;
 use Illuminate\Http\Request;
@@ -24,6 +24,7 @@ $app->instance('config',new Illuminate\Config\Repository([
     'logging'=>['default'=>'null','channels'=>['null'=>['driver'=>'monolog','handler'=>Monolog\Handler\NullHandler::class]]],
     'app'=>['key'=>str_repeat('a',32),'url'=>'https://blog.test','env'=>'testing'],
     'cache'=>['default'=>'array','stores'=>['array'=>['driver'=>'array']]],
+    'mcp_servers'=>require dirname(__DIR__,2).'/config/mcp_servers.php',
     'mcp_oauth'=>require dirname(__DIR__,2).'/config/mcp_oauth.php',
     'health_mcp'=>['enabled'=>true,'public_url'=>'https://blog.test/mcp','requests_per_minute'=>200,'max_response_bytes'=>262144],
 ]));
@@ -66,7 +67,7 @@ $contractResponses = [];
 $send = function (string $method,array $params=[],array $headers=[]) use ($app, &$contractResponses) {
     $request=Request::create('https://blog.test/mcp','POST',[],[],[],array_merge(['CONTENT_TYPE'=>'application/json','HTTP_ACCEPT'=>'application/json, text/event-stream','REMOTE_ADDR'=>'192.0.2.3'],$headers),json_encode(['jsonrpc'=>'2.0','id'=>1,'method'=>$method,'params'=>(object)$params]));
     $app->instance('request',$request);Facade::clearResolvedInstance('request');
-    $response=(new HealthMcpHttp)->handle($request,fn($request)=>$app['router']->dispatch($request));
+    $response=(new McpHttp)->handle($request,fn($request)=>$app['router']->dispatch($request));
     $wire = json_decode($response->getContent(),false,512,JSON_THROW_ON_ERROR);
     if ($method === 'tools/call' && isset($wire->result->structuredContent)) $contractResponses[] = ['tool'=>$params['name'],'result'=>$wire->result->structuredContent];
     return [$response,json_decode($response->getContent(),true,512,JSON_THROW_ON_ERROR)];
@@ -203,14 +204,14 @@ check(isset($call('wp_edit_post',['id'=>1])['error']),'Write/admin tools unavail
 check(isset($send('resources/read',['uri'=>'file:///etc/passwd'])[1]['error']),'No arbitrary filesystem resource');
 check($send('tools/list',[],['HTTP_ORIGIN'=>'https://attacker.invalid'])[0]->getStatusCode()===403,'Cross-origin requests rejected');
 $oversized=Request::create('https://blog.test/mcp','POST',[],[],[],['CONTENT_TYPE'=>'application/json'],str_repeat('x',16385));
-check((new HealthMcpHttp)->handle($oversized,fn()=>throw new RuntimeException('Must not dispatch'))->getStatusCode()===413,'Oversized inputs rejected before dispatch');
+check((new McpHttp)->handle($oversized,fn()=>throw new RuntimeException('Must not dispatch'))->getStatusCode()===413,'Oversized inputs rejected before dispatch');
 $wrongHost=Request::create('https://attacker.invalid/mcp','POST');
-check((new HealthMcpHttp)->handle($wrongHost,fn()=>throw new RuntimeException('Must not dispatch'))->getStatusCode()===403,'Unexpected Host rejected');
+check((new McpHttp)->handle($wrongHost,fn()=>throw new RuntimeException('Must not dispatch'))->getStatusCode()===403,'Unexpected Host rejected');
 $empty=$call('health_summary',['from'=>'2026-09-01','to'=>'2026-09-02','metric'=>'body.weight_kg','provider'=>'withings'])['result']['structuredContent']['statistics'];
 check($empty['count']===0 && $empty['mean']===null && $empty['numeric_change']===null && count($empty['missing_days'])===2,'Empty summary reports missing data without fabricated statistics');
-$transportFailure=(new HealthMcpHttp)->handle(Request::create('https://blog.test/mcp','POST'),fn()=>throw new RuntimeException('Private failure details'));
+$transportFailure=(new McpHttp)->handle(Request::create('https://blog.test/mcp','POST'),fn()=>throw new RuntimeException('Private failure details'));
 check($transportFailure->getStatusCode()===503 && str_contains($transportFailure->headers->get('Cache-Control'),'no-store') && !str_contains($transportFailure->getContent(),'Private'),'Unexpected transport failures remain sanitized and uncached');
-$challenge=(new HealthMcpHttp)->handle(Request::create('https://blog.test/mcp','POST'),fn()=>response()->json(['message'=>'Unauthenticated.'],401));
+$challenge=(new McpHttp)->handle(Request::create('https://blog.test/mcp','POST'),fn()=>response()->json(['message'=>'Unauthenticated.'],401));
 check(str_contains($challenge->headers->get('WWW-Authenticate'),'scope="mcp:use health"'),'Authentication challenge advertises both requested scopes');
 check(str_contains($challenge->headers->get('WWW-Authenticate'),'/.well-known/oauth-protected-resource/mcp'),'Authentication challenge links to resource discovery');
 Illuminate\Support\Facades\RateLimiter::clear('health-mcp:'.hash('sha256','192.0.2.3'));

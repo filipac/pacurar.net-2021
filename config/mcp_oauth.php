@@ -7,9 +7,4 @@ return [
         'health' => 'Access to health data',
     ],
     'default_scopes' => ['mcp:use'],
-    // Exact endpoint paths. Future servers do not inherit the health resource's scopes.
-    'resources' => [
-        '/mcp' => ['mcp:use', 'health'],
-        '/mcp-test' => ['mcp:use'],
-    ],
 ];

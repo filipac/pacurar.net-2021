@@ -12,6 +12,7 @@ $app->instance('config', new Illuminate\Config\Repository([
     'view' => ['paths' => []],
     'database'=>['default'=>'sqlite','connections'=>['sqlite'=>['driver'=>'sqlite','database'=>':memory:','prefix'=>'']]],
     'auth'=>['guards'=>['api'=>['provider'=>'wordpress']]],
+    'mcp_servers'=>require dirname(__DIR__,2).'/config/mcp_servers.php',
     'mcp_oauth' => require dirname(__DIR__, 2).'/config/mcp_oauth.php',
     'health_mcp' => require dirname(__DIR__, 2).'/config/health_mcp.php',
 ]));
@@ -74,7 +75,7 @@ $app->instance('request', $request);
 $response = $router->dispatch($request);
 check($response->getStatusCode() === 400 && !isset($response->getData(true)['scope']), 'Invalid registration remains rejected without scope metadata');
 // A second MCP resource can advertise its own scopes without receiving health.
-config(['mcp_oauth.resources'=>['/mcp'=>['mcp:use','health'], '/mcp-notes'=>['mcp:use']]]);
+config(['mcp_servers./mcp-notes'=>['server'=>App\Mcp\TestServer::class,'config'=>'mcp_test','scopes'=>['mcp:use']]]);
 foreach (['/mcp-notes', '/mcp-future', '/mcp/nested'] as $resource) {
     $request = Illuminate\Http\Request::create('https://blog.test/.well-known/oauth-protected-resource'.$resource);
     $app->instance('request', $request);

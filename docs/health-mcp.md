@@ -24,7 +24,7 @@ rules. The canonical service still excludes draft, private and password-protecte
 entries and arbitrary private fields.
 
 `app/Providers/HealthMcpProvider.php` registers the SDK route and a WordPress
-`template_redirect` bridge before normal HTML routing. `app/Mcp/HealthMcpHttp.php`
+`template_redirect` bridge before normal HTML routing. `app/Mcp/McpHttp.php`
 provides the stateless transport boundary. `app/Mcp/Tools/` contains tool descriptions,
 input schemas and read-only annotations; `app/Mcp/HealthOutputSchema.php` describes
 each tool's structured output, including typed provider maps, repeated observations,
@@ -60,8 +60,8 @@ returns `unauthenticated`; insufficient capability returns `forbidden` with
 
 ## OAuth scopes per MCP resource
 
-`config/mcp_oauth.php` separates the authorization server's supported scope
-catalog from endpoint-specific scope lists:
+`config/mcp_oauth.php` defines the authorization server's supported scope catalog
+and defaults. Endpoint-specific scope lists live in `config/mcp_servers.php`:
 
 ```php
 'scopes' => [
@@ -69,10 +69,6 @@ catalog from endpoint-specific scope lists:
     'health' => 'Access to health data',
 ],
 'default_scopes' => ['mcp:use'],
-'resources' => [
-    '/mcp' => ['mcp:use', 'health'],
-    // '/mcp-notes' => ['mcp:use'],
-],
 ```
 
 Passport registers the full scope catalog so it can issue tokens for any resource.
@@ -88,21 +84,43 @@ omits `scope`, registration omits it too, leaving selection to resource discover
 it never adds `health` to a non-health client. Registration metadata is not a grant:
 users still authorize scopes, and the tools still validate them.
 
-`HealthMcpHttp` handles only `/mcp` and advertises its scope list in the 401
-challenge. Each health tool declares OAuth `securitySchemes` with `mcp:use health`
+`McpHttp` selects the exact registered server and advertises its scope list in the
+401 challenge. Each health tool declares OAuth `securitySchemes` with `mcp:use health`
 (also mirrored in `_meta`). Missing-scope errors include
 `_meta["mcp/www_authenticate"]` with `insufficient_scope`, the resource metadata
 URL and required scopes so clients can offer reauthorization. WordPress capability
 failures do not trigger another OAuth login; login cannot grant `edit_posts`.
 The identity tool remains available without the health scope.
 
-For a new unrelated server, register its endpoint with `Mcp::web` and `auth:api`,
-add the exact path and its scopes to `mcp_oauth.resources`, and implement tools
-extending the SDK's `Tool`, not `HealthTool`. Give those tools their own required
-scope checks and declarations. Do not reuse `HealthMcpHttp`, which has the health
-endpoint's origin and payload policies. Merely registering a scope does not make
-it mandatory everywhere, and a scope is a permission, not a token audience or URL
-restriction.
+### Adding another MCP server
+
+Create the SDK server/tool classes and a settings file (for example
+`config/notes_mcp.php`) with `enabled`, `public_url` and `requests_per_minute`.
+Then add one entry to `config/mcp_servers.php`:
+
+```php
+'/mcp-notes' => [
+    'server' => \App\Mcp\NotesServer::class,
+    'config' => 'notes_mcp',
+    'scopes' => ['mcp:use'],
+],
+```
+
+The provider registers all entries with `auth:api`. `McpServers` also drives the
+WordPress bridge, session/debug exclusions, W3TC cache exclusions, transport
+settings and protected-resource scopes. No provider conditionals, manual
+`Mcp::web` call, or per-server transport subclass are needed.
+
+The bridge runs at WordPress `template_redirect` before normal HTML rendering.
+It leaves unregistered paths alone; for a registered MCP request it runs trusted
+proxy and transport checks, dispatches through Laravel's router, sends the
+response, terminates the HTTP kernel and exits before WordPress can append HTML.
+Disabled servers stay registered so the transport can return a clean, uncached 404.
+
+Unrelated tools should extend the SDK's `Tool`, not `HealthTool`, and declare and
+check their own required permissions. Add any new scope names/descriptions to the
+shared `mcp_oauth.scopes` catalog. Scope declarations don't replace tool permission
+checks and don't bind tokens to a URL or audience.
 
 After changing configuration, clear/rebuild the config cache during deployment.
 Refresh the connector's tools and authorize again. Inspector's explicit Scope

@@ -44,7 +44,7 @@ class AppServiceProvider extends ServiceProvider
                 | E_USER_WARNING
                 | E_RECOVERABLE_ERROR);
         }
-        if (!\App\Mcp\HealthMcpHttp::isRequest() && !session_id() && !app()->runningInConsole() && !headers_sent()) {
+        if (!\App\Mcp\McpServers::isRequest() && !session_id() && !app()->runningInConsole() && !headers_sent()) {
             session_start();
         }
 
@@ -72,7 +72,7 @@ class AppServiceProvider extends ServiceProvider
         add_action('init', function () {
             // OAuth uses the HTTP kernel's session middleware. Starting it here too
             // creates a second session ID for new visitors and loses authorization state.
-            if (is_admin() || \App\Mcp\HealthMcpHttp::isRequest() || request()->is('oauth/*')) {
+            if (is_admin() || \App\Mcp\McpServers::isRequest() || request()->is('oauth/*')) {
                 return;
             }
 
@@ -156,7 +156,7 @@ class AppServiceProvider extends ServiceProvider
         // dd(site_url());
 
         add_action('wp_loaded', function () {
-            if (\App\Mcp\HealthMcpHttp::isRequest()) return;
+            if (\App\Mcp\McpServers::isRequest()) return;
             if (isset($_SESSION['set_lang']) && $_SESSION['set_lang'] == '1') {
                 return;
             }

@@ -3,11 +3,9 @@
 namespace App\Providers;
 
 use App\Mcp\HealthApiClientInterface;
-use App\Mcp\HealthMcpHttp;
+use App\Mcp\McpHttp;
+use App\Mcp\McpServers;
 use App\Mcp\HealthOAuthMetadata;
-use App\Mcp\HealthServer;
-use App\Mcp\TestServer;
-use App\Mcp\TestMcpHttp;
 use App\Mcp\WordPressHealthApiClient;
 use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\ServiceProvider;
@@ -19,22 +17,31 @@ final class HealthMcpProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(HealthApiClientInterface::class, WordPressHealthApiClient::class);
-        if (HealthMcpHttp::isRequest() || TestMcpHttp::isRequest()) {
+        if (McpServers::isRequest()) {
             config(['debugbar.enabled' => false]);
         }
     }
 
     public function boot(): void
     {
-        // Stateless Passport authentication; tools read published health data or the token owner's identity.
+        $this->configurePassport();
+        $this->registerOAuthRoutes();
+        $this->registerMcpServers();
+        $this->registerWordPressBridge();
+    }
 
+    private function configurePassport(): void
+    {
         Passport::authorizationView(function ($parameters) {
             return view('mcp.authorize', $parameters);
         });
 
         Passport::tokensCan(array_replace(Passport::$scopes, config('mcp_oauth.scopes')));
         Passport::defaultScopes(config('mcp_oauth.default_scopes'));
+    }
 
+    private function registerOAuthRoutes(): void
+    {
         Mcp::oauthRoutes();
         foreach ($this->app['router']->getRoutes() as $route) {
             if (str_starts_with($route->getName() ?? '', 'mcp.oauth.')
@@ -42,16 +49,24 @@ final class HealthMcpProvider extends ServiceProvider
                 $route->middleware(HealthOAuthMetadata::class);
             }
         }
-        Mcp::web('/mcp', HealthServer::class)->middleware('auth:api');
-        Mcp::web('/mcp-test', TestServer::class)->middleware('auth:api');
+    }
+
+    private function registerMcpServers(): void
+    {
+        foreach (McpServers::all() as $path => $server) {
+            Mcp::web($path, $server['server'])->middleware('auth:api');
+        }
+    }
+
+    private function registerWordPressBridge(): void
+    {
         add_action('template_redirect', function () {
-            if (! HealthMcpHttp::isRequest() && ! TestMcpHttp::isRequest()) {
+            if (! McpServers::isRequest()) {
                 return;
             }
             $request = request();
-            $transport = TestMcpHttp::isRequest() ? TestMcpHttp::class : HealthMcpHttp::class;
             $response = (new Pipeline($this->app))->send($request)
-                ->through([\App\Http\Middleware\TrustProxies::class, $transport])
+                ->through([\App\Http\Middleware\TrustProxies::class, McpHttp::class])
                 ->then(fn ($request) => $this->app['router']->dispatch($request));
             $response->send();
             $this->app->make(\Illuminate\Contracts\Http\Kernel::class)->terminate($request, $response);
