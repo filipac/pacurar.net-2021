@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Mcp\HealthApiClientInterface;
 use App\Mcp\HealthMcpHttp;
+use App\Mcp\HealthOAuthMetadata;
 use App\Mcp\HealthServer;
 use App\Mcp\WordPressHealthApiClient;
 use Illuminate\Pipeline\Pipeline;
@@ -29,7 +30,15 @@ final class HealthMcpProvider extends ServiceProvider
             return view('mcp.authorize', $parameters);
         });
 
+        Passport::tokensCan(array_replace(Passport::$scopes, config('health_mcp.scopes')));
+        Passport::defaultScopes(array_keys(config('health_mcp.scopes')));
+
         Mcp::oauthRoutes();
+        foreach ($this->app['router']->getRoutes() as $route) {
+            if (str_starts_with($route->getName() ?? '', 'mcp.oauth.')) {
+                $route->middleware(HealthOAuthMetadata::class);
+            }
+        }
         Mcp::web('/mcp', HealthServer::class)->middleware('auth:api');
         add_action('template_redirect', function () {
             if (! HealthMcpHttp::isRequest()) {

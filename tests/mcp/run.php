@@ -24,7 +24,7 @@ $app->instance('config',new Illuminate\Config\Repository([
     'logging'=>['default'=>'null','channels'=>['null'=>['driver'=>'monolog','handler'=>Monolog\Handler\NullHandler::class]]],
     'app'=>['key'=>str_repeat('a',32),'url'=>'https://blog.test','env'=>'testing'],
     'cache'=>['default'=>'array','stores'=>['array'=>['driver'=>'array']]],
-    'health_mcp'=>['enabled'=>true,'public_url'=>'https://blog.test/mcp','requests_per_minute'=>200,'max_response_bytes'=>262144],
+    'health_mcp'=>['scopes'=>['mcp:use'=>'Use MCP server','health'=>'Access to health data'],'enabled'=>true,'public_url'=>'https://blog.test/mcp','requests_per_minute'=>200,'max_response_bytes'=>262144],
 ]));
 Facade::setFacadeApplication($app);
 $app->singleton(Illuminate\Contracts\Debug\ExceptionHandler::class,Illuminate\Foundation\Exceptions\Handler::class);
@@ -121,6 +121,15 @@ foreach ([null,new Illuminate\Auth\GenericUser(['id'=>34]),new App\Models\Wordpr
 }
 check($GLOBALS['capabilityChecks']===[],'Unauthenticated tools never check ambient user capabilities');
 $app['auth']->apiUser=$apiUser;
+$GLOBALS['testCapabilities'][12]['edit_posts']=true;
+$apiUser->withAccessToken(new Laravel\Passport\AccessToken(['oauth_scopes'=>['mcp:use']]));
+foreach ($healthInputs as $name=>$input) {
+    check($errorCode($call($name,$input))==='forbidden','Missing health scope denies privileged token owner: '.$name);
+}
+check([$fixture->calls,$fixture->schemaCalls]===$beforeReads,'Missing scope performs no health reads');
+check($call('wordpress_current_user')['result']['structuredContent']['username']==='member','Identity remains available without health scope');
+$apiUser->withAccessToken(new Laravel\Passport\AccessToken(['oauth_scopes'=>['mcp:use','health']]));
+$GLOBALS['testCapabilities'][12]['edit_posts']=false;
 foreach ($healthInputs as $name=>$input) {
     $denied=$call($name,$input);
     check($errorCode($denied)==='forbidden' && $denied['result']['isError']===true,'Token owner without edit_posts denied despite privileged browser user: '.$name);
@@ -195,6 +204,9 @@ $empty=$call('health_summary',['from'=>'2026-09-01','to'=>'2026-09-02','metric'=
 check($empty['count']===0 && $empty['mean']===null && $empty['numeric_change']===null && count($empty['missing_days'])===2,'Empty summary reports missing data without fabricated statistics');
 $transportFailure=(new HealthMcpHttp)->handle(Request::create('https://blog.test/mcp','POST'),fn()=>throw new RuntimeException('Private failure details'));
 check($transportFailure->getStatusCode()===503 && str_contains($transportFailure->headers->get('Cache-Control'),'no-store') && !str_contains($transportFailure->getContent(),'Private'),'Unexpected transport failures remain sanitized and uncached');
+$challenge=(new HealthMcpHttp)->handle(Request::create('https://blog.test/mcp','POST'),fn()=>response()->json(['message'=>'Unauthenticated.'],401));
+check(str_contains($challenge->headers->get('WWW-Authenticate'),'scope="mcp:use health"'),'Authentication challenge advertises both requested scopes');
+check(str_contains($challenge->headers->get('WWW-Authenticate'),'/.well-known/oauth-protected-resource/mcp'),'Authentication challenge links to resource discovery');
 Illuminate\Support\Facades\RateLimiter::clear('health-mcp:'.hash('sha256','192.0.2.3'));
 config(['health_mcp.requests_per_minute'=>1]);
 check($send('tools/list')[0]->getStatusCode()===200,'First request allowed');

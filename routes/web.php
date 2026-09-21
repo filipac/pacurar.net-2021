@@ -140,7 +140,7 @@ Route::get('user', function () {
         session()->getId(),
     );
     //    dd(\Illuminate\Support\Facades\Auth::guard('wordpress')->user(), \Illuminate\Support\Facades\Session::all(), $_SESSION);
-});
+})->middleware('auth');
 
 
 // Route::any('front_page', 'Generic\Home@index');

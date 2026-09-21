@@ -25,6 +25,11 @@ final class HealthMcpHttp
         foreach (AnalyticsNoCache::headers() as $key => $value) {
             $response->headers->set($key, $value);
         }
+        if ($response->getStatusCode() === 401) {
+            $response->headers->set('WWW-Authenticate', 'Bearer realm="mcp", resource_metadata="'
+                .url('/.well-known/oauth-protected-resource/mcp').'", scope="'
+                .implode(' ', array_keys(config('health_mcp.scopes'))).'"');
+        }
 
         return $response;
     }

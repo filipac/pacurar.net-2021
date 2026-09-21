@@ -52,11 +52,36 @@ for the WordPress account authenticated by the current Passport access token. It
 not use the browser's WordPress session, accept a user ID, or expose any other account
 fields. Responses share the MCP transport's no-store cache protection.
 
-All six `health_*` tools additionally require the token owner's WordPress
+All six `health_*` tools additionally require the token's `health` scope and the token owner's WordPress
 `edit_posts` capability, checked through `user_can` on every call before reading
 any health data or schema. No particular role name is required. Missing authentication
 returns `unauthenticated`; insufficient capability returns `forbidden` with
 `isError: true`. `wordpress_current_user` only requires authentication.
+
+## OAuth scopes and Inspector
+
+`config/health_mcp.php` defines the supported scope names and consent descriptions.
+The application provider registers these with Passport and sets them as defaults
+for authorization requests that omit `scope`. `HealthOAuthMetadata` advertises
+them on the SDK's root and nested authorization-server/protected-resource discovery
+routes, with no-store headers and W3TC exclusions. The MCP 401 challenge also
+advertises `scope="mcp:use health"`. Do not edit the SDK in `vendor`.
+
+After adding a scope, clear cached configuration with `php artisan config:clear`
+(or rebuild it during deployment), then disconnect/clear the Inspector's saved
+OAuth state and authorize again. If Inspector has an explicit Scope override,
+set it to `mcp:use health`. The authorization URL must contain
+`scope=mcp%3Ause+health` (spaces may also be encoded as `%20`). Check discovery at
+`/.well-known/oauth-protected-resource/mcp` and
+`/.well-known/oauth-authorization-server` on the same host as `/mcp`.
+
+Advertising a scope does not grant it to existing tokens. Passport defaults do
+not extend an explicit `scope=mcp:use` request; clients must request `health` and
+the user must authorize it. Identity-only tokens remain usable for
+`wordpress_current_user`; health tools reject them before reading data.
+
+Run `php tests/mcp/oauth-scopes.php` and `php tests/mcp/run.php` to validate
+discovery, default scopes, challenges, and per-tool scope/capability checks.
 
 Dates are inclusive, strictly `YYYY-MM-DD`, with at most 365 calendar days.
 Provider identifiers are `apple`, `oura`, `withings`. Metric lists contain 1–50

@@ -23,6 +23,9 @@ abstract class HealthTool extends Tool
             if (! $user instanceof WordpressUser || (int) $user->getAuthIdentifier() <= 0) {
                 throw new HealthToolException('unauthenticated', 'WordPress authentication is required.');
             }
+            if (!$user->tokenCan('health')) {
+                throw new HealthToolException('forbidden', 'The authenticated WordPress user must have the health scope granted.');
+            }
             // Check the token owner, never the ambient WordPress browser session.
             if (! user_can((int) $user->getAuthIdentifier(), 'edit_posts')) {
                 throw new HealthToolException('forbidden', 'The authenticated WordPress user must have the edit_posts capability.');
