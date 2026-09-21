@@ -281,6 +281,26 @@
             ]
           }
         ]
+      },
+      "securitySchemes": [
+        {
+          "type": "oauth2",
+          "scopes": [
+            "mcp:use",
+            "health"
+          ]
+        }
+      ],
+      "_meta": {
+        "securitySchemes": [
+          {
+            "type": "oauth2",
+            "scopes": [
+              "mcp:use",
+              "health"
+            ]
+          }
+        ]
       }
     },
     {
@@ -2403,6 +2423,26 @@
             "additionalProperties": false
           }
         }
+      },
+      "securitySchemes": [
+        {
+          "type": "oauth2",
+          "scopes": [
+            "mcp:use",
+            "health"
+          ]
+        }
+      ],
+      "_meta": {
+        "securitySchemes": [
+          {
+            "type": "oauth2",
+            "scopes": [
+              "mcp:use",
+              "health"
+            ]
+          }
+        ]
       }
     },
     {
@@ -2577,6 +2617,26 @@
           {
             "required": [
               "error"
+            ]
+          }
+        ]
+      },
+      "securitySchemes": [
+        {
+          "type": "oauth2",
+          "scopes": [
+            "mcp:use",
+            "health"
+          ]
+        }
+      ],
+      "_meta": {
+        "securitySchemes": [
+          {
+            "type": "oauth2",
+            "scopes": [
+              "mcp:use",
+              "health"
             ]
           }
         ]
@@ -2786,6 +2846,26 @@
           {
             "required": [
               "error"
+            ]
+          }
+        ]
+      },
+      "securitySchemes": [
+        {
+          "type": "oauth2",
+          "scopes": [
+            "mcp:use",
+            "health"
+          ]
+        }
+      ],
+      "_meta": {
+        "securitySchemes": [
+          {
+            "type": "oauth2",
+            "scopes": [
+              "mcp:use",
+              "health"
             ]
           }
         ]
@@ -4731,6 +4811,26 @@
             ]
           }
         ]
+      },
+      "securitySchemes": [
+        {
+          "type": "oauth2",
+          "scopes": [
+            "mcp:use",
+            "health"
+          ]
+        }
+      ],
+      "_meta": {
+        "securitySchemes": [
+          {
+            "type": "oauth2",
+            "scopes": [
+              "mcp:use",
+              "health"
+            ]
+          }
+        ]
       }
     },
     {
@@ -5015,6 +5115,26 @@
           {
             "required": [
               "error"
+            ]
+          }
+        ]
+      },
+      "securitySchemes": [
+        {
+          "type": "oauth2",
+          "scopes": [
+            "mcp:use",
+            "health"
+          ]
+        }
+      ],
+      "_meta": {
+        "securitySchemes": [
+          {
+            "type": "oauth2",
+            "scopes": [
+              "mcp:use",
+              "health"
             ]
           }
         ]

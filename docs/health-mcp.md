@@ -67,6 +67,24 @@ them on the SDK's root and nested authorization-server/protected-resource discov
 routes, with no-store headers and W3TC exclusions. The MCP 401 challenge also
 advertises `scope="mcp:use health"`. Do not edit the SDK in `vendor`.
 
+The same application middleware extends the SDK's `/oauth/register` response
+with the space-separated `scope` value `mcp:use health`. Discovery metadata alone
+does not correct the SDK's original registration response, which only listed
+`mcp:use`. Registration keeps the SDK's redirect validation and client creation.
+
+Each health tool declares OAuth `securitySchemes` with both scopes (also mirrored
+in `_meta` for compatibility). Missing-scope errors include
+`_meta["mcp/www_authenticate"]` with `insufficient_scope`, the resource metadata
+URL and the required scopes so ChatGPT can offer reauthorization. WordPress
+capability failures do not request reauthorization: another OAuth login cannot
+grant `edit_posts`.
+
+ChatGPT reuses its dynamically registered client for a connection. After deploying,
+refresh the connection's tools and invoke a health tool to trigger the new scope
+challenge. If a connection still requests only `mcp:use`, recreate the ChatGPT
+connection so it performs fresh registration; a reconnect alone may reuse the old
+registration. Verify the actual consent URL includes `health`, not just discovery.
+
 After adding a scope, clear cached configuration with `php artisan config:clear`
 (or rebuild it during deployment), then disconnect/clear the Inspector's saved
 OAuth state and authorize again. If Inspector has an explicit Scope override,
