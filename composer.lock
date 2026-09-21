@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f93bfdd3160fb1db452b57a276ad67a7",
+    "content-hash": "39ce5bc602e68b533dc334cb954a5312",
     "packages": [
         {
             "name": "amrshawky/currency",
@@ -2812,16 +2812,16 @@
         },
         {
             "name": "larawelp/all",
-            "version": "v0.0.12",
+            "version": "v0.0.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/larawelp/monorepo.git",
-                "reference": "a6018184c0137527dcf0c30f0602f7fddba0b0a6"
+                "reference": "afd1eb4f0e05c09f70d936e1cafa7e9c4c38dada"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/larawelp/monorepo/zipball/a6018184c0137527dcf0c30f0602f7fddba0b0a6",
-                "reference": "a6018184c0137527dcf0c30f0602f7fddba0b0a6",
+                "url": "https://api.github.com/repos/larawelp/monorepo/zipball/afd1eb4f0e05c09f70d936e1cafa7e9c4c38dada",
+                "reference": "afd1eb4f0e05c09f70d936e1cafa7e9c4c38dada",
                 "shasum": ""
             },
             "require": {
@@ -2869,10 +2869,10 @@
             ],
             "description": "WordPress integration for Laravel.",
             "support": {
-                "source": "https://github.com/larawelp/monorepo/tree/v0.0.12",
+                "source": "https://github.com/larawelp/monorepo/tree/v0.0.13",
                 "issues": "https://github.com/larawelp/monorepo/issues"
             },
-            "time": "2026-09-18T17:26:40+00:00"
+            "time": "2026-09-21T21:20:52+00:00"
         },
         {
             "name": "larawelp/sage-theme-blocks",
