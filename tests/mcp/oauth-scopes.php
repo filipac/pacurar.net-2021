@@ -55,7 +55,7 @@ check(Laravel\Passport\Passport::hasScope('health') && Laravel\Passport\Passport
 check(Laravel\Passport\Passport::$defaultScope === 'mcp:use health', 'Omitted scope defaults to both');
 // Exercise the actual SDK registration controller against a disposable in-memory DB.
 foreach (glob(dirname(__DIR__, 2).'/vendor/laravel/passport/database/migrations/*create_oauth_clients_table.php') as $migration) (require $migration)->up();
-config(['mcp.redirect_domains'=>['client.example']]);
+config(['mcp.redirect_domains'=>['https://client.example']]);
 $request = Illuminate\Http\Request::create('https://blog.test/oauth/register', 'POST', [
     'client_name'=>'Scope test', 'redirect_uris'=>['https://client.example/callback'],
 ], server: ['HTTP_ACCEPT'=>'application/json']);
