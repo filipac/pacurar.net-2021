@@ -8,7 +8,7 @@
 .health-overview-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
 .health-overview-heading h2 { font-family: var(--font-headline, sans-serif); font-size: 22px; font-weight: 600; letter-spacing: -.03em; }
 .health-overview-heading p { font-size: 12px; color: var(--on-surface-variant); }
-.health-overview-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border: 1px solid var(--outline-variant); border-radius: 5px; background: var(--surface-container-low); overflow: hidden; }
+.health-overview-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border: 1px solid var(--outline-variant); border-radius: 5px; background: var(--surface-container-low); overflow: hidden; }
 .health-overview-item { padding: 22px; min-width: 0; border-top: 3px solid var(--health-accent); }
 .health-overview-item + .health-overview-item { border-left: 1px solid var(--outline-variant); }
 .health-overview-item h3 { font-size: 11px; margin-bottom: 20px; }
@@ -46,7 +46,8 @@
 .health-week-data table :is(th, td) { padding: 7px; font-size: 11px; }
 @media(max-width: 900px) {
     .health-overview-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .health-overview-item:nth-child(3) { border-left: 0; }
+    .health-overview-item:is(:nth-child(3), :nth-child(5)) { border-left: 0; }
+    .health-overview-item:nth-child(5) { grid-column: 1 / -1; }
 }
 @media(max-width: 540px) {
     .health-overview-heading { display: block; }

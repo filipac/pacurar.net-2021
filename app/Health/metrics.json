@@ -1912,6 +1912,14 @@
     "label": "Heart rate variability",
     "unit": "ms"
   },
+  "apple_health.heart_rate_variability_rmssd": {
+    "source": "apple_health",
+    "endpoint": "heart_rate_variability_rmssd",
+    "field": "qty",
+    "topic": "heart",
+    "label": "Recovery HRV",
+    "unit": "ms"
+  },
   "apple_health.lean_body_mass": {
     "source": "apple_health",
     "endpoint": "lean_body_mass",

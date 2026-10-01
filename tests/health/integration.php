@@ -44,7 +44,10 @@ wp_install('Health test', 'health_admin', 'fixture@example.invalid', false, '', 
 require $healthThemeRoot.'/vendor/autoload.php';
 $app = new Illuminate\Container\Container;
 Illuminate\Container\Container::setInstance($app);
-$app->instance('config', new Illuminate\Config\Repository(['health' => require $healthThemeRoot.'/config/health.php']));
+$app->instance('config', new Illuminate\Config\Repository([
+    'health' => require $healthThemeRoot.'/config/health.php',
+    'mcp_servers' => require $healthThemeRoot.'/config/mcp_servers.php',
+]));
 // Record URL purges without loading W3TC or touching real theme caches.
 $GLOBALS['healthPurgedUrls'] = [];
 if (! function_exists('w3tc_flush_url')) {

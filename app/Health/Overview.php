@@ -8,6 +8,7 @@ class Overview
         'weight' => ['Weight', ['withings.measure.1', 'apple_health.weight_body_mass']],
         'sleep' => ['Sleep', ['oura.daily_sleep.score', 'apple_health.sleep_analysis.totalSleep', 'oura.sleep.total_sleep_duration', 'withings.sleep.asleepduration']],
         'activity' => ['Activity', ['oura.daily_activity.steps', 'apple_health.step_count', 'withings.activity.steps']],
+        'heart' => ['HRV', ['apple_health.heart_rate_variability_rmssd']],
         'recovery' => ['Readiness', ['oura.daily_readiness.score']],
     ];
 

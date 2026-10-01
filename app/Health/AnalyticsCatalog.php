@@ -65,6 +65,7 @@ class AnalyticsCatalog
             'recovery.readiness_score' => ['oura.daily_readiness.score'],
             'recovery.temperature_deviation_c' => ['oura.daily_readiness.temperature_deviation'],
             'recovery.temperature_trend_deviation_c' => ['oura.daily_readiness.temperature_trend_deviation'],
+            'recovery.hrv_ms' => ['apple_health.heart_rate_variability_rmssd'],
             'recovery.respiratory_rate' => ['apple_health.respiratory_rate', 'oura.sleep.average_breath', 'withings.sleep.rr_average'],
             'mindfulness.mindful_minutes' => ['apple_health.mindful_minutes'],
         ];

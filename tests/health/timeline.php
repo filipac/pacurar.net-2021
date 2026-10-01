@@ -143,6 +143,11 @@ $_SERVER['REQUEST_URI'] = $originalUri;
 $mcpClient = new App\Mcp\WordPressHealthApiClient;
 check($mcpClient->schema() === AnalyticsCatalog::schema(), 'MCP adapter reuses the canonical analytics schema');
 check(wp_json_encode($mcpClient->timeline($params['from'], $params['to'])) === wp_json_encode(timelineRequest($params)->get_data()), 'MCP adapter returns the same public timeline after edits and privacy changes');
-$_SERVER['REQUEST_URI'] = '/mcp';
-check(apply_filters('w3tc_can_cache', true) === false && preg_match('~'.end($rejects).'~i', '/mcp?transport=http') === 1, 'W3TC excludes MCP transport without disabling unrelated page caching');
+foreach (array_keys(App\Mcp\McpServers::all()) as $path) {
+    $_SERVER['REQUEST_URI'] = $path;
+    check(apply_filters('w3tc_can_cache', true) === false, 'W3TC page-cache write filter excludes MCP transport: '.$path);
+    check(count(array_filter($rejects, fn ($pattern) => preg_match('~'.$pattern.'~i', $path.'?transport=http') === 1)) > 0, 'W3TC reject rules cover MCP transport: '.$path);
+}
+$_SERVER['REQUEST_URI'] = '/health/';
+check(apply_filters('w3tc_can_cache', true) === true, 'MCP exclusions preserve unrelated page caching');
 $_SERVER['REQUEST_URI'] = $originalUri;

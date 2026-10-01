@@ -16,7 +16,7 @@ class Presentation
 
     public static function prominent(array $entry): ?array
     {
-        $priority = ['withings.measure.1', 'withings.measure.6', 'oura.daily_activity.steps', 'oura.sleep.average_heart_rate', 'oura.daily_sleep.score', 'oura.daily_readiness.score', 'oura.daily_spo2.spo2_percentage.average', 'oura.session.duration', 'apple_health.weight_body_mass', 'apple_health.body_fat_percentage', 'apple_health.step_count', 'apple_health.heart_rate.Avg', 'apple_health.sleep_analysis.totalSleep', 'apple_health.blood_oxygen_saturation'];
+        $priority = ['withings.measure.1', 'withings.measure.6', 'oura.daily_activity.steps', 'apple_health.heart_rate_variability_rmssd', 'oura.sleep.average_heart_rate', 'oura.daily_sleep.score', 'oura.daily_readiness.score', 'oura.daily_spo2.spo2_percentage.average', 'oura.session.duration', 'apple_health.weight_body_mass', 'apple_health.body_fat_percentage', 'apple_health.step_count', 'apple_health.heart_rate.Avg', 'apple_health.sleep_analysis.totalSleep', 'apple_health.blood_oxygen_saturation'];
         $metrics = [];
         foreach ($entry['providers'] ?? [] as $source => $section) foreach ($section['metrics'] as $metric) if ($metric['unit'] !== 'timestamp') $metrics[] = $metric + ['source' => $source];
         usort($metrics, function ($a, $b) use ($priority) {
