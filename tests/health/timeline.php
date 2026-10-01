@@ -71,7 +71,7 @@ check($middle['body']['visceral_fat']['withings']['value'] === -1, 'Questionable
 check($middle['sleep']['total_sleep_minutes']['apple'] === 450 && $middle['sleep']['deep_sleep_minutes']['oura'] === 60 && $middle['sleep']['efficiency_pct']['withings'] === 90, 'Sleep hours/seconds and efficiency ratio receive explicit unit conversions');
 check($middle['sleep']['bedtime']['apple'] === '2031-04-01T23:10:00+03:00', 'Sleep keeps its assigned day and preceding-night timestamp');
 check($middle['activity']['equivalent_walking_distance_km']['oura'] === 2.1 && ! isset($middle['activity']['distance_km']['oura']), 'Walking-equivalent distance is not mislabeled as actual travelled distance');
-check($middle['heart']['hrv_ms'] === ['apple' => 64, 'oura' => 52] && ! isset($middle['heart']['average_hr_bpm']), 'HRV providers remain distinct and raw samples do not create derived averages');
+check($middle['heart']['hrv_ms'] === ['apple' => 64] && $middle['recovery']['hrv_ms'] === ['oura' => 52] && ! isset($middle['heart']['average_hr_bpm']), 'SDNN and RMSSD HRV stay in separate fields and raw samples do not create derived averages');
 check($middle['recovery']['readiness_score']['oura'] === 87 && $middle['recovery']['temperature_deviation_c']['oura'] === -.2 && $middle['recovery']['daily_stress_stress_high']['oura'] === 600, 'Recovery exports both common fields and other stored catalogued metrics');
 check(count($middle['workouts']) === 4 && array_column($middle['workouts'], 'start') === ['2031-04-02T11:00:00+03:00', '2031-04-02T12:00:00+03:00', '2031-04-02T16:00:00+03:00', '2031-04-02T18:02:00+03:00'], 'Individual workouts from all sources are sorted by start time');
 $cycling = $middle['workouts'][3];

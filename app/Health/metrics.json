@@ -5,7 +5,8 @@
     "field": "steps",
     "topic": "activity",
     "unit": "steps",
-    "label": "Steps"
+    "label": "Steps",
+    "better": "up"
   },
   "oura.daily_activity.active_calories": {
     "source": "oura",
@@ -13,7 +14,8 @@
     "field": "active_calories",
     "topic": "activity",
     "unit": "kcal",
-    "label": "Active calories"
+    "label": "Active calories",
+    "better": "up"
   },
   "oura.daily_activity.total_calories": {
     "source": "oura",
@@ -93,7 +95,8 @@
     "field": "sedentary_time",
     "topic": "activity",
     "unit": "s",
-    "label": "Sedentary time"
+    "label": "Sedentary time",
+    "better": "down"
   },
   "oura.daily_activity.non_wear_time": {
     "source": "oura",
@@ -109,7 +112,8 @@
     "field": "score",
     "topic": "activity",
     "unit": "score",
-    "label": "Activity score"
+    "label": "Activity score",
+    "better": "up"
   },
   "oura.daily_activity.contributors.meet_daily_targets": {
     "source": "oura",
@@ -205,7 +209,8 @@
     "field": "inactivity_alerts",
     "topic": "activity",
     "unit": "count",
-    "label": "Inactivity alerts"
+    "label": "Inactivity alerts",
+    "better": "down"
   },
   "oura.daily_sleep.score": {
     "source": "oura",
@@ -213,7 +218,8 @@
     "field": "score",
     "topic": "sleep",
     "unit": "score",
-    "label": "Sleep score"
+    "label": "Sleep score",
+    "better": "up"
   },
   "oura.daily_sleep.contributors.deep_sleep": {
     "source": "oura",
@@ -277,7 +283,8 @@
     "field": "awake_time",
     "topic": "sleep",
     "unit": "s",
-    "label": "Awake time"
+    "label": "Awake time",
+    "better": "down"
   },
   "oura.sleep.deep_sleep_duration": {
     "source": "oura",
@@ -285,7 +292,8 @@
     "field": "deep_sleep_duration",
     "topic": "sleep",
     "unit": "s",
-    "label": "Deep sleep duration"
+    "label": "Deep sleep duration",
+    "better": "up"
   },
   "oura.sleep.latency": {
     "source": "oura",
@@ -309,7 +317,8 @@
     "field": "rem_sleep_duration",
     "topic": "sleep",
     "unit": "s",
-    "label": "Rem sleep duration"
+    "label": "Rem sleep duration",
+    "better": "up"
   },
   "oura.sleep.time_in_bed": {
     "source": "oura",
@@ -325,7 +334,8 @@
     "field": "total_sleep_duration",
     "topic": "sleep",
     "unit": "s",
-    "label": "Total sleep duration"
+    "label": "Total sleep duration",
+    "better": "up"
   },
   "oura.sleep.efficiency": {
     "source": "oura",
@@ -333,7 +343,8 @@
     "field": "efficiency",
     "topic": "sleep",
     "unit": "%",
-    "label": "Efficiency"
+    "label": "Efficiency",
+    "better": "up"
   },
   "oura.sleep.restless_periods": {
     "source": "oura",
@@ -349,7 +360,8 @@
     "field": "average_heart_rate",
     "topic": "heart",
     "unit": "bpm",
-    "label": "Average heart rate"
+    "label": "Average heart rate",
+    "better": "down"
   },
   "oura.sleep.lowest_heart_rate": {
     "source": "oura",
@@ -357,7 +369,8 @@
     "field": "lowest_heart_rate",
     "topic": "heart",
     "unit": "bpm",
-    "label": "Lowest heart rate"
+    "label": "Lowest heart rate",
+    "better": "down"
   },
   "oura.sleep.average_hrv": {
     "source": "oura",
@@ -365,7 +378,8 @@
     "field": "average_hrv",
     "topic": "heart",
     "unit": "ms",
-    "label": "Average HRV"
+    "label": "Average HRV",
+    "better": "up"
   },
   "oura.sleep.average_breath": {
     "source": "oura",
@@ -397,7 +411,8 @@
     "field": "score",
     "topic": "recovery",
     "unit": "score",
-    "label": "Readiness score"
+    "label": "Readiness score",
+    "better": "up"
   },
   "oura.daily_readiness.contributors.activity_balance": {
     "source": "oura",
@@ -493,7 +508,8 @@
     "field": "recovery_high",
     "topic": "recovery",
     "unit": "s",
-    "label": "Restorative time"
+    "label": "Restorative time",
+    "better": "up"
   },
   "oura.daily_stress.stress_high": {
     "source": "oura",
@@ -501,7 +517,8 @@
     "field": "stress_high",
     "topic": "recovery",
     "unit": "s",
-    "label": "Stressed time"
+    "label": "Stressed time",
+    "better": "down"
   },
   "oura.daily_resilience.contributors.daytime_recovery": {
     "source": "oura",
@@ -533,7 +550,8 @@
     "field": "spo2_percentage.average",
     "topic": "vitals",
     "unit": "%",
-    "label": "Average SpO₂"
+    "label": "Average SpO₂",
+    "better": "up"
   },
   "oura.daily_spo2.breathing_disturbance_index": {
     "source": "oura",
@@ -541,7 +559,8 @@
     "field": "breathing_disturbance_index",
     "topic": "vitals",
     "unit": "index",
-    "label": "Breathing disturbance index"
+    "label": "Breathing disturbance index",
+    "better": "down"
   },
   "oura.daily_cardiovascular_age.vascular_age": {
     "source": "oura",
@@ -549,7 +568,8 @@
     "field": "vascular_age",
     "topic": "heart",
     "unit": "years",
-    "label": "Vascular age"
+    "label": "Vascular age",
+    "better": "down"
   },
   "oura.daily_cardiovascular_age.pulse_wave_velocity": {
     "source": "oura",
@@ -557,7 +577,8 @@
     "field": "pulse_wave_velocity",
     "topic": "heart",
     "unit": "m/s",
-    "label": "Pulse wave velocity"
+    "label": "Pulse wave velocity",
+    "better": "down"
   },
   "oura.vO2_max.vo2_max": {
     "source": "oura",
@@ -565,7 +586,8 @@
     "field": "vo2_max",
     "topic": "heart",
     "unit": "ml/kg/min",
-    "label": "VO₂ max"
+    "label": "VO₂ max",
+    "better": "up"
   },
   "oura.workout.calories": {
     "source": "oura",
@@ -710,7 +732,8 @@
     "field": "1",
     "topic": "weight",
     "unit": "kg",
-    "label": "Weight"
+    "label": "Weight",
+    "better": "down"
   },
   "withings.measure.5": {
     "source": "withings",
@@ -718,7 +741,8 @@
     "field": "5",
     "topic": "body-composition",
     "unit": "kg",
-    "label": "Fat free mass"
+    "label": "Fat free mass",
+    "better": "up"
   },
   "withings.measure.6": {
     "source": "withings",
@@ -726,7 +750,8 @@
     "field": "6",
     "topic": "body-composition",
     "unit": "%",
-    "label": "Body fat"
+    "label": "Body fat",
+    "better": "down"
   },
   "withings.measure.8": {
     "source": "withings",
@@ -734,7 +759,8 @@
     "field": "8",
     "topic": "body-composition",
     "unit": "kg",
-    "label": "Fat mass"
+    "label": "Fat mass",
+    "better": "down"
   },
   "withings.measure.76": {
     "source": "withings",
@@ -742,7 +768,8 @@
     "field": "76",
     "topic": "body-composition",
     "unit": "kg",
-    "label": "Muscle mass"
+    "label": "Muscle mass",
+    "better": "up"
   },
   "withings.measure.77": {
     "source": "withings",
@@ -822,7 +849,8 @@
     "field": "91",
     "topic": "heart",
     "unit": "m/s",
-    "label": "Pulse wave velocity"
+    "label": "Pulse wave velocity",
+    "better": "down"
   },
   "withings.measure.123": {
     "source": "withings",
@@ -830,7 +858,8 @@
     "field": "123",
     "topic": "heart",
     "unit": "ml/kg/min",
-    "label": "VO₂ max"
+    "label": "VO₂ max",
+    "better": "up"
   },
   "withings.measure.135": {
     "source": "withings",
@@ -870,7 +899,8 @@
     "field": "steps",
     "topic": "activity",
     "unit": "steps",
-    "label": "Steps"
+    "label": "Steps",
+    "better": "up"
   },
   "withings.activity.distance": {
     "source": "withings",
@@ -894,7 +924,8 @@
     "field": "calories",
     "topic": "activity",
     "unit": "kcal",
-    "label": "Calories"
+    "label": "Calories",
+    "better": "up"
   },
   "withings.activity.totalcalories": {
     "source": "withings",
@@ -1030,7 +1061,8 @@
     "field": "deepsleepduration",
     "topic": "sleep",
     "unit": "s",
-    "label": "Deep sleep duration"
+    "label": "Deep sleep duration",
+    "better": "up"
   },
   "withings.sleep.lightsleepduration": {
     "source": "withings",
@@ -1046,7 +1078,8 @@
     "field": "remsleepduration",
     "topic": "sleep",
     "unit": "s",
-    "label": "REM sleep duration"
+    "label": "REM sleep duration",
+    "better": "up"
   },
   "withings.sleep.wakeupduration": {
     "source": "withings",
@@ -1054,7 +1087,8 @@
     "field": "wakeupduration",
     "topic": "sleep",
     "unit": "s",
-    "label": "Awake duration"
+    "label": "Awake duration",
+    "better": "down"
   },
   "withings.sleep.durationtosleep": {
     "source": "withings",
@@ -1062,7 +1096,8 @@
     "field": "durationtosleep",
     "topic": "sleep",
     "unit": "s",
-    "label": "Time to fall asleep"
+    "label": "Time to fall asleep",
+    "better": "down"
   },
   "withings.sleep.durationtowakeup": {
     "source": "withings",
@@ -1078,7 +1113,8 @@
     "field": "total_sleep_time",
     "topic": "sleep",
     "unit": "s",
-    "label": "Total sleep time"
+    "label": "Total sleep time",
+    "better": "up"
   },
   "withings.sleep.total_timeinbed": {
     "source": "withings",
@@ -1094,7 +1130,8 @@
     "field": "wakeupcount",
     "topic": "sleep",
     "unit": "count",
-    "label": "Wake-up count"
+    "label": "Wake-up count",
+    "better": "down"
   },
   "withings.sleep.apnea_hypopnea_index": {
     "source": "withings",
@@ -1102,7 +1139,8 @@
     "field": "apnea_hypopnea_index",
     "topic": "sleep",
     "unit": "events/hour",
-    "label": "Apnea hypopnea index"
+    "label": "Apnea hypopnea index",
+    "better": "down"
   },
   "withings.sleep.snoringepisodecount": {
     "source": "withings",
@@ -1118,7 +1156,8 @@
     "field": "sleep_score",
     "topic": "sleep",
     "unit": "score",
-    "label": "Sleep score"
+    "label": "Sleep score",
+    "better": "up"
   },
   "withings.sleep.sleep_efficiency": {
     "source": "withings",
@@ -1126,7 +1165,8 @@
     "field": "sleep_efficiency",
     "topic": "sleep",
     "unit": "ratio",
-    "label": "Sleep efficiency"
+    "label": "Sleep efficiency",
+    "better": "up"
   },
   "withings.sleep.snoring": {
     "source": "withings",
@@ -1142,7 +1182,8 @@
     "field": "hr_average",
     "topic": "heart",
     "unit": "bpm",
-    "label": "Average heart rate"
+    "label": "Average heart rate",
+    "better": "down"
   },
   "withings.sleep.hr_min": {
     "source": "withings",
@@ -1150,7 +1191,8 @@
     "field": "hr_min",
     "topic": "heart",
     "unit": "bpm",
-    "label": "Minimum heart rate"
+    "label": "Minimum heart rate",
+    "better": "down"
   },
   "withings.sleep.hr_max": {
     "source": "withings",
@@ -1198,7 +1240,8 @@
     "field": "155",
     "topic": "heart",
     "unit": "years",
-    "label": "Vascular age"
+    "label": "Vascular age",
+    "better": "down"
   },
   "withings.measure.168": {
     "source": "withings",
@@ -1222,7 +1265,8 @@
     "field": "170",
     "topic": "body-composition",
     "unit": "index",
-    "label": "Visceral fat"
+    "label": "Visceral fat",
+    "better": "down"
   },
   "withings.measure.227": {
     "source": "withings",
@@ -1230,7 +1274,8 @@
     "field": "227",
     "topic": "body-composition",
     "unit": "years",
-    "label": "Metabolic age"
+    "label": "Metabolic age",
+    "better": "down"
   },
   "withings.measure.147": {
     "source": "withings",
@@ -1670,7 +1715,8 @@
     "field": "asleepduration",
     "topic": "sleep",
     "unit": "s",
-    "label": "Asleepduration"
+    "label": "Asleepduration",
+    "better": "up"
   },
   "withings.sleep.sleep_latency": {
     "source": "withings",
@@ -1694,7 +1740,8 @@
     "field": "waso",
     "topic": "sleep",
     "unit": "s",
-    "label": "Waso"
+    "label": "Waso",
+    "better": "down"
   },
   "withings.sleep.mvt_active_duration": {
     "source": "withings",
@@ -1782,7 +1829,8 @@
     "field": "qty",
     "topic": "activity",
     "label": "Active energy",
-    "unit": "kcal"
+    "unit": "kcal",
+    "better": "up"
   },
   "apple_health.apple_exercise_time": {
     "source": "apple_health",
@@ -1790,7 +1838,8 @@
     "field": "qty",
     "topic": "activity",
     "label": "Exercise time",
-    "unit": "min"
+    "unit": "min",
+    "better": "up"
   },
   "apple_health.apple_sleeping_wrist_temperature": {
     "source": "apple_health",
@@ -1846,7 +1895,8 @@
     "field": "qty",
     "topic": "body-composition",
     "label": "Body fat",
-    "unit": "%"
+    "unit": "%",
+    "better": "down"
   },
   "apple_health.body_mass_index": {
     "source": "apple_health",
@@ -1854,7 +1904,8 @@
     "field": "qty",
     "topic": "body-composition",
     "label": "Body mass index",
-    "unit": "index"
+    "unit": "index",
+    "better": "down"
   },
   "apple_health.breathing_disturbances": {
     "source": "apple_health",
@@ -1886,7 +1937,8 @@
     "field": "qty",
     "topic": "activity",
     "label": "Flights climbed",
-    "unit": "count"
+    "unit": "count",
+    "better": "up"
   },
   "apple_health.handwashing": {
     "source": "apple_health",
@@ -1910,7 +1962,8 @@
     "field": "qty",
     "topic": "heart",
     "label": "Heart rate variability",
-    "unit": "ms"
+    "unit": "ms",
+    "better": "up"
   },
   "apple_health.heart_rate_variability_rmssd": {
     "source": "apple_health",
@@ -1918,7 +1971,8 @@
     "field": "qty",
     "topic": "heart",
     "label": "Recovery HRV",
-    "unit": "ms"
+    "unit": "ms",
+    "better": "up"
   },
   "apple_health.lean_body_mass": {
     "source": "apple_health",
@@ -1926,7 +1980,8 @@
     "field": "qty",
     "topic": "body-composition",
     "label": "Lean body mass",
-    "unit": "kg"
+    "unit": "kg",
+    "better": "up"
   },
   "apple_health.physical_effort": {
     "source": "apple_health",
@@ -1958,7 +2013,8 @@
     "field": "qty",
     "topic": "heart",
     "label": "Resting heart rate",
-    "unit": "bpm"
+    "unit": "bpm",
+    "better": "down"
   },
   "apple_health.running_ground_contact_time": {
     "source": "apple_health",
@@ -2030,7 +2086,8 @@
     "field": "qty",
     "topic": "activity",
     "label": "Steps",
-    "unit": "count"
+    "unit": "count",
+    "better": "up"
   },
   "apple_health.time_in_daylight": {
     "source": "apple_health",
@@ -2046,7 +2103,8 @@
     "field": "qty",
     "topic": "heart",
     "label": "VO₂ max",
-    "unit": "ml/kg/min"
+    "unit": "ml/kg/min",
+    "better": "up"
   },
   "apple_health.cycling_distance": {
     "source": "apple_health",
@@ -2062,7 +2120,8 @@
     "field": "qty",
     "topic": "body-composition",
     "label": "Waist circumference",
-    "unit": "cm"
+    "unit": "cm",
+    "better": "down"
   },
   "apple_health.walking_running_distance": {
     "source": "apple_health",
@@ -2070,7 +2129,8 @@
     "field": "qty",
     "topic": "activity",
     "label": "Walking and running distance",
-    "unit": "km"
+    "unit": "km",
+    "better": "up"
   },
   "apple_health.walking_asymmetry_percentage": {
     "source": "apple_health",
@@ -2118,7 +2178,8 @@
     "field": "qty",
     "topic": "weight",
     "label": "Exported body mass",
-    "unit": "kg"
+    "unit": "kg",
+    "better": "down"
   },
   "apple_health.heart_rate.Avg": {
     "source": "apple_health",
@@ -2150,7 +2211,8 @@
     "field": "asleep",
     "topic": "sleep",
     "label": "Unspecified sleep",
-    "unit": "hr"
+    "unit": "hr",
+    "better": "up"
   },
   "apple_health.sleep_analysis.awake": {
     "source": "apple_health",
@@ -2158,7 +2220,8 @@
     "field": "awake",
     "topic": "sleep",
     "label": "Awake",
-    "unit": "hr"
+    "unit": "hr",
+    "better": "down"
   },
   "apple_health.sleep_analysis.core": {
     "source": "apple_health",
@@ -2174,7 +2237,8 @@
     "field": "deep",
     "topic": "sleep",
     "label": "Deep sleep",
-    "unit": "hr"
+    "unit": "hr",
+    "better": "up"
   },
   "apple_health.sleep_analysis.inBed": {
     "source": "apple_health",
@@ -2190,7 +2254,8 @@
     "field": "rem",
     "topic": "sleep",
     "label": "REM sleep",
-    "unit": "hr"
+    "unit": "hr",
+    "better": "up"
   },
   "apple_health.sleep_analysis.totalSleep": {
     "source": "apple_health",
@@ -2198,7 +2263,8 @@
     "field": "totalSleep",
     "topic": "sleep",
     "label": "Total sleep",
-    "unit": "hr"
+    "unit": "hr",
+    "better": "up"
   },
   "apple_health.sleep_analysis.sleepStart": {
     "source": "apple_health",
@@ -2755,6 +2821,7 @@
     "field": "qty",
     "topic": "mindfulness",
     "unit": "min",
-    "label": "Mindful minutes"
+    "label": "Mindful minutes",
+    "better": "up"
   }
 }

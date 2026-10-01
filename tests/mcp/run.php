@@ -48,7 +48,7 @@ class PublicHealthFixture implements HealthApiClientInterface
             '2026-09-15'=>['body'=>(object)['weight_kg'=>['withings'=>[['value'=>71.618,'measured_at'=>'2026-09-15T09:30:19+03:00'],['value'=>72.0,'measured_at'=>'2026-09-15T20:00:00+03:00']],'apple'=>['value'=>71.6,'measured_at'=>'2026-09-15T00:00:00+03:00']]],
                 'activity'=>(object)['active_energy_kcal'=>['apple'=>0]],
                 'workouts'=>[['provider'=>'apple','origin'=>'oura','type'=>'other','original_type'=>'Boxing','start'=>'2026-09-15T19:00:00+03:00','end'=>'2026-09-15T19:30:00+03:00','active_energy_kcal'=>123,'average_hr_bpm'=>140],['provider'=>'oura','origin'=>'oura','type'=>null,'start'=>'2026-09-15T19:00:00+03:00','end'=>null,'active_energy_kcal'=>120]]],
-            '2026-09-17'=>['body'=>(object)['weight_kg'=>['withings'=>['value'=>71.2,'measured_at'=>'2026-09-17T08:00:00+03:00']]],'heart'=>(object)['hrv_ms'=>['oura'=>[['value'=>45,'source_timestamp'=>'2026-09-16T22:00:00+03:00'],['value'=>47,'source_timestamp'=>'2026-09-17T01:00:00+03:00']]]]],
+            '2026-09-17'=>['body'=>(object)['weight_kg'=>['withings'=>['value'=>71.2,'measured_at'=>'2026-09-17T08:00:00+03:00']]],'recovery'=>(object)['hrv_ms'=>['oura'=>[['value'=>45,'source_timestamp'=>'2026-09-16T22:00:00+03:00'],['value'=>47,'source_timestamp'=>'2026-09-17T01:00:00+03:00']]]]],
         ];
         $days = [];
         for ($date=new DateTimeImmutable($from);$date->format('Y-m-d')<=$to;$date=$date->modify('+1 day')) {
@@ -164,7 +164,7 @@ $metric=$call('health_metric',$range+['metric'=>'body.weight_kg','provider'=>'wi
 check(count($metric['observations'])===3,'Multiple observations per day are retained');
 check($metric['observations'][0]['measured_at']==='2026-09-15T09:30:19+03:00','Weight timestamp and timezone offset preserved');
 check($metric['unit']==='kg','Units come from canonical schema');
-$hrv=$call('health_metric',$range+['metric'=>'heart.hrv_ms','provider'=>'oura'])['result']['structuredContent'];
+$hrv=$call('health_metric',$range+['metric'=>'recovery.hrv_ms','provider'=>'oura'])['result']['structuredContent'];
 check($hrv['observations'][0]['source_timestamp']==='2026-09-16T22:00:00+03:00' && $hrv['observations'][0]['date']==='2026-09-17','Assigned day and prior-night source timestamp remain distinct');
 $zero=$call('health_metric',$range+['metric'=>'activity.active_energy_kcal','provider'=>'apple'])['result']['structuredContent'];
 check(count($zero['observations'])===1 && $zero['observations'][0]['value']===0,'Stored zero retained; missing days never become zero');

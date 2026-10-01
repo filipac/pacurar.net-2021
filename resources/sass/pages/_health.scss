@@ -23,6 +23,16 @@
 .health-overview-caption { display: block; font-size: 12px; margin-top: 12px; }
 .health-overview-caption > span { float: right; }
 .health-overview-meta { display: block; color: var(--on-surface-variant); font-size: 11px; line-height: 1.6; margin-top: 8px; }
+.health-overview { --health-good: #2f7d4f; --health-bad: #b23a3a; --health-stale: #8a5a00; }
+.dark .health-overview, .dark .health-comparison { --health-good: #7fd39b; --health-bad: #ff9b8f; --health-stale: #f3cc65; }
+.health-comparison { --health-good: #2f7d4f; --health-bad: #b23a3a; }
+.health-tone-good { --health-tone: var(--health-good); }
+.health-tone-bad { --health-tone: var(--health-bad); }
+.health-tone-neutral { --health-tone: var(--on-surface-variant); }
+.health-overview-status { display: inline-block; margin-top: 12px; padding: 2px 9px; border: 1px solid currentColor; border-radius: 999px; color: var(--health-tone); font-size: 11px; font-weight: 600; line-height: 1.6; }
+.health-overview-change:is(.health-tone-good, .health-tone-bad) strong, .health-deltas dd:is(.health-tone-good, .health-tone-bad) { color: var(--health-tone); }
+.health-overview-stale { display: block; margin-top: 8px; color: var(--health-stale); font-size: 11px; font-weight: 600; }
+.health-overview-item.is-stale .health-big-number { opacity: .55; }
 .health-overview-missing { color: var(--on-surface-variant); font-size: 13px; }
 .health-overview-compare { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; margin-top: 8px; font-size: 12px; font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
 .health-overview-compare:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; border-radius: 2px; }

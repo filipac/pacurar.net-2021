@@ -52,7 +52,7 @@ class Comparisons
             if ($unit === 'timestamp') $difference *= 60;
             $deltaUnit = match ($unit) { 'timestamp' => 'min', '%' => 'pp', default => $unit };
             $difference = round($difference, 2);
-            $deltas[] = ['offset' => $offset, 'date' => $previousDate, 'value' => $difference,
+            $deltas[] = ['offset' => $offset, 'date' => $previousDate, 'value' => $difference, 'tone' => Overview::tone(explode('|', $key, 2)[0], $difference <=> 0),
                 'text' => ($difference > 0 ? '+' : '').Presentation::number($difference).' '.$deltaUnit];
         }
         $from = self::date($date)->modify('-6 days')->format('Y-m-d');
