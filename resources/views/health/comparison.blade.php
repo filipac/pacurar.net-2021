@@ -7,7 +7,7 @@
         @if($comparison['deltas'])
             <dl class="health-deltas">
                 @foreach($comparison['deltas'] as $delta)
-                    <div><dt title="{{ $delta['date'] }}">{{ $delta['offset'] === 1 ? 'vs previous day' : 'vs 7 days earlier' }}</dt><dd title="{{ $basis }}; {{ $comparison['current']['unit'] === '%' ? 'pp = percentage points' : $comparison['current']['unit'] }}">{{ $delta['text'] }}</dd></div>
+                    <div><dt title="{{ $delta['date'] }}">{{ $delta['offset'] === 1 ? 'vs previous day' : 'vs 7 days earlier' }}</dt><dd class="health-tone-{{ $delta['tone'] ?? 'neutral' }}" title="{{ $basis }}; {{ $comparison['current']['unit'] === '%' ? 'pp = percentage points' : $comparison['current']['unit'] }}">{{ $delta['text'] }}</dd></div>
                 @endforeach
             </dl>
         @endif

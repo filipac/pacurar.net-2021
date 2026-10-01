@@ -47,7 +47,7 @@ class AnalyticsCatalog
             'heart.sleep_max_hr_bpm' => ['withings.sleep.hr_max'],
             'heart.heart_rate_bpm' => ['withings.measure.11'],
             'heart.recording_heart_rate_bpm' => ['withings.heart.heart_rate'],
-            'heart.hrv_ms' => ['apple_health.heart_rate_variability', 'oura.sleep.average_hrv'],
+            'heart.hrv_ms' => ['apple_health.heart_rate_variability'],
             'heart.vo2max' => ['apple_health.vo2_max', 'oura.vO2_max.vo2_max', 'withings.measure.123'],
             'heart.pwv_m_s' => ['withings.measure.91', 'oura.daily_cardiovascular_age.pulse_wave_velocity'],
             'heart.vascular_age_years' => ['withings.measure.155', 'oura.daily_cardiovascular_age.vascular_age'],
@@ -65,7 +65,8 @@ class AnalyticsCatalog
             'recovery.readiness_score' => ['oura.daily_readiness.score'],
             'recovery.temperature_deviation_c' => ['oura.daily_readiness.temperature_deviation'],
             'recovery.temperature_trend_deviation_c' => ['oura.daily_readiness.temperature_trend_deviation'],
-            'recovery.hrv_ms' => ['apple_health.heart_rate_variability_rmssd'],
+            // Apple's HRV is SDNN; Oura and Recovery HRV are RMSSD. The two are not comparable.
+            'recovery.hrv_ms' => ['apple_health.heart_rate_variability_rmssd', 'oura.sleep.average_hrv'],
             'recovery.respiratory_rate' => ['apple_health.respiratory_rate', 'oura.sleep.average_breath', 'withings.sleep.rr_average'],
             'mindfulness.mindful_minutes' => ['apple_health.mindful_minutes'],
         ];

@@ -27,6 +27,7 @@ class EntryContract
             self::keys($section, ['fetched_at', 'metrics', 'series', 'workouts']);
             self::timestamp($section['fetched_at'] ?? null);
             $clean = ['fetched_at' => $section['fetched_at'], 'metrics' => [], 'series' => []];
+            $skipped = false;
             foreach (['metrics', 'series'] as $kind) {
                 if (! is_array($section[$kind] ?? null) || count($section[$kind]) > 10000) {
                     self::invalid();
@@ -37,6 +38,12 @@ class EntryContract
                     }
                     self::keys($item, $kind === 'metrics' ? ['key', 'label', 'unit', 'value', 'at'] : ['key', 'label', 'unit', 'points']);
                     $def = MetricCatalog::all()[$item['key'] ?? ''] ?? null;
+                    // A sender with a newer catalog must not lose the whole day: drop only that metric.
+                    if (! $def && is_string($item['key'] ?? null)) {
+                        $skipped = true;
+
+                        continue;
+                    }
                     if (! $def || $def['source'] !== $source || $def['topic'] !== $input['topic'] || (! empty($def['series'])) !== ($kind === 'series')) {
                         self::invalid();
                     }
@@ -89,6 +96,12 @@ class EntryContract
                             $workout['original_type'] = $name;
                         }
                     }
+                    $before = count((array) ($workout['metrics'] ?? [])) + count((array) ($workout['series'] ?? []));
+                    $workout['metrics'] = self::known($workout['metrics'] ?? null);
+                    $workout['series'] = self::known($workout['series'] ?? null);
+                    if ($before && ! $workout['metrics'] && ! $workout['series']) {
+                        continue;
+                    }
                     self::timestamp($workout['start'] ?? null);
                     self::timestamp($workout['end'] ?? null);
                     if (strtotime($workout['end']) <= strtotime($workout['start'])) {
@@ -110,9 +123,15 @@ class EntryContract
                 }
             }
             if (! $clean['metrics'] && ! $clean['series'] && empty($clean['workouts'])) {
+                if ($skipped) {
+                    continue;
+                }
                 self::invalid();
             }
             $out['providers'][$source] = $clean;
+        }
+        if (! $out['providers']) {
+            self::invalid();
         }
         ksort($out['providers']);
 
@@ -196,6 +215,39 @@ class EntryContract
         }
 
         return $entry;
+    }
+
+    /** Metric keys that normalize() drops because this catalog does not know them. */
+    public static function unrecognized(array $input): array
+    {
+        $keys = [];
+        foreach ((array) ($input['providers'] ?? []) as $section) {
+            if (! is_array($section)) {
+                continue;
+            }
+            $items = array_merge((array) ($section['metrics'] ?? []), (array) ($section['series'] ?? []));
+            foreach ((array) ($section['workouts'] ?? []) as $workout) {
+                if (is_array($workout)) {
+                    $items = array_merge($items, (array) ($workout['metrics'] ?? []), (array) ($workout['series'] ?? []));
+                }
+            }
+            foreach ($items as $item) {
+                if (is_array($item) && is_string($item['key'] ?? null) && ! isset(MetricCatalog::all()[$item['key']])) {
+                    $keys[$item['key']] = true;
+                }
+            }
+        }
+
+        return array_keys($keys);
+    }
+
+    private static function known(mixed $items): mixed
+    {
+        if (! is_array($items)) {
+            return $items;
+        }
+
+        return array_values(array_filter($items, fn ($item) => ! is_array($item) || ! is_string($item['key'] ?? null) || isset(MetricCatalog::all()[$item['key']])));
     }
 
     private static function keys(array $value, array $allowed): void

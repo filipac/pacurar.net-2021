@@ -14,17 +14,25 @@
             </div>
             <div class="health-overview-grid">
                 @foreach($overview as $reading)
-                    <article class="health-overview-item health-topic-{{ $reading['topic'] }}">
+                    @php $stale = ($reading['stale_days'] ?? 0) > 2; @endphp
+                    <article class="health-overview-item health-topic-{{ $reading['topic'] }} {{ $stale ? 'is-stale' : '' }}">
                         <h3 class="health-topic-label">{{ $reading['label'] }}</h3>
                         @if($reading['metric'])
+                            @php $unit = $reading['metric']['unit']; $baseline = $reading['baseline'] ?? null; @endphp
                             <a class="health-overview-reading" href="{{ $reading['url'] }}">
-                                <span class="health-overview-value"><span class="health-big-number">{{ \App\Health\Presentation::number($reading['metric']['value']) }}</span> <span class="health-unit">{{ $reading['metric']['unit'] }}</span></span>
-                                @if($reading['change'])
-                                    <span class="health-overview-change"><strong>{{ $reading['change']['text'] }}</strong> vs <time datetime="{{ $reading['change']['date'] }}">{{ date('d M Y', strtotime($reading['change']['date'])) }}</time>
-                                    {{-- <span class="health-overview-change-note">Previous day with data</span></span> --}}
+                                <span class="health-overview-value"><span class="health-big-number">{{ \App\Health\Presentation::number($reading['metric']['value']) }}</span> <span class="health-unit">{{ $unit }}</span></span>
+                                @if($baseline)
+                                    <span class="health-overview-status health-tone-{{ $baseline['tone'] }}">{{ $baseline['status'] }}</span>
+                                    <span class="health-overview-change" title="Your normal is the average ± one standard deviation of the {{ $baseline['history_days'] }} readings in the 53 days before this week.">
+                                        7-day avg <strong>{{ \App\Health\Presentation::number($baseline['average']) }} {{ $unit }}</strong>@if($baseline['days'] < 7) <span class="health-overview-change-note">{{ $baseline['days'] }} of 7 days</span>@endif
+                                        <br>Your normal <strong>{{ \App\Health\Presentation::number($baseline['low']) }}–{{ \App\Health\Presentation::number($baseline['high']) }}</strong>
+                                    </span>
+                                @elseif($reading['change'])
+                                    <span class="health-overview-change health-tone-{{ $reading['change']['tone'] }}"><strong>{{ $reading['change']['text'] }}</strong> vs <time datetime="{{ $reading['change']['date'] }}">{{ date('d M Y', strtotime($reading['change']['date'])) }}</time></span>
                                 @endif
                                 <span class="health-overview-caption">{{ $reading['metric']['label'] }} <span aria-hidden="true">↗</span></span>
                                 <span class="health-overview-meta"><time datetime="{{ $reading['date'] }}">{{ date('d M Y', strtotime($reading['date'])) }}</time> · {{ \App\Health\MetricCatalog::SOURCES[$reading['metric']['source']] }}</span>
+                                @if($stale)<span class="health-overview-stale">No new reading for {{ $reading['stale_days'] }} days</span>@endif
                             </a>
                             <a class="health-overview-compare" href="{{ route('health.compare', ['metric' => $reading['metric']['key'].'|daily']) }}" aria-label="Compare {{ $reading['metric']['label'] }} from {{ \App\Health\MetricCatalog::SOURCES[$reading['metric']['source']] }}">Compare <span aria-hidden="true">↗</span></a>
                         @else

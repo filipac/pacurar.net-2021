@@ -17,7 +17,7 @@ prefer its six tools:
 - `health_summary`: numerical descriptive statistics for one metric/provider;
   count means observations, not days, and missing_days lists dates without values.
 
-Use canonical paths such as `body.weight_kg`, `heart.hrv_ms`,
+Use canonical paths such as `body.weight_kg`, `recovery.hrv_ms`,
 `activity.active_energy_kcal` and `recovery.readiness_score`, verified against the
 schema. Do not pass importer keys such as `withings.measure.1`. Always specify a
 provider for health_metric/health_summary. Do not ask for a huge full timeline when

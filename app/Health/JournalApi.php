@@ -42,6 +42,7 @@ class JournalApi
         try {
             if (! is_array($input) || ! array_key_exists('expected_revision', $input) || (! is_null($input['expected_revision']) && (! is_string($input['expected_revision']) || ! preg_match('/^[a-f0-9]{64}$/D', $input['expected_revision'])))) throw new \InvalidArgumentException;
             $entry = EntryContract::normalize($input);
+            $skipped = EntryContract::unrecognized($input);
         } catch (\Throwable) { return new \WP_Error('health_invalid', 'Invalid health entry. Only recognized numerical metrics and timestamps are accepted.', ['status' => 422]); }
         global $wpdb;
         $lock = 'health:'.substr(hash('sha256', $wpdb->prefix.$entry['topic'].$entry['date']), 0, 50);
@@ -52,7 +53,7 @@ class JournalApi
             if ($post && (! current_user_can('edit_post', $post->ID) || $post->post_status !== 'publish')) return new \WP_Error('health_forbidden', 'This entry cannot be updated by this request.', ['status' => 403]);
             $fingerprint = EntryContract::fingerprint($entry);
             // A lost response is safe to retry even with the original expected revision.
-            if ($post && $fingerprint === EntryContract::fingerprint(get_post_meta($post->ID, '_health_data', true))) return $this->result($post->ID, 'unchanged');
+            if ($post && $fingerprint === EntryContract::fingerprint(get_post_meta($post->ID, '_health_data', true))) return $this->result($post->ID, 'unchanged', $skipped);
             if (($post ? $this->revision($post->ID) : null) !== $input['expected_revision']) return new \WP_Error('health_conflict', 'Entry changed after preview. Fetch again.', ['status' => 409]);
             if ($post && EntryContract::fingerprint(EntryContract::merge(get_post_meta($post->ID, '_health_data', true), $entry)) !== $fingerprint) return new \WP_Error('health_conflict', 'Existing provider data must be included in the preview.', ['status' => 409]);
             $wpdb->query('START TRANSACTION');
@@ -77,7 +78,7 @@ class JournalApi
             }
             $wpdb->query('COMMIT');
             clean_post_cache($id);
-            $result = $this->result($id, $post ? 'updated' : 'created');
+            $result = $this->result($id, $post ? 'updated' : 'created', $skipped);
             // Purge only affected health URLs, after data and taxonomies commit.
             try {
                 app(CacheInvalidator::class)->flush($id);
@@ -94,9 +95,10 @@ class JournalApi
         } finally { $wpdb->get_var($wpdb->prepare('SELECT RELEASE_LOCK(%s)', $lock)); }
     }
 
-    private function result(int $id, string $operation): array
+    private function result(int $id, string $operation, array $skipped = []): array
     {
-        return ['schema_version' => 1, 'id' => $id, 'url' => get_permalink($id), 'revision' => $this->revision($id), 'operation' => $operation];
+        return ['schema_version' => 1, 'id' => $id, 'url' => get_permalink($id), 'revision' => $this->revision($id), 'operation' => $operation]
+            + ($skipped ? ['skipped_metrics' => $skipped] : []);
     }
 
     private function content(array $entry): string

@@ -208,7 +208,7 @@ Weight since September 1 (`health_metric`):
 
 Oura HRV over 30 inclusive days (`health_metric`):
 ```json
-{"metric":"heart.hrv_ms","provider":"oura","from":"2026-08-20","to":"2026-09-18"}
+{"metric":"recovery.hrv_ms","provider":"oura","from":"2026-08-20","to":"2026-09-18"}
 ```
 
 Apple active energy and Withings weight (`health_timeline`; results remain separate):
