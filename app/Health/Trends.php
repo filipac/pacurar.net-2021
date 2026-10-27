@@ -5,7 +5,49 @@ namespace App\Health;
 /** Compact daily trends built only from published, catalogued measurements. */
 class Trends
 {
+    private const CACHE_GROUP = 'health_trends';
+
     public static function published(): array
+    {
+        // A rebuild unserializes every raw payload (seconds and ~190MB for the
+        // live journal), and every /health/compare query-string variant needs it.
+        $key = 'published:'.self::generation();
+        $metrics = wp_cache_get($key, self::CACHE_GROUP);
+        if (is_array($metrics)) return $metrics;
+        $metrics = self::build();
+        wp_cache_set($key, $metrics, self::CACHE_GROUP, DAY_IN_SECONDS);
+        return $metrics;
+    }
+
+    /** Starts a new cache generation; entries built for older ones just expire. */
+    public static function invalidate(): string
+    {
+        $generation = uniqid('', true);
+        // Explicit TTL: W3TC expires keys set without one after objectcache.lifetime
+        // (180s), which rules out wp_cache_get_last_changed() here.
+        wp_cache_set('generation', $generation, self::CACHE_GROUP, DAY_IN_SECONDS);
+        return $generation;
+    }
+
+    public static function invalidateMeta($metaId, $postId, $key): void
+    {
+        if ($key === '_health_data') self::invalidate();
+    }
+
+    public static function invalidatePost($postId, $post): void
+    {
+        // Also runs after JournalApi commits, so a rebuild that raced the
+        // transaction cannot leave pre-commit data cached.
+        if (($post->post_type ?? null) === 'health_entry') self::invalidate();
+    }
+
+    private static function generation(): string
+    {
+        $generation = wp_cache_get('generation', self::CACHE_GROUP);
+        return is_string($generation) ? $generation : self::invalidate();
+    }
+
+    private static function build(): array
     {
         global $wpdb;
         $metrics = [];

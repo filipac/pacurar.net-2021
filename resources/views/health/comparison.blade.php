@@ -20,7 +20,7 @@
                 <span>7-day trend <small>{{ count($comparison['chart']['days']) }}/7 days</small></span>
             </div>
         @endif
-        <p class="health-comparison-basis">{{ $basis }} · <a href="{{ route('health.compare', ['metric' => $comparison['key'], 'range' => 'custom', 'from' => $comparison['from'], 'to' => $comparison['date']]) }}">Explore week <span aria-hidden="true">↗</span></a></p>
+        <p class="health-comparison-basis">{{ $basis }} · <a rel="nofollow" href="{{ route('health.compare', ['metric' => $comparison['key'], 'range' => 'custom', 'from' => $comparison['from'], 'to' => $comparison['date']]) }}">Explore week <span aria-hidden="true">↗</span></a></p>
         @if($comparison['chart'] && ! ($compact ?? false))
             <details class="health-week-data"><summary>Weekly values · {{ $comparison['from'] }}–{{ $comparison['date'] }}</summary>
                 <table><caption>{{ $basis }} · {{ $comparison['current']['unit'] === 'timestamp' ? 'Europe/Bucharest' : $comparison['current']['unit'] }}</caption><thead><tr><th scope="col">Date</th><th scope="col">Value</th></tr></thead><tbody>

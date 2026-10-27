@@ -14,6 +14,10 @@ class HealthJournalProvider extends ServiceProvider
         add_action('added_post_meta', [\App\Health\DailySummary::class, 'sync'], 10, 4);
         add_action('updated_post_meta', [\App\Health\DailySummary::class, 'sync'], 10, 4);
         add_action('deleted_post_meta', [\App\Health\DailySummary::class, 'remove'], 10, 3);
+        foreach (['added_post_meta', 'updated_post_meta', 'deleted_post_meta'] as $hook) add_action($hook, [\App\Health\Trends::class, 'invalidateMeta'], 10, 3);
+        add_action('clean_post_cache', [\App\Health\Trends::class, 'invalidatePost'], 10, 2);
+        // Inside Yoast's User-agent: * group; a second group is ignored by first-match crawlers.
+        add_action('Yoast\WP\SEO\register_robots_rules', static fn ($robots) => $robots->add_disallow('*', '/'.trim(config('health.archive_slug', 'health'), '/').'/compare'));
         add_action('rest_api_init', function () {
             register_rest_route('health/v1', '/timeline', ['methods' => 'GET', 'permission_callback' => '__return_true',
                 'callback' => [new \App\Health\TimelineApi, 'timeline']]);

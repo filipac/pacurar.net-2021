@@ -51,3 +51,8 @@ try {
     App\Health\CacheInvalidator::write(static fn () => throw new RuntimeException('Fixture write failure.'));
 } catch (RuntimeException) {}
 check(has_filter('w3tc_flushable_post') === false, 'W3TC filter removed even when writing fails');
+
+$robotsRules = new class { public array $disallowed = []; public function add_disallow($agent, $path): void { $this->disallowed[] = [$agent, $path]; } };
+do_action('Yoast\WP\SEO\register_robots_rules', $robotsRules);
+check(in_array(['*', '/health/compare'], $robotsRules->disallowed, true), 'robots.txt keeps crawlers out of comparison permutations');
+check(App\Http\Controllers\HealthJournal::noindex(['index' => true, 'follow' => true, 'max-image-preview' => 'large']) === ['noindex' => true, 'nofollow' => true, 'max-image-preview' => 'large'], 'Comparison robots meta is noindex, nofollow and keeps other directives');

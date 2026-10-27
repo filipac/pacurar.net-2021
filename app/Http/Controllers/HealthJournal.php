@@ -6,6 +6,8 @@ class HealthJournal extends Controller
 {
     public function compare(\Illuminate\Http\Request $request)
     {
+        // Every metric, range and date combination is its own uncacheable URL.
+        add_filter('wp_robots', [self::class, 'noindex'], PHP_INT_MAX);
         $metrics = \App\Health\Trends::published();
         $today = new \DateTimeImmutable('today', new \DateTimeZone('Europe/Bucharest'));
         $range = $request->query('range', '30');
@@ -29,7 +31,15 @@ class HealthJournal extends Controller
         }
         $charts = [];
         if (! $error) foreach ($selected as $key) $charts[$key] = \App\Health\Trends::chart($metrics[$key], $from, $to);
-        return view('health.compare', compact('metrics', 'selected', 'charts', 'from', 'to', 'range', 'error'));
+        return response()->view('health.compare', compact('metrics', 'selected', 'charts', 'from', 'to', 'range', 'error'))
+            ->header('X-Robots-Tag', 'noindex, nofollow');
+    }
+
+    /** Runs after Yoast (PHP_INT_MAX - 10), which marks this non-WordPress route noindex, follow. */
+    public static function noindex(array $robots): array
+    {
+        unset($robots['index'], $robots['follow']);
+        return ['noindex' => true, 'nofollow' => true] + $robots;
     }
 
     public function archive()

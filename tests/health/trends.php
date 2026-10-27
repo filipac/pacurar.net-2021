@@ -38,6 +38,11 @@ trendFixture(['topic' => 'activity', 'date' => '2002-03-31', 'providers' => ['ap
 ]]]]);
 $workouts = Trends::published();
 check($workouts['apple_health.workout.distance|running|apple_health']['days']['2002-03-31']['value'] === 5.0 && $workouts['apple_health.workout.distance|cycling|apple_health']['days']['2002-03-31']['value'] === 20.0, 'Workout trends keep types and origins separate');
+$queries = $wpdb->num_queries;
+check(Trends::published() === $workouts && $wpdb->num_queries === $queries, 'Repeated trend reads are served from cache without database queries');
+$edited = $fixture; $edited['providers']['withings']['metrics'][0]['value'] = 84;
+update_post_meta($publishedId, '_health_data', $edited);
+check(Trends::published()['withings.measure.1|daily']['days']['2002-03-30']['value'] === 83.0, 'Editing a published entry refreshes cached trends');
 
 $chartMetric = ['unit' => 'kg', 'days' => []];
 foreach (['2002-03-30', '2002-03-31', '2002-04-02'] as $date) $chartMetric['days'][$date] = ['date' => $date, 'value' => 80];
